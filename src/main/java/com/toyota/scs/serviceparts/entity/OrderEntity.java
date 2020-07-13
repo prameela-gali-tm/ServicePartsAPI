@@ -26,12 +26,12 @@ import lombok.Setter;
 
 @Entity
 @Table(name="SP_ORDER")
-public class Order implements Serializable {
+public class OrderEntity implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name="ORDER_ID")
-	private long orderid;
+	private long orderId;
 	
 	@Column(name="PO_NUMBER")
 	private String poNumber;
@@ -56,12 +56,12 @@ public class Order implements Serializable {
 	@Column(name="VENDOR_CODE")
 	private String vendorCode;
 
-	public Order() {
+	public OrderEntity() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Order(String poNumber, String orderType, String modifiedBy, Date modifiedDate, String vendorCode) {
+	public OrderEntity(String poNumber, String orderType, String modifiedBy, Date modifiedDate, String vendorCode) {
 		super();
 		this.poNumber = poNumber;
 		this.orderType = orderType;
@@ -70,13 +70,6 @@ public class Order implements Serializable {
 		this.vendorCode = vendorCode;
 	}
 
-	public long getOrderid() {
-		return orderid;
-	}
-
-	public void setOrderid(long orderid) {
-		this.orderid = orderid;
-	}
 
 	public String getPoNumber() {
 		return poNumber;
@@ -116,6 +109,14 @@ public class Order implements Serializable {
 
 	public void setVendorCode(String vendorCode) {
 		this.vendorCode = vendorCode;
+	}
+
+	public long getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(long orderId) {
+		this.orderId = orderId;
 	}
 	
 	

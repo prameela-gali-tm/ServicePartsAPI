@@ -13,7 +13,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "SP_VENDOR")
-public class Vendor{
+public class VendorEntity{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,12 +30,12 @@ public class Vendor{
 	@Column(name = "MODIFIED_BY",nullable = false)
 	private String modifiedBy;
 	
-	public Vendor() {
+	public VendorEntity() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Vendor(String vendorCode, String vendorDesc, String tradingPartnerId, Date modifiedDate, String modifiedBy) {
+	public VendorEntity(String vendorCode, String vendorDesc, String tradingPartnerId, Date modifiedDate, String modifiedBy) {
 		super();
 		this.vendorCode = vendorCode;
 		this.vendorDesc = vendorDesc;

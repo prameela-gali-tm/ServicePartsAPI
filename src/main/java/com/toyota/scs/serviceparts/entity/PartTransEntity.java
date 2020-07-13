@@ -25,7 +25,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name="SP_PART_TRANS")
-public class PartTrans implements Serializable {
+public class PartTransEntity implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -91,12 +91,12 @@ public class PartTrans implements Serializable {
 	@Column(name = "MODIFIED_BY")
 	private String modifiedBy;
 
-	public PartTrans() {
+	public PartTransEntity() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public PartTrans(long partTransId, long supplierTotal, Date transmussionDate, String serialNumber, String status,
+	public PartTransEntity(long partTransId, long supplierTotal, Date transmussionDate, String serialNumber, String status,
 			long fullfilledQuantity, long partId, long caseId, long orderId, Date modifiedDate, String modifiedBy) {
 		super();
 		this.partTransId = partTransId;

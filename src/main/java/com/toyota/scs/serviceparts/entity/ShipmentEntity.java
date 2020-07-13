@@ -17,7 +17,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name="SP_SHIPMENT")
-public class Shipment implements Serializable {
+public class ShipmentEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name="SHIPMENT_ID")
@@ -74,12 +74,12 @@ public class Shipment implements Serializable {
 	@Column(name = "MODIFIED_BY")
 	private String modifiedBy;
 
-	public Shipment() {
+	public ShipmentEntity() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Shipment(long shipmnetId, String route, long run, Date shipDate, String trailer, String driverFirstName,
+	public ShipmentEntity(long shipmnetId, String route, long run, Date shipDate, String trailer, String driverFirstName,
 			String driverLastName, String scacCode, String supplierFirstName, String supplierLastName,
 			String trackingNumber, String confirmationNumber, String status, String geoLongitude, String geoLattitude,
 			Date modifiedDate, String modifiedBy) {

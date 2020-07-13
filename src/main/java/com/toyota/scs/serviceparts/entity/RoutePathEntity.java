@@ -17,7 +17,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name="SP_ROUTE_PATH")
-public class RoutePath implements Serializable {
+public class RoutePathEntity implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -34,12 +34,12 @@ public class RoutePath implements Serializable {
 	@Column(name = "MODIFIED_BY")
 	private String modifiedBy;
 
-	public RoutePath() {
+	public RoutePathEntity() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public RoutePath(long routePathId, long routeSeq, Date modifiedDate, String modifiedBy) {
+	public RoutePathEntity(long routePathId, long routeSeq, Date modifiedDate, String modifiedBy) {
 		super();
 		this.routePathId = routePathId;
 		this.routeSeq = routeSeq;

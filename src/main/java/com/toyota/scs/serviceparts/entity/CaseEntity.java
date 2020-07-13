@@ -5,27 +5,21 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import lombok.Getter;
-import lombok.Setter;
-
 @Entity
 @Table(name="SP_CASE")
-public class Case implements Serializable {
+public class CaseEntity implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -116,12 +110,12 @@ public class Case implements Serializable {
 		this.modifiedBy = modifiedBy;
 	}
 
-	public Case() {
+	public CaseEntity() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Case(long caseId, String caseNumber, String confirmationNumber, String status, long shipment,
+	public CaseEntity(long caseId, String caseNumber, String confirmationNumber, String status, long shipment,
 			Date modifiedDate, String modifiedBy) {
 		super();
 		this.caseId = caseId;

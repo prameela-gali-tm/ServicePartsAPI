@@ -25,7 +25,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name="SP_PART")
-public class Part implements Serializable {
+public class PartEntity implements Serializable {
 	
 	
 	@Id
@@ -86,12 +86,12 @@ public class Part implements Serializable {
 	@Column(name="ORDER_ID")
 	private long orderId;
 
-	public Part() {
+	public PartEntity() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Part(long partId, String partNumber, String lineItemNumber, Date dDD, String partDesc, long orderQuantity,
+	public PartEntity(long partId, String partNumber, String lineItemNumber, Date dDD, String partDesc, long orderQuantity,
 			String vendorPartNumber, String directShip, String homePosition, Date transmissionDate,
 			String orderRefNumber, String dealer, String status, String modifiedBy, Date modifiedDate, long orderId) {
 		super();
