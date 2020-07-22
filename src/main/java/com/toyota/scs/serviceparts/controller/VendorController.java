@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.toyota.scs.serviceparts.entity.VendorEntity;
+import com.toyota.scs.serviceparts.model.CaseBuildModel;
+import com.toyota.scs.serviceparts.model.ModelApiResponse;
 import com.toyota.scs.serviceparts.model.PartDetailsModel;
 import com.toyota.scs.serviceparts.repository.VendorRepositroy;
+import com.toyota.scs.serviceparts.service.CasesDetailService;
 import com.toyota.scs.serviceparts.serviceImpl.PartDetailsServiceImpl;
 
 @RestController
@@ -27,6 +30,9 @@ public class VendorController {
 	
 	@Autowired
 	private PartDetailsServiceImpl partdetailsService;
+	
+	@Autowired
+	private CasesDetailService caseDetailSer;
 	
 	@PostMapping("/vendors")
 	public VendorEntity createVendor(@RequestBody VendorEntity vendor) {
@@ -44,4 +50,16 @@ public class VendorController {
 		
 	}
 	
+	@PostMapping("/casebuild")
+	public ResponseEntity<ModelApiResponse> caseBuild(@RequestBody List<CaseBuildModel> caseModelObject,
+			@RequestParam(name="status", required = true) String status){
+		ModelApiResponse apiResponse = new ModelApiResponse();
+		apiResponse = caseDetailSer.casesDetailsValidation(caseModelObject, status);
+		return new ResponseEntity<>(apiResponse,HttpStatus.OK);
+	}
+	
+	@GetMapping("/findbyvendorcode")
+	public VendorEntity findByVedoreCode(@RequestParam(name="vendoreCode", required = true) String vendoreCode) {
+		return vendorRepositroy.findByVendorCodeEquals(vendoreCode);
+	}
 }
