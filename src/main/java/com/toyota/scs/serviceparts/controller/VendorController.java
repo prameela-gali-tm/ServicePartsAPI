@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.toyota.scs.serviceparts.entity.PartEntity;
 import com.toyota.scs.serviceparts.entity.VendorEntity;
 import com.toyota.scs.serviceparts.model.CaseBuildModel;
 import com.toyota.scs.serviceparts.model.ModelApiResponse;
-import com.toyota.scs.serviceparts.model.PartDetailsModel;
 import com.toyota.scs.serviceparts.repository.VendorRepositroy;
 import com.toyota.scs.serviceparts.service.CasesDetailService;
 import com.toyota.scs.serviceparts.serviceImpl.PartDetailsServiceImpl;
@@ -40,11 +40,11 @@ public class VendorController {
 	}
 	
 	@GetMapping("/partdetails")
-	public ResponseEntity<List<PartDetailsModel>> getPartDetails(
+	public ResponseEntity<List<PartEntity>> getPartDetails(
 			@RequestParam(name="partNumber", required = true) String partNumber,
 			@RequestParam(name="vendorCode", required = true) String vendorCode){
 		
-		List<PartDetailsModel> partDetails = new ArrayList<PartDetailsModel>();	
+		List<PartEntity> partDetails = new ArrayList();	
 		partDetails = partdetailsService.findPartDetails(partNumber, vendorCode);
 		return new ResponseEntity<>(partDetails,HttpStatus.OK);
 		
