@@ -15,7 +15,7 @@
 	<description>Service Parts</description>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>13</java.version>
 	</properties>
 
 	<dependencies>
@@ -65,9 +65,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<layout>LAYERED_JAR</layout>
-				</configuration>
+				
 			</plugin>
 			
 			
