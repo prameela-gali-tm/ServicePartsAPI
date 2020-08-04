@@ -5,23 +5,13 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import lombok.Getter;
-import lombok.Setter;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="SP_PART")
@@ -41,13 +31,16 @@ public class PartEntity implements Serializable {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="DDD")
-	private Date DDD;
+	private Date deliveryDueDate;
 	
 	@Column(name="PART_DESC")
 	private String partDesc;
 	
 	@Column(name="ORDER_QUANTITY")
 	private long orderQuantity;
+	
+	@Column(name="OUTSTANDING_QUANTITY")
+	private long outstandingQuantity;
 	
 	@Column(name="VENDOR_PART_NUMBER")
 	private String vendorPartNumber;
@@ -86,33 +79,32 @@ public class PartEntity implements Serializable {
 	@Column(name="ORDER_ID")
 	private long orderId;
 
+	@Column(name="CONTAINER_ID")
+	private String containerID;
+	
+	@Column(name="SERIAL_NUMBER")
+	private String serialNumber;
+	
+	@Column(name="SUB_PART_NUMBER")
+	private long subPartNumber;
+		  
+		  
+
+	@Transient
+	private String poNumber;
+	
+	@Transient
+	private String orderType;
+	
+	@Transient
+	private String vendorCode;
+	
 	public PartEntity() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public PartEntity(long partId, String partNumber, String lineItemNumber, Date dDD, String partDesc, long orderQuantity,
-			String vendorPartNumber, String directShip, String homePosition, Date transmissionDate,
-			String orderRefNumber, String dealer, String status, String modifiedBy, Date modifiedDate, long orderId) {
-		super();
-		this.partId = partId;
-		this.partNumber = partNumber;
-		this.lineItemNumber = lineItemNumber;
-		this.DDD = dDD;
-		this.partDesc = partDesc;
-		this.orderQuantity = orderQuantity;
-		this.vendorPartNumber = vendorPartNumber;
-		this.directShip = directShip;
-		this.homePosition = homePosition;
-		this.transmissionDate = transmissionDate;
-		this.orderRefNumber = orderRefNumber;
-		this.dealer = dealer;
-		this.status = status;
-		this.modifiedBy = modifiedBy;
-		this.modifiedDate = modifiedDate;
-		this.orderId = orderId;
-	}
-
+	
 	public long getPartId() {
 		return partId;
 	}
@@ -137,13 +129,7 @@ public class PartEntity implements Serializable {
 		this.lineItemNumber = lineItemNumber;
 	}
 
-	public Date getDDD() {
-		return DDD;
-	}
-
-	public void setDDD(Date dDD) {
-		DDD = dDD;
-	}
+	
 
 	public String getPartDesc() {
 		return partDesc;
@@ -239,6 +225,107 @@ public class PartEntity implements Serializable {
 
 	public void setOrderId(long orderId) {
 		this.orderId = orderId;
+	}
+
+	public String getPoNumber() {
+		return poNumber;
+	}
+
+	public void setPoNumber(String poNumber) {
+		this.poNumber = poNumber;
+	}
+
+	public String getOrderType() {
+		return orderType;
+	}
+
+	public void setOrderType(String orderType) {
+		this.orderType = orderType;
+	}
+
+	public String getVendorCode() {
+		return vendorCode;
+	}
+
+	public void setVendorCode(String vendorCode) {
+		this.vendorCode = vendorCode;
+	}
+
+	public Date getDeliveryDueDate() {
+		return deliveryDueDate;
+	}
+
+	public void setDeliveryDueDate(Date deliveryDueDate) {
+		this.deliveryDueDate = deliveryDueDate;
+	}
+
+
+	public long getOutstandingQuantity() {
+		return outstandingQuantity;
+	}
+
+
+	public void setOutstandingQuantity(long outstandingQuantity) {
+		this.outstandingQuantity = outstandingQuantity;
+	}
+
+
+	public String getContainerID() {
+		return containerID;
+	}
+
+
+	public void setContainerID(String containerID) {
+		this.containerID = containerID;
+	}
+
+
+	public String getSerialNumber() {
+		return serialNumber;
+	}
+
+
+	public void setSerialNumber(String serialNumber) {
+		this.serialNumber = serialNumber;
+	}
+
+
+	public long getSubPartNumber() {
+		return subPartNumber;
+	}
+
+
+	public void setSubPartNumber(long subPartNumber) {
+		this.subPartNumber = subPartNumber;
+	}
+
+
+	public PartEntity(long partId, String partNumber, String lineItemNumber, Date deliveryDueDate, String partDesc,
+			long orderQuantity, long outstandingQuantity, String vendorPartNumber, String directShip,
+			String homePosition, Date transmissionDate, String orderRefNumber, String dealer, String status,
+			String modifiedBy, Date modifiedDate, long orderId, String containerID, String serialNumber,
+			long subPartNumber) {
+		super();
+		this.partId = partId;
+		this.partNumber = partNumber;
+		this.lineItemNumber = lineItemNumber;
+		this.deliveryDueDate = deliveryDueDate;
+		this.partDesc = partDesc;
+		this.orderQuantity = orderQuantity;
+		this.outstandingQuantity = outstandingQuantity;
+		this.vendorPartNumber = vendorPartNumber;
+		this.directShip = directShip;
+		this.homePosition = homePosition;
+		this.transmissionDate = transmissionDate;
+		this.orderRefNumber = orderRefNumber;
+		this.dealer = dealer;
+		this.status = status;
+		this.modifiedBy = modifiedBy;
+		this.modifiedDate = modifiedDate;
+		this.orderId = orderId;
+		this.containerID = containerID;
+		this.serialNumber = serialNumber;
+		this.subPartNumber = subPartNumber;
 	}
 	
 	
