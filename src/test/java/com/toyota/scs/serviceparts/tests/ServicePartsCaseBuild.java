@@ -32,7 +32,7 @@ import com.toyota.scs.serviceparts.util.TestUtil;
 
 @Listeners(TestNGListener.class)
 @TestClass(description = "ServicePartsVendorTests")
-public class ServicePartsVendorTests extends BaseTest {
+public class ServicePartsCaseBuild extends BaseTest {
 
 	RestService rs = new RestService();
 	public String reqjson;
@@ -95,25 +95,7 @@ public class ServicePartsVendorTests extends BaseTest {
 		JSONObject resp = rs.sendPostwithHeaders(req);
 		test.log(LogStatus.INFO, "received response-----" + resp.toString());
 		System.out.println("response..." + resp);
-		// pipeline in jenkins
-
-	}
-
-	@Test(priority = 1, dataProvider = "VendorsDataProvider")
-	public void VerifyVendorsFailCode(Integer row)
-			throws ParseException, IOException, JsonIOException, FilloException, InterruptedException, JSONException {
-		test = rep.startTest("VerifyVendorsSuccessCode-verify confirmation number is generated");
-
-		currentRow.set(row);
-		GetDataWithRowNum(row);
-		test.log(LogStatus.INFO, " VerifyConfirmationnumberGenerated test started");
-		HttpPost req = tu.prepareForFailureHTTPPost(Inputfile);
-		test.log(LogStatus.INFO, "sent post request with payload-----" + Inputfile);
-		System.out.println("Test uses file..." + Inputfile);
-		JSONObject resp = rs.sendPostwithHeaders(req);
-		test.log(LogStatus.INFO, "received response-----" + resp.toString());
-		System.out.println("response..." + resp);
-		// pipeline in jenkins
+		
 
 	}
 
@@ -135,42 +117,5 @@ public class ServicePartsVendorTests extends BaseTest {
 		ReqjpathtoRemove = (String) testdata.get(i++);
 		secondReqJpathtoRemove = (String) testdata.get(i++);
 		valuetosetOnfirstJpath = (String) testdata.get(i++);
-	}
-
-	public String prepareRequestArraytoJString(String JReqString)
-			throws JsonIOException, IOException, FilloException, InterruptedException {
-		String JString = null;
-
-		if (JReqString.charAt(0) == '[') {
-
-			JString = JReqString.substring(1, (JReqString.length() - 1));
-		} else {
-			JString = JReqString;
-		}
-		return JString;
-	}
-
-	public String prepareRequestJStringtoArray(String originalRequest, String UpdatedReq) {
-
-		String PreparedReq = null;
-		if (originalRequest.charAt(0) == '[') {
-			PreparedReq = "[" + UpdatedReq + "]";
-		} else {
-			PreparedReq = UpdatedReq;
-		}
-
-		return PreparedReq;
-
-	}
-	
-	@Test(priority = 1, dataProvider = "VendorsDataProvider")
-	public void VerifyVendorCodeLength(Integer row) {
-		
-	}
-
-	
-	@Test(priority = 1, dataProvider = "VendorsDataProvider")
-	public void VerifyModifiedDateFormat(Integer row) {
-		
 	}
 }
