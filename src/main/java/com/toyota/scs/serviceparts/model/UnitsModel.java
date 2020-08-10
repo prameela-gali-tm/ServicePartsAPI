@@ -24,9 +24,9 @@ public class UnitsModel {
 	@JsonProperty("deliveryDueDate")
 	private String deliveryDueDate;
 	
-	@JsonProperty("containerID")
-	private String containerID;
-	
+	/*
+	 * @JsonProperty("containerID") private String containerID;
+	 */
 	@JsonProperty("serialNumber")
 	private String serialNumber;
 	
@@ -81,14 +81,12 @@ public class UnitsModel {
 		this.deliveryDueDate = deliveryDueDate;
 	}	
 
-	public String getContainerID() {
-		return containerID;
-	}
-
-	public void setContainerID(String containerID) {
-		this.containerID = containerID;
-	}
-
+	/*
+	 * public String getContainerID() { return containerID; }
+	 * 
+	 * public void setContainerID(String containerID) { this.containerID =
+	 * containerID; }
+	 */
 	public String getSerialNumber() {
 		return serialNumber;
 	}
@@ -120,7 +118,7 @@ public class UnitsModel {
 		this.partQuantity = partQuantity;
 		this.homePosition = homePosition;
 		this.deliveryDueDate = deliveryDueDate;
-		this.containerID = containerID;
+		//this.containerID = containerID;
 		this.serialNumber = serialNumber;
 		this.subPartNumber = subPartNumber;
 	}
@@ -129,7 +127,7 @@ public class UnitsModel {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((containerID == null) ? 0 : containerID.hashCode());
+		//result = prime * result + ((containerID == null) ? 0 : containerID.hashCode());
 		result = prime * result + ((deliveryDueDate == null) ? 0 : deliveryDueDate.hashCode());
 		result = prime * result + ((homePosition == null) ? 0 : homePosition.hashCode());
 		result = prime * result + ((partNumber == null) ? 0 : partNumber.hashCode());
@@ -150,11 +148,10 @@ public class UnitsModel {
 		if (getClass() != obj.getClass())
 			return false;
 		UnitsModel other = (UnitsModel) obj;
-		if (containerID == null) {
-			if (other.containerID != null)
-				return false;
-		} else if (!containerID.equals(other.containerID))
-			return false;
+		/*
+		 * if (containerID == null) { if (other.containerID != null) return false; }
+		 * else if (!containerID.equals(other.containerID)) return false;
+		 */
 		if (deliveryDueDate == null) {
 			if (other.deliveryDueDate != null)
 				return false;

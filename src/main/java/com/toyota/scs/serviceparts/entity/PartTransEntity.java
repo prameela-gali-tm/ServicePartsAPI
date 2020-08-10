@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -47,34 +48,7 @@ public class PartTransEntity implements Serializable {
 	
 	@Column(name="FULLFILLED_QUANTITY")
 	private long fullfilledQuantity;
-	
-	
-	/*
-	 * @ManyToOne(fetch = FetchType.LAZY, optional = false)
-	 * 
-	 * @JoinColumn(name = "PART_ID", nullable = false)
-	 * 
-	 * @OnDelete(action = OnDeleteAction.CASCADE)
-	 * 
-	 * @JsonIgnore private Part part;
-	 * 
-	 * 
-	 * @ManyToOne(fetch = FetchType.LAZY, optional = false)
-	 * 
-	 * @JoinColumn(name = "CASE_ID", nullable = false)
-	 * 
-	 * @OnDelete(action = OnDeleteAction.CASCADE)
-	 * 
-	 * @JsonIgnore private Case caseobj;
-	 * 
-	 * @ManyToOne(fetch = FetchType.LAZY, optional = false)
-	 * 
-	 * @JoinColumn(name = "ORDER_ID", nullable = false)
-	 * 
-	 * @OnDelete(action = OnDeleteAction.CASCADE)
-	 * 
-	 * @JsonIgnore private Order order;
-	 */
+
 	@Column(name = "PART_ID")
 	private long partId;
 	
@@ -91,6 +65,9 @@ public class PartTransEntity implements Serializable {
 	@Column(name = "MODIFIED_BY")
 	private String modifiedBy;
 
+	@Transient
+	private String caseNumber;
+	
 	public PartTransEntity() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -198,6 +175,14 @@ public class PartTransEntity implements Serializable {
 
 	public void setModifiedBy(String modifiedBy) {
 		this.modifiedBy = modifiedBy;
+	}
+
+	public String getCaseNumber() {
+		return caseNumber;
+	}
+
+	public void setCaseNumber(String caseNumber) {
+		this.caseNumber = caseNumber;
 	}
 	
 	

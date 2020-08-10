@@ -7,16 +7,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class RfidDetailsModel {
 
 	@JsonProperty("rfid")
-	private Integer rfid;
+	private String rfid;
 	
 	@JsonProperty("type")
 	private String type;
 
-	public Integer getRfid() {
+	public String getRfid() {
 		return rfid;
 	}
 
-	public void setRfid(Integer rfid) {
+	public void setRfid(String rfid) {
 		this.rfid = rfid;
 	}
 
@@ -33,7 +33,7 @@ public class RfidDetailsModel {
 		// TODO Auto-generated constructor stub
 	}
 
-	public RfidDetailsModel(Integer rfid, String type) {
+	public RfidDetailsModel(String rfid, String type) {
 		super();
 		this.rfid = rfid;
 		this.type = type;

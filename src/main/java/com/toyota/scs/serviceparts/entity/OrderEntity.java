@@ -15,6 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -25,8 +26,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name="SP_ORDER")
+@Table(name="SP_ORDER",uniqueConstraints = @UniqueConstraint(columnNames = {"PO_NUMBER","ORDER_TYPE","VENDOR_CODE"}))
 public class OrderEntity implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
