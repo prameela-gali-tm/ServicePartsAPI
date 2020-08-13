@@ -29,7 +29,7 @@ public class PartEntity implements Serializable {
 	@Column(name="LINE_ITEM_NUMBER")
 	private String lineItemNumber;
 	
-	@Temporal(TemporalType.TIMESTAMP)
+	
 	@Column(name="DDD")
 	private Date deliveryDueDate;
 	

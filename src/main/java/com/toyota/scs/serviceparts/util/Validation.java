@@ -181,7 +181,7 @@ public class Validation {
 		}else{
 			mes=mesMap.get(key);
 		}
-		mesMap.put(key, mes);
+		//mesMap.put(key, mes);
 		pushMessage(mes, vendorCodeValid(buildModel.getVendorCode(),vendorRepositroy));
 	}
 	public  OrderEntity vendorPonumberOrderValidation(UnitsModel unitsModel,String vendorCode,Map<String, Message> mesMap,OrderRepositroy orderRepositroy){
@@ -209,7 +209,7 @@ public class Validation {
 		String key= vendorCode+obj.getPartNumber();
 		PartEntity partEntity  = new PartEntity();
 		if(vendorCode!=null && obj!=null) {
-			partEntity = partRepositroy.findByPartNumberAndLineItemNumberAndDeliveryDueDate(obj.getPartNumber(), obj.getPoLineNumber(), parseTimestamp(obj.getDeliveryDueDate()));
+			partEntity = partRepositroy.findByPartNumberAndLineItemNumberAndDeliveryDueDate(obj.getPartNumber(), obj.getPoLineNumber(), parseDate(obj.getDeliveryDueDate()));
 			if(!mesMap.containsKey(key)){
 				 mes = new Message();
 				 mes.setKeyObject(key);
@@ -220,10 +220,6 @@ public class Validation {
 				if(partEntity.getOrderId()!=entity.getOrderId()) {
 					mesMap.put(key, mes);
 					pushMessage(mes, ServicePartConstant.PART_LINE_DDD);
-				}else
-				{
-					mesMap.put(key, mes);
-					pushMessage(mes, ServicePartConstant.PART_LINE_DDD_INVALID);
 				}
 			}else {
 				mesMap.put(key, mes);

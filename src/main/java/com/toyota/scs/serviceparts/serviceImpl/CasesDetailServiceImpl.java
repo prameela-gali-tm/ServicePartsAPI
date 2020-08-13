@@ -168,7 +168,10 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 					}else {
 						blanceQuantity = outStandingQuantity-actaulShippedQuantity;
 					}
-					partEntity.setOutstandingQuantity(blanceQuantity);					
+					partEntity.setOutstandingQuantity(blanceQuantity);	
+					partEntity.setTransmissionDate(new Date());
+					partEntity.setModifiedBy("sreedhar");
+					partEntity.setModifiedDate(new Date());
 					obj.setCaseId(caseNumberWithcaseID.get(obj.getCaseNumber()));
 					savePartTrans.add(obj);
 					updatePart.add(partEntity);
