@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.toyota.scs.serviceparts.entity.OrderEntity;
 import com.toyota.scs.serviceparts.entity.VendorEntity;
 import com.toyota.scs.serviceparts.model.PartDetailsModel;
+import com.toyota.scs.serviceparts.model.PurchaseOrderDetailsModel;
 import com.toyota.scs.serviceparts.repository.OrderRepositroy;
 import com.toyota.scs.serviceparts.repository.VendorRepositroy;
 import com.toyota.scs.serviceparts.serviceImpl.PartDetailsServiceImpl;
@@ -48,5 +49,9 @@ public class GetApiController {
 	@GetMapping("/getallponumber")
 	public List<OrderEntity> getAllPoNumber(@RequestParam(name="vendoreCode", required = true) String vendorCode) {
 		return (List<OrderEntity>) orderRepositroy.findByVendorCode(vendorCode);
+	}
+	@GetMapping("/getpurchasedetails")
+	public List<PurchaseOrderDetailsModel> getViewAllPurchaseDetails(){
+		return partdetailsService.getViewAllPurchaseDetails();
 	}
 }

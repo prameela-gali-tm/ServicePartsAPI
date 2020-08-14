@@ -9,4 +9,5 @@ import com.toyota.scs.serviceparts.entity.PartEntity;
 public interface PartRepository extends CrudRepository<PartEntity, Long> {
 
 	public PartEntity findByPartNumberAndLineItemNumberAndDeliveryDueDate(String partNumber,String lineItemNumber,Date deliveryDueDate);
+	
 }

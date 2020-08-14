@@ -13,12 +13,16 @@ import org.springframework.stereotype.Service;
 import com.toyota.scs.serviceparts.entity.OrderEntity;
 import com.toyota.scs.serviceparts.entity.PartEntity;
 import com.toyota.scs.serviceparts.model.PartDetailsModel;
+import com.toyota.scs.serviceparts.model.PurchaseOrderDetailsModel;
+import com.toyota.scs.serviceparts.repository.PartRepository;
 import com.toyota.scs.serviceparts.service.PartDetailsService;
 @Service
 public class PartDetailsServiceImpl implements PartDetailsService {
 
 	@Autowired
     EntityManagerFactory emf;
+	
+
 	@Override
 	public List<PartDetailsModel> findPartDetails(String partNumber,String vendorCode) {
 		EntityManager em = emf.createEntityManager();
@@ -50,5 +54,17 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 		  }
 	      return partDetilsList;    		     
 		     
+	}
+	@Override
+	public List<PurchaseOrderDetailsModel> getViewAllPurchaseDetails() {
+		EntityManager em = emf.createEntityManager();		
+		StringBuilder sqlQuery = new StringBuilder();
+		sqlQuery.append("select new com.toyota.scs.serviceparts.model.PurchaseOrderDetailsModel(ord.poNumber as poNumber,"
+				+ "ord.orderType as orderType,pa.deliveryDueDate as deliveryDueDate,'' as finalDestinationName,pa.directShip as directDhipFlag,"
+				+ "count(pa.lineItemNumber)) from PartEntity pa ,OrderEntity ord where pa.orderId = ord.orderId"
+				+" group by ord.poNumber,ord.orderType,pa.deliveryDueDate,pa.directShip");
+		Query query = em.createQuery(sqlQuery.toString());
+		List<PurchaseOrderDetailsModel> viewPurchaseOrderDetails = query.getResultList();
+		return viewPurchaseOrderDetails;
 	}
 }

@@ -12,9 +12,10 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="SP_PART")
+@Table(name="SP_PART",uniqueConstraints = @UniqueConstraint(columnNames = {"PART_NUMBER","LINE_ITEM_NUMBER","DDD"}))
 public class PartEntity implements Serializable {
 	
 	
