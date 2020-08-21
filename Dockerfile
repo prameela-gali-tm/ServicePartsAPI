@@ -1,4 +1,4 @@
-FROM openjdk:13-jdk-alpine as builder
+FROM amazoncorretto:11 as builder
 WORKDIR application
 ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} serviceparts.jar
