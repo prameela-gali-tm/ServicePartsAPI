@@ -1,7 +1,5 @@
-FROM amazoncorretto:11
-VOLUME /tmp
-
-RUN mkdir /deployments
-COPY ["target/serviceparts.jar", "/deployments"]
-
-ENTRYPOINT java -jar /deployments/serviceparts.jar
+FROM openjdk:13-jdk-alpine as builder
+WORKDIR application
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} serviceparts.jar
+ENTRYPOINT ["java","-jar","/serviceparts.jar"]
