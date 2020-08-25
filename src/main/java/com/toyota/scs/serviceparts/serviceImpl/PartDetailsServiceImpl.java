@@ -28,10 +28,17 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 		EntityManager em = emf.createEntityManager();
 		
 		StringBuilder sqlQuery = new StringBuilder();
-		sqlQuery.append("Select p,ord from PartEntity p inner join OrderEntity ord on ord.orderId=p.orderId where p.partNumber=?1 and ord.vendorCode=?2 order by p.deliveryDueDate asc");
-		Query query = em.createQuery(sqlQuery.toString())
-				   .setParameter(1, partNumber)
-				   .setParameter(2, vendorCode);		  
+		Query query =null;
+		if(partNumber!=null) {
+			sqlQuery.append("Select p,ord from PartEntity p inner join OrderEntity ord on ord.orderId=p.orderId where p.partNumber=?1 and ord.vendorCode=?2 order by p.deliveryDueDate asc");
+			 query = em.createQuery(sqlQuery.toString())
+					   .setParameter(1, partNumber)
+					   .setParameter(2, vendorCode);	
+		}else {
+			sqlQuery.append("Select p,ord from PartEntity p inner join OrderEntity ord on ord.orderId=p.orderId where ord.vendorCode=?1 order by p.deliveryDueDate asc");
+			 query = em.createQuery(sqlQuery.toString())
+					   .setParameter(1, vendorCode);
+		}
 		  @SuppressWarnings("unchecked") 
 		  List list  = query.getResultList();
 		  List<PartDetailsModel> partDetilsList = new ArrayList<PartDetailsModel>();
@@ -46,6 +53,7 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 				   detailsModel.setDeliveryDueDate(partEntity.getDeliveryDueDate());
 				   detailsModel.setOrderQuantity(partEntity.getOrderQuantity());
 				   detailsModel.setOutstandingQuantity(partEntity.getOutstandingQuantity());
+				   detailsModel.setLineItemNumber(partEntity.getLineItemNumber());
 				   detailsModel.setPoNumber(orderEntity.getPoNumber());
 				   detailsModel.setOrderType(orderEntity.getOrderType());
 				   detailsModel.setVendorCode(orderEntity.getVendorCode());

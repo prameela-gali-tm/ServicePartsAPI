@@ -68,6 +68,19 @@ public class PartTransEntity implements Serializable {
 	@Transient
 	private String caseNumber;
 	
+	@Transient
+	private String partNumber;
+	
+	@Transient
+	private String poLineItemNumber;
+	
+	@Transient
+	private String poNumber;
+	
+	@Transient
+	private String deliveryDueDate;
+	
+	
 	public PartTransEntity() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -183,6 +196,38 @@ public class PartTransEntity implements Serializable {
 
 	public void setCaseNumber(String caseNumber) {
 		this.caseNumber = caseNumber;
+	}
+
+	public String getPartNumber() {
+		return partNumber;
+	}
+
+	public void setPartNumber(String partNumber) {
+		this.partNumber = partNumber;
+	}
+
+	public String getPoLineItemNumber() {
+		return poLineItemNumber;
+	}
+
+	public void setPoLineItemNumber(String poLineItemNumber) {
+		this.poLineItemNumber = poLineItemNumber;
+	}
+
+	public String getPoNumber() {
+		return poNumber;
+	}
+
+	public void setPoNumber(String poNumber) {
+		this.poNumber = poNumber;
+	}
+
+	public String getDeliveryDueDate() {
+		return deliveryDueDate;
+	}
+
+	public void setDeliveryDueDate(String deliveryDueDate) {
+		this.deliveryDueDate = deliveryDueDate;
 	}
 	
 	

@@ -66,33 +66,34 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 		Map<String,Message> mesMap= new HashMap<String,Message>();
 		List<OrderEntity> orderList = new ArrayList<OrderEntity>();
 		Validation validation = new Validation();
+		List<PartTransEntity> partTransList = new ArrayList<PartTransEntity>();
+		String vendorCode=null;
+		List<String> vendorAndCaseNumber = new ArrayList<String>();
+		// validation start here
 		if(caseModel!=null && caseModel.size()>0)
 		{	
-			String vendorCode=null;
-			Map<Long, Long> orderAndPartId= new HashMap<Long, Long>();
-			Map<String, String> vendorAndCaseNumber= new HashMap<String, String>();
-			Map<Long,PartTransEntity> partTransMapList = new HashMap<Long, PartTransEntity>();
-			Map<Long,PartEntity> partsMapList = new HashMap<Long, PartEntity>();
 			for(int i=0;i<caseModel.size();i++) {
 				valid=true;
 				CaseBuildModel caseBuildModel = caseModel.get(i);
 				vendorCode = caseBuildModel.getVendorCode();
-				validation.vendorCodeValiadation(caseBuildModel,mesMap,vendorRepositroy);
+				validation.vendorCodeValiadation(caseBuildModel,mesMap,vendorRepositroy,mes);
 				List<ExceptionsModel> exceptions= caseBuildModel.getExceptions();
 				List<CaseModel> cases = caseBuildModel.getCases();
 				if(cases!=null && cases.size()>0) {
 					for(int j=0;j<cases.size();j++) {
 						CaseModel model = cases.get(j);
+						vendorAndCaseNumber.add(model.getCaseNumber());
 						validation.pushMessage(vendorCode, validation.caseNumberValid(model.getCaseNumber()),mesMap);
-						if(!vendorAndCaseNumber.containsKey(vendorCode)) {
-							vendorAndCaseNumber.put(vendorCode, model.getCaseNumber());
-						}
+						String keyVendor= vendorCode+model.getCaseNumber();						
 						List<UnitsModel> units = model.getUnits();
 						List<RfidDetailsModel> rfidDetails = model.getRfidDetails();
 						for(RfidDetailsModel detailsModel:rfidDetails) {
 							validation.pushMessage(vendorCode, validation.rfIdValidation(detailsModel.getRfid()),mesMap);
 						}
-						
+						for(ExceptionsModel exceptionsModel:exceptions) {
+							validation.pushMessage(vendorCode, validation.exceptionValidation(exceptionsModel.getExceptionCode()),mesMap);
+						}
+						Map<String, String> duplicateValidation = new HashMap<String, String>();
 					for(UnitsModel obj:units) {
 							validation.pushMessage(vendorCode,validation.partNumberValidation(obj.getPartNumber()),mesMap);//part number
 							validation.pushMessage(vendorCode, validation.poNumberValidation(obj.getPoNumber()),mesMap);//po number
@@ -103,84 +104,98 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 							validation.pushMessage(vendorCode, validation.deliverDueDateValidation(obj.getDeliveryDueDate()),mesMap);//delivery due date
 							validation.pushMessage(vendorCode, validation.serialNumberValidation(obj.getSerialNumber()),mesMap);// serail number
 							validation.pushMessage(vendorCode, validation.subPartNumberValidation(obj.getSubPartNumber()),mesMap);// sub part number	
+							OrderEntity entity=validation.vendorPonumberOrderValidation(obj,vendorCode,mesMap,orderRepositroy,mes);
+							PartEntity partEntity = validation.partNumberDDDLineNumbervalidation(obj,entity,mesMap,partRepositroy,vendorCode,duplicateValidation,model.getCaseNumber());
 							if(mesMap.values().size()==0) {
-								OrderEntity entity=validation.vendorPonumberOrderValidation(obj,vendorCode,mesMap,orderRepositroy);
-								PartEntity partEntity = new PartEntity();
-								if(entity!=null) {
-								partEntity= validation.partNumberDDDLineNumbervalidation(obj,entity,mesMap,partRepositroy,vendorCode);
-								}
-								if(mesMap.values().size()==0) {
-									if(!orderAndPartId.containsKey(entity.getOrderId())){
-										orderAndPartId.put(entity.getOrderId(), partEntity.getPartId());
-									}
-									if(!partTransMapList.containsKey(partEntity.getPartId())) {
-										 PartTransEntity partTransEntity = new PartTransEntity();
-										 partTransEntity.setPartId(partEntity.getPartId());
-										 partTransEntity.setSupplierTotal(obj.getPartQuantity());
-										 partTransEntity.setTransmussionDate(new Date());
-										 partTransEntity.setOrderId(entity.getOrderId());
-										 partTransEntity.setStatus("CASE BUILD");
-										 partTransEntity.setModifiedBy("sreedhar");
-										 partTransEntity.setModifiedDate(new Date());
-										 partTransEntity.setCaseNumber(model.getCaseNumber());
-										partTransMapList.put(partEntity.getPartId(), partTransEntity);
-										partsMapList.put(partEntity.getPartId(), partEntity);
-									}
-								}
+							PartTransEntity partTransEntity = new PartTransEntity();
+							 partTransEntity.setPartId(partEntity.getPartId());
+							 partTransEntity.setSupplierTotal(obj.getPartQuantity());
+							 partTransEntity.setTransmussionDate(new Date());
+							 partTransEntity.setOrderId(entity.getOrderId());
+							 partTransEntity.setStatus("CASE BUILD");
+							 partTransEntity.setModifiedBy("sreedhar");
+							 partTransEntity.setModifiedDate(new Date());   
+							 partTransEntity.setCaseNumber(model.getCaseNumber());
+							 partTransEntity.setPartNumber(obj.getPartNumber());
+							 partTransEntity.setPoLineItemNumber(obj.getPoLineNumber());
+							 partTransEntity.setDeliveryDueDate(obj.getDeliveryDueDate());
+							 partTransEntity.setPoNumber(obj.getPoNumber());
+							 partTransList.add(partTransEntity);
 							}
+						}
+							
 						}
 					}
 					
 				}
-			}
+		}
+		// validation ends here
+			
 			if(mesMap.values().size()==0) {
 				String confirmationNumber = validation.confirmationNumber(vendorCode,"C");
 				message.setConfirmationNumber(confirmationNumber);
 				CaseEntity caseEntity = null;
 				List<CaseEntity> saveCaseList = new ArrayList<CaseEntity>();
-				for(Map.Entry<String, String> entry : vendorAndCaseNumber.entrySet()) {
+				for(String caseNumbervalue : vendorAndCaseNumber) {
 					caseEntity = new CaseEntity();
+					CaseEntity caseEntityDB = caseRepositroy.findByCaseNumber(caseNumbervalue);
+					if(caseEntityDB!=null) {
+						caseEntity = caseEntityDB;						
+					}
+					caseEntity.setCaseNumber(caseNumbervalue);
 					caseEntity.setConfirmationNumber(confirmationNumber);
-					caseEntity.setCaseNumber(entry.getValue());
 					caseEntity.setStatus("CASE BUILD");
 					caseEntity.setModifiedBy("sreedhar");
-					caseEntity.setModifiedDate(new Date());
+					caseEntity.setModifiedDate(new Date());					
 					saveCaseList.add(caseEntity);
 				}
 				caseRepositroy.saveAll(saveCaseList);
-				Map<String, Long> caseNumberWithcaseID = new HashMap<String, Long>();
-				for(CaseEntity entity:saveCaseList) {
-					if(!caseNumberWithcaseID.containsKey(entity.getCaseNumber())) {
-						caseNumberWithcaseID.put(entity.getCaseNumber(), entity.getCaseId());
-					}					
-				}
-				List<PartTransEntity> savePartTrans = new ArrayList<PartTransEntity>();
-				List<PartEntity> updatePart = new ArrayList<PartEntity>();
-				for(Map.Entry<Long, PartTransEntity> entry:partTransMapList.entrySet()) {
-					PartTransEntity obj = entry.getValue();
-					PartEntity partEntity = partsMapList.get(entry.getKey());
-					long plannedQuantity = partEntity.getOrderQuantity();
-					long actaulShippedQuantity = obj.getSupplierTotal();
-					long outStandingQuantity = partEntity.getOutstandingQuantity();
-					long blanceQuantity =0;
-					if(outStandingQuantity==0) {
-						blanceQuantity= plannedQuantity-actaulShippedQuantity;
-					}else {
-						blanceQuantity = outStandingQuantity-actaulShippedQuantity;
+				for(PartTransEntity entry:partTransList) {
+						PartTransEntity obj = entry;
+						caseEntity = caseRepositroy.findByCaseNumber(obj.getCaseNumber());
+						PartTransEntity partTransEntity =null;
+						if(caseEntity!=null) {
+						 partTransEntity= partTransRepositroy.findByCaseId(caseEntity.getCaseId());
+						}
+						PartEntity partEntity = partRepositroy.findByPartNumberAndLineItemNumberAndDeliveryDueDate(entry.getPartNumber(), entry.getPoLineItemNumber(), validation.parseDate(entry.getDeliveryDueDate()));
+						if(partTransEntity!=null) {
+							obj.setPartTransId(partTransEntity.getPartTransId());
+							if(partTransEntity.getCaseId()==caseEntity.getCaseId() && 
+									partTransEntity.getPartId()==partEntity.getPartId() &&
+											partTransEntity.getOrderId()==partEntity.getOrderId()) {
+								if(obj.getSupplierTotal()>partTransEntity.getSupplierTotal()) {
+									long differenceAmount = obj.getSupplierTotal()- partTransEntity.getSupplierTotal();
+									obj.setSupplierTotal(partTransEntity.getSupplierTotal()+differenceAmount);
+									partEntity.setOutstandingQuantity(partEntity.getOutstandingQuantity()-differenceAmount);
+								}else {
+									long differenceAmount = partTransEntity.getSupplierTotal()-obj.getSupplierTotal();
+									obj.setSupplierTotal(partTransEntity.getSupplierTotal()-differenceAmount);
+									partEntity.setOutstandingQuantity(partEntity.getOutstandingQuantity()+differenceAmount);
+								}
+							}
+						}else {
+							long plannedQuantity = partEntity.getOrderQuantity();
+							long actaulShippedQuantity = obj.getSupplierTotal();
+							long outStandingQuantity = partEntity.getOutstandingQuantity();
+							long blanceQuantity =0;
+							if(outStandingQuantity==0) {
+								blanceQuantity= plannedQuantity-actaulShippedQuantity;
+							}else {
+								blanceQuantity = outStandingQuantity-actaulShippedQuantity;
+							}
+							partEntity.setOutstandingQuantity(blanceQuantity);	
+							partEntity.setTransmissionDate(new Date());
+							partEntity.setModifiedBy("sreedhar");
+							partEntity.setModifiedDate(new Date());
+							obj.setCaseId(caseEntity.getCaseId());
+						}
+						partRepositroy.save(partEntity);
+						partTransRepositroy.save(obj);
 					}
-					partEntity.setOutstandingQuantity(blanceQuantity);	
-					partEntity.setTransmissionDate(new Date());
-					partEntity.setModifiedBy("sreedhar");
-					partEntity.setModifiedDate(new Date());
-					obj.setCaseId(caseNumberWithcaseID.get(obj.getCaseNumber()));
-					savePartTrans.add(obj);
-					updatePart.add(partEntity);
 				}
-				partTransRepositroy.saveAll(savePartTrans);
-				partRepositroy.saveAll(updatePart);
 				
-			}
-		}
+			
+		
 		message.setMessages(new ArrayList<Message>(mesMap.values()));
 		return message;
 	}

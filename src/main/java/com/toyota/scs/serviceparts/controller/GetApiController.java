@@ -33,7 +33,7 @@ public class GetApiController {
 	
 	@GetMapping("/partdetails")
 	public ResponseEntity<List<PartDetailsModel>> getPartDetails(
-			@RequestParam(name="partNumber", required = true) String partNumber,
+			@RequestParam(name="partNumber", required = false) String partNumber,
 			@RequestParam(name="vendorCode", required = true) String vendorCode){
 		
 		List<PartDetailsModel> partDetails = new ArrayList<PartDetailsModel>();	

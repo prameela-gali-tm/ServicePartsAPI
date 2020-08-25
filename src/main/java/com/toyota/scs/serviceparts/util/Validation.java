@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.Map;
 
 import com.toyota.scs.serviceparts.entity.OrderEntity;
@@ -45,7 +44,10 @@ public class Validation {
 		}
 		if(s.length()>20){
 			return ServicePartConstant.PART_NUMBER_INVALID;
-		}			
+		}
+		if(!CommonValidation.isAlphaNumeric(s)) {
+			return ServicePartConstant.PART_NUMBER_SPEC;
+		}
 		return mes;
 	}
 	
@@ -56,7 +58,10 @@ public class Validation {
 		}
 		if(s.length()>8){
 			return ServicePartConstant.PO_NUMBER_INVALID;
-		}			
+		}
+		if(!CommonValidation.isAlphaNumeric(s)) {
+			return ServicePartConstant.PO_NUMBER_SPEC;
+		}
 		return mes;
 	}
 	
@@ -67,15 +72,26 @@ public class Validation {
 		}
 		if(s.length()>5){
 			return ServicePartConstant.PO_LINE_NUMBER_INVALID;
-		}			
+		}	
+		if(!CommonValidation.isAlphaNumeric(s)) {
+			return ServicePartConstant.PO_LINE_NUMBER_SPEC;
+		}
 		return mes;
 	}
 	public  String partQuantityValidation(int s){
 		String mes=EMPTY;
-		if(s==0){
-			return ServicePartConstant.PART_NUMBER_EMPTY;
+		String value = String.valueOf(s);
+		/*
+		 * if(CommonValidation.isNumeric(value)) { return
+		 * ServicePartConstant.PART_QUANTITY_INVALID; }
+		 */
+		if(value.length()>5) {
+			return ServicePartConstant.PART_QUANTITY_INVALID;
 		}
-		//if(CommonValidation.isNumeric(s))
+		if(s==0){
+			return ServicePartConstant.PART_QUANTITY_EMPTY;
+		}
+			
 		return mes;
 	}
 	
@@ -86,6 +102,9 @@ public class Validation {
 			if(s.length()>1)
 			{
 				return ServicePartConstant.HOMEPOSITION_INVALID;
+			}
+			if(!CommonValidation.isAlphaNumeric(s)) {
+				return ServicePartConstant.HOMEPOSTION_SPEC;
 			}
 		}
 		return mes;
@@ -99,6 +118,9 @@ public class Validation {
 			{
 				return ServicePartConstant.SERIAL_NUMBER_INVALID;
 			}
+			if(!CommonValidation.isAlphaNumeric(s)) {
+				return ServicePartConstant.SERIAL_NUMBWE_SPEC;
+			}
 		}
 		return mes;
 	}
@@ -111,7 +133,11 @@ public class Validation {
 			{
 				return ServicePartConstant.SUB_PARTNUMBER_INVALID;
 			}
+			if(!CommonValidation.isAlphaNumeric(s)) {
+				return ServicePartConstant.SUB_PARTNUMBER_SPEC;
+			}
 		}
+		
 		return mes;
 	}
 	
@@ -141,21 +167,33 @@ public class Validation {
 			{
 				return ServicePartConstant.RFID_INVALID;
 			}
+			if(!CommonValidation.isAlphaNumeric(s)) {
+				return ServicePartConstant.RFID_SPC;
+			}
 		}
 		return mes;
 	}
-	
+	public String exceptionValidation(String s)
+	{
+		String mes =EMPTY;
+		if(s!=null && !s.equalsIgnoreCase("")) {
+			if(!CommonValidation.isAlphaNumeric(s)) {
+				return ServicePartConstant.EXCEPTION_CODE;
+			}
+		}
+		return mes;
+	}
 	public  String vendorCodeValid(String s,VendorRepositroy vendorRepositroy){
 		String mes=EMPTY;
 		if(s==null||s.isEmpty()){
 			return ServicePartConstant.VENDOR_CODE_EMPTY;
 		}
-		if(!CommonValidation.isAlphaNumeric(s)){
-			return ServicePartConstant.VENDOR_CODE_SPECIAL_CHAR;
-		}
 		if(s!=null && s.length()>5) {
 			return ServicePartConstant.VENDOR_CODE_INVALID;
 		}
+		if(!CommonValidation.isAlphaNumeric(s)){
+			return ServicePartConstant.VENDOR_CODE_SPECIAL_CHAR;
+		}		
 		VendorEntity entity = vendorRepositroy.findByVendorCodeEquals(s);
 		if(entity==null) {
 			return ServicePartConstant.VENDOR_CODE_DOES_NOT_EXIST;
@@ -172,8 +210,8 @@ public class Validation {
 		return cm;
 		
 	}
-	public  void vendorCodeValiadation(CaseBuildModel buildModel,Map<String, Message> mesMap,VendorRepositroy vendorRepositroy) {
-		Message mes ;
+	public  void vendorCodeValiadation(CaseBuildModel buildModel,Map<String, Message> mesMap,VendorRepositroy vendorRepositroy,Message mes) {
+	//	 ;
 		String key=buildModel.getVendorCode();
 		if(!mesMap.containsKey(key)){
 			 mes = new Message();
@@ -181,11 +219,11 @@ public class Validation {
 		}else{
 			mes=mesMap.get(key);
 		}
-		//mesMap.put(key, mes);
+		mesMap.put(key, mes);
 		pushMessage(mes, vendorCodeValid(buildModel.getVendorCode(),vendorRepositroy));
 	}
-	public  OrderEntity vendorPonumberOrderValidation(UnitsModel unitsModel,String vendorCode,Map<String, Message> mesMap,OrderRepositroy orderRepositroy){
-		Message mes ;
+	public  OrderEntity vendorPonumberOrderValidation(UnitsModel unitsModel,String vendorCode,Map<String, Message> mesMap,OrderRepositroy orderRepositroy,Message mes){
+		//Message mes ;
 		String key= vendorCode;
 		OrderEntity entity = new OrderEntity();
 		if(vendorCode!=null && unitsModel!=null) {
@@ -204,10 +242,12 @@ public class Validation {
 		}
 		return entity;
 	}
-	public PartEntity partNumberDDDLineNumbervalidation(UnitsModel obj,OrderEntity entity,Map<String, Message> mesMap,PartRepository partRepositroy,String vendorCode) {
+	public PartEntity partNumberDDDLineNumbervalidation(UnitsModel obj,OrderEntity entity,Map<String, Message> mesMap,PartRepository partRepositroy,String vendorCode,Map<String, String> duplicateValidation,
+			String caseNumber) {
 		Message mes ;
-		String key= vendorCode+obj.getPartNumber();
+		String key= vendorCode;
 		PartEntity partEntity  = new PartEntity();
+		String duplicateKey = obj.getPartNumber()+obj.getPoNumber()+obj.getPoLineNumber()+obj.getDeliveryDueDate();
 		if(vendorCode!=null && obj!=null) {
 			partEntity = partRepositroy.findByPartNumberAndLineItemNumberAndDeliveryDueDate(obj.getPartNumber(), obj.getPoLineNumber(), parseDate(obj.getDeliveryDueDate()));
 			if(!mesMap.containsKey(key)){
@@ -216,10 +256,28 @@ public class Validation {
 			}else{
 				mes=mesMap.get(key);
 			}
-			if(partEntity!=null) {
+			if(duplicateValidation.containsKey(duplicateKey)) {
+				mesMap.put(key, mes);
+				pushMessage(mes, ServicePartConstant.DUPLICATE_UNITS+" "+caseNumber);
+			}else {
+				duplicateValidation.put(duplicateKey, duplicateKey);
+			}
+			if(partEntity!=null && entity!=null) {
 				if(partEntity.getOrderId()!=entity.getOrderId()) {
 					mesMap.put(key, mes);
 					pushMessage(mes, ServicePartConstant.PART_LINE_DDD);
+				}
+				if(partEntity.getOutstandingQuantity()==0) {
+					if(obj.getPartQuantity()>partEntity.getOrderQuantity()) {
+						mesMap.put(key, mes);
+						pushMessage(mes, ServicePartConstant.ORDER_QUANTITY+" for the part numner "+obj.getPartNumber()+" and PoNumber "+ obj.getPoNumber()+" and line item number "+ obj.getPoLineNumber());
+					}
+				}else
+				{
+					if(obj.getPartQuantity()>partEntity.getOutstandingQuantity()) {
+						mesMap.put(key, mes);
+						pushMessage(mes, ServicePartConstant.ORDER_QUANTITY+" for the part numner "+obj.getPartNumber()+" and PoNumber "+ obj.getPoNumber()+" and line item number "+ obj.getPoLineNumber());
+					}
 				}
 			}else {
 				mesMap.put(key, mes);
@@ -231,20 +289,13 @@ public class Validation {
 		
 	}
 	
-	public void pushMessage(String key,String message,Map<String,Message> mesMap){
-		if(message.equals(EMPTY)){
-			return;
-		}
-		Message mes ;
-		if(!mesMap.containsKey(key)){
-			 mes = new Message();
-			 mes.setKeyObject(key);
-		}else{
-			mes=mesMap.get(key);
-		}
-		pushMessage(mes,message);
-		mesMap.put(key, mes);
-	}
+	
+	  public void pushMessage(String key,String message,Map<String,Message>
+	  mesMap){ if(message.equals(EMPTY)){ return; } Message mes ;
+	  if(!mesMap.containsKey(key)){ mes = new Message(); mes.setKeyObject(key);
+	  }else{ mes=mesMap.get(key); } pushMessage(mes,message); mesMap.put(key, mes);
+	  }
+	 
 	public  void pushMessage(Message mes,String message){
 		if(message.equals(EMPTY)){
 			return;

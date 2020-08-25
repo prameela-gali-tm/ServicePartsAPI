@@ -98,7 +98,8 @@ public class PartEntity implements Serializable {
 	private String orderType;
 	
 	@Transient
-	private String vendorCode;
+	private String vendorCode;	
+	
 	
 	public PartEntity() {
 		super();

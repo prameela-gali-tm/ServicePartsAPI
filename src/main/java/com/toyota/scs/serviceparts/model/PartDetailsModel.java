@@ -26,6 +26,9 @@ public class PartDetailsModel {
 	
 	@JsonProperty("vendorCode")
 	private String vendorCode;
+	
+	@JsonProperty("lineItemNumber")
+	private String lineItemNumber;
 
 	public PartDetailsModel() {
 		super();
@@ -33,7 +36,7 @@ public class PartDetailsModel {
 	}
 
 	public PartDetailsModel(String partNumber, Date deliveryDueDate, long orderQuantity, long outstandingQuantity,
-			String poNumber, String orderType, String vendorCode) {
+			String poNumber, String orderType, String vendorCode,String lineItemNumber) {
 		super();
 		this.partNumber = partNumber;
 		this.deliveryDueDate = deliveryDueDate;
@@ -42,6 +45,7 @@ public class PartDetailsModel {
 		this.poNumber = poNumber;
 		this.orderType = orderType;
 		this.vendorCode = vendorCode;
+		this.lineItemNumber=lineItemNumber;
 	}
 
 	public String getPartNumber() {
@@ -98,6 +102,14 @@ public class PartDetailsModel {
 
 	public void setVendorCode(String vendorCode) {
 		this.vendorCode = vendorCode;
+	}
+
+	public String getLineItemNumber() {
+		return lineItemNumber;
+	}
+
+	public void setLineItemNumber(String lineItemNumber) {
+		this.lineItemNumber = lineItemNumber;
 	}
 	
 	
