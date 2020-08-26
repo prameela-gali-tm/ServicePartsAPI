@@ -1,0 +1,32 @@
+[
+   {
+      "vendorCode":"0848H",
+      "exceptions":[
+         {
+            "exceptionCode":"10",
+            "comments":""
+         },
+         {
+            "exceptionCode":"20",
+            "comments":""
+         }
+      ],
+      "cases":[
+         {
+            "caseNumber":"21800001",
+            "units":[
+               {
+                  "partNumber":"581650702000",
+                  "poNumber":"32330011",
+                  "poLineNumber":"1",
+                  "partQuantity":100,
+                  "homePosition":"S",
+                  "deliveryDueDate":"2020-08-01",
+                  "serialNumber":"231231F31",
+                  "subPartNumber":"581650702200"
+               }
+            ]
+         }
+      ]
+   }
+]
