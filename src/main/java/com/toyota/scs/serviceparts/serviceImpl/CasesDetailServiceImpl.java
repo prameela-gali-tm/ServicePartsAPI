@@ -153,7 +153,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 					saveCaseList.add(caseEntity);
 				}
 				caseRepositroy.saveAll(saveCaseList);
-				for(PartTransEntity entry:partTransList) {
+				for(PartTransEntity entry:partTransList) { 
 						PartTransEntity obj = entry;
 						caseEntity = caseRepositroy.findByCaseNumber(obj.getCaseNumber());
 						PartEntity partEntity = partRepositroy.findByPartNumberAndLineItemNumberAndDeliveryDueDate(entry.getPartNumber(), entry.getPoLineItemNumber(), parseDate(entry.getDeliveryDueDate()));
