@@ -7,7 +7,9 @@
 	<test name="ServiceParttests">
 		<classes>
 			
-			<class name="com.toyota.scs.serviceparts.tests.ServicePartsVendorTests" />
+		<!-- 	<class name="com.toyota.scs.serviceparts.tests.ServicePartsVendorTests" /> -->
+			<class name="com.toyota.scs.serviceparts.tests.ServicePartsCaseBuild" />
+			
 
 		</classes>
 	</test> <!-- Test -->

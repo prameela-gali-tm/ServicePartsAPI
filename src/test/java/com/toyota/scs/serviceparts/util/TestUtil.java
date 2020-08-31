@@ -170,6 +170,9 @@ public class TestUtil extends BaseTest {
 		if ((TestNGListener.className).equalsIgnoreCase("ServicePartsVendorTests")) {
 			ResourceURL = TestEnvironment.APP_SERVICE_URL + "vendors";
 		}
+		if ((TestNGListener.className).equalsIgnoreCase("ServicePartsCaseBuild")) {
+			ResourceURL = TestEnvironment.APP_SERVICE_URL + "casebuild?status=true";
+		}
 
 		System.out.println(ResourceURL);
 
@@ -294,7 +297,7 @@ public class TestUtil extends BaseTest {
 		} else {
 			header = Headers.AddHeaders();
 		}
-		reqjson = FileLoader.readJsonFile(Reqfilepath, url);
+	
 		reqjson = FileLoader.UpdateJsonFile(reqjson);
 		postrequest.setEntity(new StringEntity(reqjson));// setting Payload-
 		for (Map.Entry<String, String> entry : header.entrySet())// Setting Headers
@@ -316,7 +319,7 @@ public class TestUtil extends BaseTest {
 		} else {
 			header = Headers.AddHeaders();
 		}
-		reqjson = FileLoader.readJsonFile(Reqfilepath, url);
+		reqjson = FileLoader.readJsonFilefromProject(Reqfilepath);
 		postrequest.setEntity(new StringEntity(reqjson));// setting Payload-
 		for (Map.Entry<String, String> entry : header.entrySet())// Setting
 																	// Headers
@@ -343,21 +346,43 @@ public class TestUtil extends BaseTest {
 		return result;
 	}
 
-	public static int genrateRandomNumber() {
-		int min = 10000;
-		int max = 99999;
+	public static int genrateRandomNumber(int length) {
+
+		int min = 0;
+		int max = 0;
+		if (length == 2) {
+			min = 10;
+			max = 99;
+		}
+		if (length == 2) {
+			min = 10;
+			max = 99;
+		}
+
+		if (length == 3) {
+			min = 100;
+			max = 999;
+		}
+
+		if (length == 4) {
+			min = 1000;
+			max = 99999;
+		}
+		if (length == 5) {
+			min = 10000;
+			max = 999999;
+		}
 
 		int b = (int) (Math.random() * (max - min + 1) + min);
-		System.out.println(b);
 		return b;
 	}
 
-	public static Object genrateRandomString() {
+	public static String genrateRandomString(int targetStringLength) {
 		int leftLimit = 48; // numeral '0'
 
 		int rightLimit = 122; // letter 'z'
 
-		int targetStringLength = 5;
+		// int targetStringLength = 5;
 
 		Random random = new Random();
 
@@ -371,7 +396,6 @@ public class TestUtil extends BaseTest {
 
 				.toString();
 
-		System.out.println(generatedString);
 		return generatedString;
 
 	}

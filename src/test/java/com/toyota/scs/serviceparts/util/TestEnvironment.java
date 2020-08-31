@@ -76,8 +76,8 @@ public class TestEnvironment {
 		public static void setLocalValues() {
 			System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 		ENVIRONMENT = "LOCAL";
-		APP_SERVICE_URL = "http://localhost:8181/api/";
+		APP_SERVICE_URL = "http://localhost:8181/";
 		Filepath = System.getProperty("user.dir") + "\\src\\test\\resources\\testdata\\Scenarios1.xlsx";
-		DATABASE_CONNECTION_URL = "jdbc:oracle:thin:@//DC2-UVLORL12Q-SCAN.tmm.na.corp.toyota.com:1590/LIOSS.tmm.na.corp.toyota.com";
+		//DATABASE_CONNECTION_URL = "jdbc:oracle:thin:@//DC2-UVLORL12Q-SCAN.tmm.na.corp.toyota.com:1590/LIOSS.tmm.na.corp.toyota.com";
 	}
 }

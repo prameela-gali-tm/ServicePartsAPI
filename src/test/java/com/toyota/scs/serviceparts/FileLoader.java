@@ -119,9 +119,9 @@ public class FileLoader extends BaseTest {
 			throws JsonIOException, JsonSyntaxException, IOException, JSONException {
 		JSONObject JO = null;
 		JO = new JSONObject(jsontxt);
-		JO.put("vendorCode", TestUtil.genrateRandomString());
-		JO.put("tradingPartnerId", TestUtil.genrateRandomNumber());
-		JO.put("vendorDesc", "Test" + TestUtil.genrateRandomString());
+		JO.put("vendorCode", TestUtil.genrateRandomString(5));
+		JO.put("tradingPartnerId", TestUtil.genrateRandomNumber(5));
+		JO.put("vendorDesc", "Test" + TestUtil.genrateRandomString(5));
 		JO.put("modifiedDate", TestUtil.formatDateForVendors());
 		return JO.toString();
 	}
