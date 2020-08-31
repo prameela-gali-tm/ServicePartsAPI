@@ -165,6 +165,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 								partTransEntity.getPartId()==partEntity.getPartId() &&
 								partTransEntity.getOrderId()==partEntity.getOrderId()) {
 							obj.setPartTransId(partTransEntity.getPartTransId());
+							obj.setCaseId(caseEntity.getCaseId());
 								if(obj.getSupplierTotal()>partTransEntity.getSupplierTotal()) {
 									long differenceAmount = obj.getSupplierTotal()- partTransEntity.getSupplierTotal();
 									obj.setSupplierTotal(partTransEntity.getSupplierTotal()+differenceAmount);
