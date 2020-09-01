@@ -1,4 +1,4 @@
-resource "aws_iam_role" "default_role" {
+/* resource "aws_iam_role" "default_role" {
   name = "default_role"
 
   assume_role_policy = <<EOF
@@ -58,6 +58,16 @@ resource "aws_ecs_service" "default" {
   }
  
 }
+# The following module will download Docker image from Artifactory and 
+module "ecr_sync" {
+  source               = "git::https://bitbucket.sdlc.toyota.com/scm/tdp/terraform-module-ecr-copy.git?ref=0.12"
+  artifactory_user     = var.artifactory_user
+  artifactory_password = var.artifactory_password
+  source_image_url     = "docker-dev.artifactory.tmna-devops.com/${var.source_image_path}"
+  target_image_url     = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${var.target_image_path}"
+  image_tag            = var.image_tag
+  aws_region           = var.aws_region
+}
 resource "aws_ecr_repository" "default" {
   name = "tscs/opa"
 }
@@ -68,28 +78,28 @@ resource "aws_ecs_task_definition" "default" {
   container_definitions = <<EOF
 [
   {
-    "name": "opa-container",
-    "image": "${aws_ecr_repository.default.repository_url}:${var.image_tag}",
+    "name": "maven-docker-hello-world",
+    "image": "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${var.target_image_path}:${var.image_tag}",
     "essential": true,
-    "memoryReservation": 128,
-    "memory": 128,
+    "memoryReservation": 256,
     "portMappings":[
       {
-        "containerPort": 8181,
-        "hostPort": 8181
+        "containerPort": 8080,
+        "hostPort": 8085
       }
     ],
     "logConfiguration": {
-      "logDriver": "awslogs",
-      "options": {
-        "awslogs-group": "${var.env}-opa-log-group",
-        "awslogs-region": "${var.aws_region}",
-        "awslogs-stream-prefix": "${var.env}-opa"
-      }
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "${var.env}-sample-maven-docker-log-group",
+          "awslogs-region": "${var.aws_region}",
+          "awslogs-stream-prefix": "sample-maven-docker-tf"
+        }
     }
   }
 ]
-  EOF
+  
+EOF
 
   
 }
@@ -105,7 +115,7 @@ resource "aws_cloudwatch_log_group" "default" {
 
 #############################
 # Load Balancer Listener Rule
-/* resource "aws_alb_listener_rule" "https_private_route_path" {
+resource "aws_alb_listener_rule" "https_private_route_path" {
   listener_arn = data.aws_lb_listener.private_alb_443_listener.arn
   priority     = 16
 
@@ -156,4 +166,4 @@ resource "aws_route53_record" "default" {
     zone_id                = data.aws_lb.private.zone_id
     evaluate_target_health = false
   }
-} */
+} */ 
