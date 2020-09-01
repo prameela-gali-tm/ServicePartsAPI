@@ -67,3 +67,6 @@ variable "created_by" {
 variable "terraform_scriptversion" {
 }
 
+variable "vpc_id" {
+}
+
