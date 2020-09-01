@@ -171,13 +171,18 @@ resource "aws_lb_target_group" "scsserviceparts_tg" {
 }
 
 #############################
-resource "aws_alb_listener_rule" "https_route_path" {
+resource "aws_lb_listener_rule" "https_route_path" { 
   listener_arn = data.aws_ssm_parameter.aws_lb_listener_https_arn.value
   priority     = 51
 
   action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.scsserviceparts_tg.arn
+  }
+condition {
+    host_header {
+      values = ["api.scs.toyota.com*"]
+    }
   }
 
   /* condition {
