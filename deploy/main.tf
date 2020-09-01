@@ -109,7 +109,7 @@ resource "aws_ecs_service" "scs_service_parts_api" {
   }
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.sampleapp_tg.arn
+    target_group_arn = aws_lb_target_group.scsserviceparts_tg.arn
     container_name   = "maven-docker-hello-world"
     container_port   = 8080
   }
@@ -138,7 +138,7 @@ resource "aws_ecr_repository" "scs_service_parts_api" {
 ########################################################################################################################
 #############################
 # Port Based Load Balancer Target Group
-resource "aws_lb_target_group" "sampleapp_tg" {
+resource "aws_lb_target_group" "scsserviceparts_tg" {
   name     = "maven-docker-hello-world-tgt"
   port     = "8085"
   protocol = "HTTP"
@@ -177,21 +177,21 @@ resource "aws_alb_listener_rule" "https_route_path" {
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.sampleapp_tg.arn
+    target_group_arn = aws_lb_target_group.scsserviceparts_tg.arn
   }
 
-  condition {
+  /* condition {
     field = "host-header"
 
     values = [
       "tdp-sample-apiapp.*",
     ]
-  }
+  } */
 }
 
 #############################
 # R53 enrty
-resource "aws_route53_record" "api_sampleapp_dns" {
+resource "aws_route53_record" "api_scsserviceparts_dns" {
   zone_id = data.aws_route53_zone.public.zone_id
   name    = "tdp-sample-apiapp.${var.tools_domain_name}"
   type    = "A"
