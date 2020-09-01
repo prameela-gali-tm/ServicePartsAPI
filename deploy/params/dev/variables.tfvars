@@ -22,8 +22,10 @@ created_by = "TDP"
 
 terraform_scriptversion = "NA"
 
-env = "subprod"
+env = "dev"
 
-tools_domain_name = "subprod-tmna-devops.com"
+tools_domain_name = "dev-tmna-devops.com"
 
 aws_profile = "AWS-TMNA-SubProd"
+
+vpc_id="vpc-0369d880f6debee29"
