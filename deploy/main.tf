@@ -114,7 +114,7 @@ resource "aws_ecs_service" "scs_service_parts_api" {
     container_port   = 8080
   }
   network_configuration{
-    subnets=["${var.app_private_subnet_id}"]
+    subnets=var.app_private_subnet_id
   }
 }
 
@@ -143,7 +143,7 @@ resource "aws_ecr_repository" "scs_service_parts_api" {
 resource "aws_lb" "load_balancer" {
   name                              = "${var.env}-${var.app_name}-loadBalancer"
   load_balancer_type                = "network"
-  subnets         = ["${var.load_balance_subnet_id}"]
+  subnets         = var.load_balance_subnet_id
   internal        = var.alb_internal
 
    tags = {
@@ -166,7 +166,7 @@ resource "aws_lb_target_group" "scsserviceparts_tg" {
   name     = "${var.env}-${var.app_name}-tgt"
   port     = "8085"
   protocol = "HTTP"
-  vpc_id   = data.aws_vpc.default.id
+  vpc_id   = var.vpc_id
 
   tags = {
     ApplicationId          = var.application_id
@@ -220,7 +220,7 @@ condition {
 
 #############################
 # R53 enrty
-resource "aws_route53_record" "api_scsserviceparts_dns" {
+/* resource "aws_route53_record" "api_scsserviceparts_dns" {
   zone_id = data.aws_route53_zone.public.zone_id
   name    = "scs-apiapp.${var.tools_domain_name}"
   type    = "A"
@@ -230,13 +230,13 @@ resource "aws_route53_record" "api_scsserviceparts_dns" {
     zone_id                = data.aws_lb.public.zone_id
     evaluate_target_health = false
   }
-}
+} */
 
 #RDS
 
 resource "aws_db_subnet_group" "scsserviceparts-sbg" {
-  subnet_ids = ["${var.rds_private_subnet_id}"]
-  name       = var.aws_db_subnet_group_name
+  subnet_ids = var.rds_private_subnet_id
+  name       = "${var.env}-${var.app_name}-rds-subnet"
 
   
 }
@@ -251,7 +251,8 @@ resource "aws_rds_cluster" "scsserviceparts-rdscr" {
   #availability_zones     				= "${var.rds_instance_availability_zones}"
   database_name                       = "${var.rds_instance_database_name}"
   master_username                     = "${var.rds_instance_username}"
-  master_password                     = "${data.aws_ssm_parameter.mtmus-sandbox-root.value}"
+  master_password                     = "${var.rds_instance_password}"
+ # master_password                     = "${data.aws_ssm_parameter.mtmus-sandbox-root.value}"
   db_subnet_group_name                = "${aws_db_subnet_group.scsserviceparts-sbg.id}"
   apply_immediately                   = "${var.rds_instance_apply_immediately}"
   preferred_backup_window             = "${var.rds_instance_preferred_backup_window}"

@@ -124,6 +124,10 @@ variable "rds_instance_username" {
   description = "Instance database username "
   default     = ""
 }
+variable "rds_instance_password" {
+  description = "Instance database username "
+  default     = ""
+}
 
 variable "rds_instance_cluster_identifier" {
   description = "Whether the DB should have a public IP address"

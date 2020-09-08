@@ -47,6 +47,7 @@ rds_instance_engine_version = "11.6"
 rds_instance_database_name = "scsdevdb"
 
 rds_instance_username = "root"
+rds_instance_password ="password"
 
 rds_instance_preferred_backup_window = "04:00-05:00"
 
