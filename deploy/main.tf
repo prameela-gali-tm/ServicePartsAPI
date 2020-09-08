@@ -42,7 +42,7 @@ resource "aws_cloudwatch_log_group" "scs_service_parts_api" {
 }
 
 resource "aws_ecs_task_definition" "scs_service_parts_api" {
-  family = "maven-docker-hello-world"
+  family = "${var.env}-${var.app_name}"
 
   depends_on = [aws_cloudwatch_log_group.scs_service_parts_api]
 
@@ -63,7 +63,7 @@ resource "aws_ecs_task_definition" "scs_service_parts_api" {
   container_definitions = <<EOF
 [
   {
-    "name": "maven-docker-hello-world",
+    "name": "${var.env}-${var.app_name}-maven",
     "image": "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${var.target_image_path}:${var.image_tag}",
     "essential": true,
     "memoryReservation": 256,
@@ -89,7 +89,7 @@ EOF
 }
 
 resource "aws_ecs_service" "scs_service_parts_api" {
-  name            = "${var.env}-maven-docker-hello-world"
+  name            = "${var.env}-${var.app_name}-maven"
   cluster         = var.ecs_cluster_id
   task_definition = aws_ecs_task_definition.scs_service_parts_api.arn
   desired_count   = "1"
@@ -110,8 +110,11 @@ resource "aws_ecs_service" "scs_service_parts_api" {
 
   load_balancer {
     target_group_arn = aws_lb_target_group.scsserviceparts_tg.arn
-    container_name   = "maven-docker-hello-world"
+    container_name   = "${var.env}-${var.app_name}-maven"
     container_port   = 8080
+  }
+  network_configuration{
+    subnets=["${var.app_private_subnet_id}"]
   }
 }
 
@@ -137,9 +140,30 @@ resource "aws_ecr_repository" "scs_service_parts_api" {
 # Load Balancer Target Groups
 ########################################################################################################################
 #############################
+resource "aws_lb" "load_balancer" {
+  name                              = "${var.env}-${var.app_name}-loadBalancer"
+  load_balancer_type                = "network"
+  subnets         = ["${var.load_balance_subnet_id}"]
+  internal        = var.alb_internal
+
+   tags = {
+    ApplicationId          = var.application_id
+    ApplicationName        = var.application_name
+    ProjectName            = var.project_name
+    BU                     = var.bu
+    DeptID                 = var.dept_id
+    CoreID                 = var.core_id
+    ProjectID              = var.project_id
+    CostCenter             = var.cost_center
+    CreatedBy              = var.created_by
+    TerraformScriptVersion = var.terraform_scriptversion
+    Env                    = var.env
+  }
+
+}
 # Port Based Load Balancer Target Group
 resource "aws_lb_target_group" "scsserviceparts_tg" {
-  name     = "maven-docker-hello-world-tgt"
+  name     = "${var.env}-${var.app_name}-tgt"
   port     = "8085"
   protocol = "HTTP"
   vpc_id   = data.aws_vpc.default.id
@@ -172,7 +196,7 @@ resource "aws_lb_target_group" "scsserviceparts_tg" {
 
 #############################
 resource "aws_lb_listener_rule" "https_route_path" { 
-  listener_arn = data.aws_ssm_parameter.aws_lb_listener_https_arn.value
+  listener_arn = aws_lb.load_balancer.arn
   priority     = 51
 
   action {
@@ -198,7 +222,7 @@ condition {
 # R53 enrty
 resource "aws_route53_record" "api_scsserviceparts_dns" {
   zone_id = data.aws_route53_zone.public.zone_id
-  name    = "tdp-sample-apiapp.${var.tools_domain_name}"
+  name    = "scs-apiapp.${var.tools_domain_name}"
   type    = "A"
 
   alias {
@@ -207,4 +231,79 @@ resource "aws_route53_record" "api_scsserviceparts_dns" {
     evaluate_target_health = false
   }
 }
+
+#RDS
+
+resource "aws_db_subnet_group" "scsserviceparts-sbg" {
+  subnet_ids = ["${var.rds_private_subnet_id}"]
+  name       = var.aws_db_subnet_group_name
+
+  
+}
+
+resource "aws_rds_cluster" "scsserviceparts-rdscr" {
+  cluster_identifier = "${var.rds_instance_cluster_identifier}"
+
+  #cluster_identifier      			= "aurora-cluster-mysql6"
+  engine         = "${var.rds_instance_engine}"
+  engine_version = "${var.rds_instance_engine_version}"
+
+  #availability_zones     				= "${var.rds_instance_availability_zones}"
+  database_name                       = "${var.rds_instance_database_name}"
+  master_username                     = "${var.rds_instance_username}"
+  master_password                     = "${data.aws_ssm_parameter.mtmus-sandbox-root.value}"
+  db_subnet_group_name                = "${aws_db_subnet_group.scsserviceparts-sbg.id}"
+  apply_immediately                   = "${var.rds_instance_apply_immediately}"
+  preferred_backup_window             = "${var.rds_instance_preferred_backup_window}"
+  preferred_maintenance_window        = "${var.rds_instance_preferred_maintenance_window}"
+  db_cluster_parameter_group_name     = "${var.rds_instance_parameter_group_name}"
+  iam_database_authentication_enabled = "${var.rds_instance_iam_database_authentication_enabled}"
+  skip_final_snapshot                 = "${var.rds_instance_skip_final_snapshot}"
+  backup_retention_period			  = "${var.backup_retention_period}"
+  deletion_protection				  = "${var.deletion_protection}"
+  #final_snapshot_identifier 			= "${var.rds_instance_snapshot_identifier}"
+  #publicly_accessible 				= "${var.rds_instance_publicly_accessible}"
+ tags = {
+    ApplicationId          = var.application_id
+    ApplicationName        = var.application_name
+    ProjectName            = var.project_name
+    BU                     = var.bu
+    DeptID                 = var.dept_id
+    CoreID                 = var.core_id
+    ProjectID              = var.project_id
+    CostCenter             = var.cost_center
+    CreatedBy              = var.created_by
+    TerraformScriptVersion = var.terraform_scriptversion
+    Env                    = var.env
+  }
+}
+
+output "rds_endpoint" {
+  value = "${aws_rds_cluster.scsserviceparts-rdscr.endpoint}"
+}
+
+# Aurora postgresql Creation
+# 4.cluster instance creation
+resource "aws_rds_cluster_instance" "scsserviceparts-rds" {
+  count                        = "${var.rds_instance_count}"
+  identifier                   = "${var.rds_instance_cluster_identifier}-${count.index}"
+  cluster_identifier           = "${aws_rds_cluster.scsserviceparts-rdscr.id}"
+  instance_class               = "${var.rds_instance_class}"
+  preferred_maintenance_window = "${var.rds_instance_preferred_maintenance_window}"
+  depends_on                   = [aws_rds_cluster.scsserviceparts-rdscr]
+  tags = {
+    ApplicationId          = var.application_id
+    ApplicationName        = var.application_name
+    ProjectName            = var.project_name
+    BU                     = var.bu
+    DeptID                 = var.dept_id
+    CoreID                 = var.core_id
+    ProjectID              = var.project_id
+    CostCenter             = var.cost_center
+    CreatedBy              = var.created_by
+    TerraformScriptVersion = var.terraform_scriptversion
+    Env                    = var.env
+  }
+}
+
 
