@@ -174,3 +174,12 @@ variable "rds_instance_iam_database_authentication_enabled" {
   description = "Whether to enable IAM database authentication for the RDS Cluster"
 }
 
+variable "backup_retention_period" {
+  default     = ""
+  description = "backup retention perioda in days"
+}
+
+variable "deletion_protection" {
+  default     = ""
+  description = "boolean for deletion protection"
+}
