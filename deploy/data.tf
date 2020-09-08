@@ -20,6 +20,6 @@
   name = "/${var.env}/aws_lb_listener_https_arn"
 } */
 
-/* data "aws_caller_identity" "current" {
-} */
+ data "aws_caller_identity" "current" {
+} 
 
