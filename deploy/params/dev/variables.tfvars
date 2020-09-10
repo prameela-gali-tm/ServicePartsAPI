@@ -40,9 +40,9 @@ alb_idle_timeout = "50"
 #RDS Properties
 rds_instance_class = "db.r5.4large"
 
-rds_instance_engine = "aurora"
+rds_instance_engine = "aurora-postgresql"
 
-rds_instance_engine_version = "11.6"
+rds_instance_engine_version = "aurora-postgresql11.6"
 
 rds_instance_database_name = "scsdevdb"
 

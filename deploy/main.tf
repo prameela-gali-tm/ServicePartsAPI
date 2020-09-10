@@ -108,11 +108,11 @@ resource "aws_ecs_service" "scs_service_parts_api" {
     Env                    = var.env
   }
 
-  load_balancer {
+  /* load_balancer {
     target_group_arn = aws_lb_target_group.scsserviceparts_tg.arn
     container_name   = "${var.env}-${var.app_name}-maven"
     container_port   = 8080
-  }
+  } */
   network_configuration{
     subnets=var.app_private_subnet_id
   }
@@ -140,7 +140,7 @@ resource "aws_ecr_repository" "scs_service_parts_api" {
 # Load Balancer Target Groups
 ########################################################################################################################
 #############################
-resource "aws_lb" "load_balancer" {
+/* resource "aws_lb" "load_balancer" {
   name                              = "${var.env}-${var.app_name}-loadBalancer"
   load_balancer_type                = "network"
   subnets         = var.load_balance_subnet_id
@@ -209,15 +209,15 @@ condition {
     }
   }
 
-  /* condition {
-    field = "host-header"
+  # condition {
+   # field = "host-header"
 
-    values = [
-      "tdp-sample-apiapp.*",
-    ]
-  } */
-}
-
+    #values = [
+    #  "tdp-sample-apiapp.*",
+    #]
+  #} 
+} 
+*/
 #############################
 # R53 enrty
 /* resource "aws_route53_record" "api_scsserviceparts_dns" {
@@ -253,7 +253,7 @@ resource "aws_rds_cluster" "scsserviceparts-rdscr" {
   master_username                     = "${var.rds_instance_username}"
   master_password                     = "${var.rds_instance_password}"
  # master_password                     = "${data.aws_ssm_parameter.mtmus-sandbox-root.value}"
-  db_subnet_group_name                = "${aws_db_subnet_group.scsserviceparts-sbg.id}"
+  db_subnet_group_name                = "${aws_db_subnet_group.scsserviceparts-sbg.name}"
   apply_immediately                   = "${var.rds_instance_apply_immediately}"
   preferred_backup_window             = "${var.rds_instance_preferred_backup_window}"
   preferred_maintenance_window        = "${var.rds_instance_preferred_maintenance_window}"

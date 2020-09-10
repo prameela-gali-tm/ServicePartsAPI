@@ -33,7 +33,7 @@ variable "source_image_path" {
 # Pass the ECR repo path relative to the ecr url. For eg if the repo url is 1234567890.dkr.ecr.us-west-2.amazonaws.com/tdp/samples/maven-docker-hello-world, target_image_path will be tdp/samples/maven-docker-hello-world
 variable "target_image_path" {
   description = "Pass the ECR repo path relative to the ecr url. For eg if the repo url is 1234567890.dkr.ecr.us-west-2.amazonaws.com/tdp/samples/maven-docker-hello-world, target_image_path will be tdp/samples/maven-docker-hello-world"
-  default     = "tdp/maven-docker-hello-world"
+  default     = "lios/service-parts-api"
 }
 
 variable "tools_domain_name" {
