@@ -10,15 +10,15 @@ project_name = "SCS"
 
 bu = "ATD"
 
-dept_id = "00001"
+dept_id = "955042"
 
 core_id = "00001"
 
-project_id = "00001"
+project_id = "NIS01338"
 
 cost_center = "00001"
 
-created_by = "TDP"
+created_by = "SCS"
 
 terraform_scriptversion = "NA"
 
@@ -27,7 +27,7 @@ env = "dev"
 tools_domain_name = "dev-tmna-devops.com"
 
 aws_profile = "AWS-TMNA-SubProd"
-
+source_image_path="lios/service-parts-api"
 vpc_id="vpc-0369d880f6debee29"
 
 load_balance_subnet_id = ["subnet-0159ce27d8fdc7583", "subnet-07c1afe035fc98aa4"]
