@@ -67,6 +67,7 @@ resource "aws_ecs_task_definition" "scs_service_parts_api" {
     "image": "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${var.target_image_path}:${var.image_tag}",
     "essential": true,
     "memoryReservation": 256,
+    "compatibilities": "FARGATE",
     "portMappings":[
       {
         "containerPort": 8080,
@@ -108,11 +109,11 @@ resource "aws_ecs_service" "scs_service_parts_api" {
     Env                    = var.env
   }
 
-  /* load_balancer {
+   load_balancer {
     target_group_arn = aws_lb_target_group.scsserviceparts_tg.arn
     container_name   = "${var.env}-${var.app_name}-maven"
     container_port   = 8080
-  } */
+  } 
   network_configuration{
     subnets=var.app_private_subnet_id
   }
@@ -140,7 +141,7 @@ resource "aws_ecr_repository" "scs_service_parts_api" {
 # Load Balancer Target Groups
 ########################################################################################################################
 #############################
-/* resource "aws_lb" "load_balancer" {
+ resource "aws_lb" "load_balancer" {
   name                              = "${var.env}-${var.app_name}-loadBalancer"
   load_balancer_type                = "network"
   subnets         = var.load_balance_subnet_id
@@ -205,7 +206,7 @@ resource "aws_lb_listener_rule" "https_route_path" {
   }
 condition {
     host_header {
-      values = ["api.scs.toyota.com*"]
+      values = ["/*"]
     }
   }
 
@@ -217,7 +218,7 @@ condition {
     #]
   #} 
 } 
-*/
+
 #############################
 # R53 enrty
 /* resource "aws_route53_record" "api_scsserviceparts_dns" {
