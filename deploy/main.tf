@@ -44,7 +44,7 @@ resource "aws_cloudwatch_log_group" "scs_service_parts_api" {
 resource "aws_ecs_task_definition" "scs_service_parts_api" {
   family = "${var.env}-${var.app_name}"
 
-  depends_on = [aws_cloudwatch_log_group.scs_service_parts_api]
+  depends_on = [aws_cloudwatch_log_group.scs_service_parts_api,ecr_sync]
 
   tags = {
     ApplicationId          = var.application_id
