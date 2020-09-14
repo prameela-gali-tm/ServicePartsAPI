@@ -199,16 +199,16 @@ resource "aws_lb_target_group" "scsserviceparts_tg" {
 resource "aws_lb_listener_rule" "https_route_path" { 
   listener_arn = aws_lb.load_balancer.arn
   priority     = 51
-
+  depends_on =[aws_lb_target_group.scsserviceparts_tg]
   action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.scsserviceparts_tg.arn
   }
-  /* condition {
-      host_header {
-        values = ["/*"]
-      }
-    } */
+condition {
+    host_header {
+      values = ["/*"]
+    }
+  }
 
   # condition {
    # field = "host-header"
