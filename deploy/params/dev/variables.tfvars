@@ -38,7 +38,7 @@ alb_internal = "false"
 alb_idle_timeout = "50"
 
 #RDS Properties
-rds_instance_class = "db.r5.4large"
+rds_instance_class = "db.m5.large"
 
 rds_instance_engine = "aurora-postgresql"
 
