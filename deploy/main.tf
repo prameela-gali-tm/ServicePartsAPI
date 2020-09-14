@@ -12,7 +12,7 @@ terraform {
 }
 
 # The following module will download Docker image from Artifactory and 
-module "ecr_sync" {
+module "ecr_sync"  {
   source               = "git::https://bitbucket.sdlc.toyota.com/scm/tdp/terraform-module-ecr-copy.git?ref=0.12"
   artifactory_user     = var.artifactory_user
   artifactory_password = var.artifactory_password
@@ -44,7 +44,7 @@ resource "aws_cloudwatch_log_group" "scs_service_parts_api" {
 resource "aws_ecs_task_definition" "scs_service_parts_api" {
   family = "${var.env}-${var.app_name}"
 
-  depends_on = [aws_cloudwatch_log_group.scs_service_parts_api,ecr_sync]
+  depends_on = [aws_cloudwatch_log_group.scs_service_parts_api,module.ecr_sync]
 
   tags = {
     ApplicationId          = var.application_id
