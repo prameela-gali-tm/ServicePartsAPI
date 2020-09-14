@@ -94,7 +94,7 @@ resource "aws_ecs_service" "scs_service_parts_api" {
   cluster         = var.ecs_cluster_id
   task_definition = aws_ecs_task_definition.scs_service_parts_api.arn
   desired_count   = "1"
-
+  depends_on = [aws_cloudwatch_log_group.scs_service_parts_api,module.ecr_sync,aws_ecs_task_definition.scs_service_parts_api]
   tags = {
     ApplicationId          = var.application_id
     ApplicationName        = var.application_name
@@ -258,7 +258,7 @@ resource "aws_rds_cluster" "scsserviceparts-rdscr" {
   apply_immediately                   = "${var.rds_instance_apply_immediately}"
   preferred_backup_window             = "${var.rds_instance_preferred_backup_window}"
   preferred_maintenance_window        = "${var.rds_instance_preferred_maintenance_window}"
-  db_cluster_parameter_group_name     = "${var.rds_instance_parameter_group_name}"
+ # db_cluster_parameter_group_name     = "${var.rds_instance_parameter_group_name}"
   iam_database_authentication_enabled = "${var.rds_instance_iam_database_authentication_enabled}"
   skip_final_snapshot                 = "${var.rds_instance_skip_final_snapshot}"
   backup_retention_period			  = "${var.backup_retention_period}"
