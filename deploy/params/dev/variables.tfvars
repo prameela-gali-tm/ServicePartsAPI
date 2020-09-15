@@ -27,8 +27,8 @@ env = "dev"
 tools_domain_name = "dev-tmna-devops.com"
 
 aws_profile = "AWS-TMNA-SubProd"
-fargate_cpu=1
-fargate_memory=
+fargate_cpu=256
+fargate_memory=512
 source_image_path="lios/service-parts-api"
 vpc_id="vpc-0369d880f6debee29"
 
