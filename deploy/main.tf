@@ -44,8 +44,7 @@ resource "aws_ecs_task_definition" "scs_service_parts_api" {
   family = "${var.env}-${var.app_name}"
 
   depends_on = [aws_cloudwatch_log_group.scs_service_parts_api,module.ecr_sync]
-  requires_compatibilities= ["FARGATE"]
-  network_mode ="awsvpc"
+  requires_compatibilities= ["FARGATE"]  
   cpu                      = "${var.fargate_cpu}"
   memory                   = "${var.fargate_memory}"
   tags = {
