@@ -99,7 +99,7 @@ resource "aws_ecs_service" "scs_service_parts_api" {
   task_definition = aws_ecs_task_definition.scs_service_parts_api.arn
   desired_count   = "1"
   launch_type     = "FARGATE"
-  depends_on = [aws_cloudwatch_log_group.scs_service_parts_api,aws_lb_target_group.scsserviceparts_tg,module.ecr_sync,aws_ecs_task_definition.scs_service_parts_api]
+  depends_on = [aws_cloudwatch_log_group.scs_service_parts_api,aws_lb_target_group.scsserviceparts_tg,module.ecr_sync,aws_ecs_task_definition.scs_service_parts_api,aws_lb.load_balancer]
   tags = {
     ApplicationId          = var.application_id
     ApplicationName        = var.application_name
@@ -148,7 +148,7 @@ resource "aws_ecr_repository" "scs_service_parts_api" {
 #############################
  resource "aws_lb" "load_balancer" {
   name                              = "${var.env}-${var.app_name}-loadBalancer"
-  load_balancer_type                = "network"
+  load_balancer_type                = "application"
   subnets         = var.load_balance_subnet_id
   internal        = var.alb_internal
 
