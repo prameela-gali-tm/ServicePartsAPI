@@ -1,4 +1,4 @@
-resource "aws_iam_role" "resource_aws_iam_role" {
+/* resource "aws_iam_role" "resource_aws_iam_role" {
   name = "${format("%s-%s",var.project_name, var.ecs_task_iam_role)}"
 
   assume_role_policy = <<EOF
@@ -99,4 +99,4 @@ resource "aws_iam_role_policy" "resource_aws_iam_service_role_policy" {
   name   = "${format("%s-%s-%s",var.project_name, var.ecs_task_iam_policy, var.env)}"
   role   = "${aws_iam_role.resource_aws_iam_service_role.id}"
   policy = "${file(var.module_ecs_task_role_policy_document)}"
-}
+} */
