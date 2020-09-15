@@ -1,6 +1,5 @@
 provider "aws" {
   region  = var.aws_region
-  profile = var.aws_profile
 }
 
 # Backend configurations are loaded from deploys/params/${env}/backend.tfvars
@@ -45,7 +44,7 @@ resource "aws_ecs_task_definition" "scs_service_parts_api" {
   family = "${var.env}-${var.app_name}"
 
   depends_on = [aws_cloudwatch_log_group.scs_service_parts_api,module.ecr_sync]
-
+  requires_compatibilities:"FARGATE"
   tags = {
     ApplicationId          = var.application_id
     ApplicationName        = var.application_name
@@ -94,7 +93,7 @@ resource "aws_ecs_service" "scs_service_parts_api" {
   cluster         = var.ecs_cluster_id
   task_definition = aws_ecs_task_definition.scs_service_parts_api.arn
   desired_count   = "1"
-  depends_on = [aws_cloudwatch_log_group.scs_service_parts_api,module.ecr_sync,aws_ecs_task_definition.scs_service_parts_api]
+  depends_on = [aws_cloudwatch_log_group.scs_service_parts_api,aws_lb_target_group.scsserviceparts_tg,module.ecr_sync,aws_ecs_task_definition.scs_service_parts_api]
   tags = {
     ApplicationId          = var.application_id
     ApplicationName        = var.application_name
