@@ -44,7 +44,7 @@ resource "aws_ecs_task_definition" "scs_service_parts_api" {
   family = "${var.env}-${var.app_name}"
 
   depends_on = [aws_cloudwatch_log_group.scs_service_parts_api,module.ecr_sync]
-  requires_compatibilities:"FARGATE"
+  requires_compatibilities= "FARGATE"
   tags = {
     ApplicationId          = var.application_id
     ApplicationName        = var.application_name
