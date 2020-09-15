@@ -205,7 +205,7 @@ resource "aws_lb_listener_rule" "https_route_path" {
     target_group_arn = aws_lb_target_group.scsserviceparts_tg.arn
   }
 condition {
-    host_header {
+    path-pattern {
       values = ["/*"]
     }
   }
@@ -247,7 +247,7 @@ resource "aws_rds_cluster" "scsserviceparts-rdscr" {
 
   #cluster_identifier      			= "aurora-cluster-mysql6"
   engine         = "${var.rds_instance_engine}"
-  #engine_version = "${var.rds_instance_engine_version}"
+  engine_version = "${var.rds_instance_engine_version}"
 
   #availability_zones     				= "${var.rds_instance_availability_zones}"
   database_name                       = "${var.rds_instance_database_name}"

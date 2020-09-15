@@ -42,7 +42,7 @@ rds_instance_class = "db.m5.large"
 
 rds_instance_engine = "aurora-postgresql"
 
-rds_instance_engine_version = "11.6"
+rds_instance_engine_version = "10.11"
 
 rds_instance_database_name = "scsdevdb"
 
