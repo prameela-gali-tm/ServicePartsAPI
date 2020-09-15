@@ -7,7 +7,7 @@ application_id = "BS201828014"
 application_name = "SCS Service Parts"
 
 project_name = "SCS"
-
+ecs_task_iam_role="ecs_iam_role"
 bu = "ATD"
 
 dept_id = "955042"

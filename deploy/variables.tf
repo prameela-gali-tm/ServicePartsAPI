@@ -79,6 +79,8 @@ variable "fargate_memory" {
   description = "Fargate instance memory to provision (in MiB)"
   
 }
+variable "ecs_task_iam_role" {
+}
 variable "vpc_id" {
 }
 
