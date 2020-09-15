@@ -81,6 +81,10 @@ variable "fargate_memory" {
 }
 variable "ecs_task_iam_role" {
 }
+variable "ecs_task_iam_policy" {
+}
+variable "ecs_task_iam_policy_autoscaling" {
+}
 variable "vpc_id" {
 }
 
