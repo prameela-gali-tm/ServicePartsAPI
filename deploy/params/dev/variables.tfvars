@@ -27,8 +27,11 @@ env = "dev"
 tools_domain_name = "dev-tmna-devops.com"
 
 aws_profile = "AWS-TMNA-SubProd"
+fargate_cpu=1
+fargate_memory=
 source_image_path="lios/service-parts-api"
 vpc_id="vpc-0369d880f6debee29"
+
 
 load_balance_subnet_id = ["subnet-0159ce27d8fdc7583", "subnet-07c1afe035fc98aa4"]
 rds_private_subnet_id = ["subnet-0985d3868f57106a7", "subnet-0b4e04f041a715e5f"]
@@ -42,7 +45,7 @@ rds_instance_class = "db.m5.large"
 
 rds_instance_engine = "aurora-postgresql"
 
-rds_instance_engine_version = "10.11"
+rds_instance_engine_version = "11.1"
 
 rds_instance_database_name = "scsdevdb"
 

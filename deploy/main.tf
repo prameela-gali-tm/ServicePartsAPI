@@ -46,6 +46,8 @@ resource "aws_ecs_task_definition" "scs_service_parts_api" {
   depends_on = [aws_cloudwatch_log_group.scs_service_parts_api,module.ecr_sync]
   requires_compatibilities= ["FARGATE"]
   network_mode ="awsvpc"
+  cpu                      = "${var.fargate_cpu}"
+  memory                   = "${var.fargate_memory}"
   tags = {
     ApplicationId          = var.application_id
     ApplicationName        = var.application_name
@@ -66,7 +68,9 @@ resource "aws_ecs_task_definition" "scs_service_parts_api" {
     "name": "${var.env}-${var.app_name}-maven",
     "image": "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${var.target_image_path}:${var.image_tag}",
     "essential": true,
-    "memoryReservation": 256,
+    "cpu": ${var.fargate_cpu},
+    "memory": ${var.fargate_memory},
+    "networkMode": "awsvpc",
     "compatibilities": "FARGATE",
     "portMappings":[
       {
@@ -94,6 +98,7 @@ resource "aws_ecs_service" "scs_service_parts_api" {
   cluster         = var.ecs_cluster_id
   task_definition = aws_ecs_task_definition.scs_service_parts_api.arn
   desired_count   = "1"
+  launch_type     = "FARGATE"
   depends_on = [aws_cloudwatch_log_group.scs_service_parts_api,aws_lb_target_group.scsserviceparts_tg,module.ecr_sync,aws_ecs_task_definition.scs_service_parts_api]
   tags = {
     ApplicationId          = var.application_id
