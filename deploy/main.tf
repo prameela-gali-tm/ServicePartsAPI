@@ -45,6 +45,7 @@ resource "aws_ecs_task_definition" "scs_service_parts_api" {
 
   depends_on = [aws_cloudwatch_log_group.scs_service_parts_api,module.ecr_sync]
   requires_compatibilities= ["FARGATE"]
+  network_mode ="awsvpc"
   tags = {
     ApplicationId          = var.application_id
     ApplicationName        = var.application_name
@@ -287,6 +288,8 @@ output "rds_endpoint" {
 # 4.cluster instance creation
 resource "aws_rds_cluster_instance" "scsserviceparts-rds" {
   count                        = "${var.rds_instance_count}"
+  engine         = "${var.rds_instance_engine}"
+  engine_version = "${var.rds_instance_engine_version}"
   identifier                   = "${var.rds_instance_cluster_identifier}-${count.index}"
   cluster_identifier           = "${aws_rds_cluster.scsserviceparts-rdscr.id}"
   instance_class               = "${var.rds_instance_class}"
