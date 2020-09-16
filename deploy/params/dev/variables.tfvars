@@ -7,9 +7,9 @@ application_id = "BS201828014"
 application_name = "SCS Service Parts"
 
 project_name = "SCS"
-ecs_task_iam_role="ecs_role"
-ecs_task_iam_policy="ecs_policy"
-ecs_task_iam_policy_autoscaling="ecs_autoscale_policy"
+ecs_task_iam_role="ecs-role"
+ecs_task_iam_policy="ecs-policy"
+ecs_task_iam_policy_autoscaling="ecs-autoscale-policy"
 bu = "ATD"
 
 dept_id = "955042"
