@@ -75,7 +75,7 @@ resource "aws_iam_role_policy" "resource_aws_iam_role_policy_autoscaling" {
 EOF
 }
  
-resource "aws_iam_role" "resource_aws_iam_service_role" {
+/* resource "aws_iam_role" "resource_aws_iam_service_role" {
   name = "${format("%s-%s",var.project_name, var.ecs_task_iam_role)}"
 
   assume_role_policy = <<EOF
@@ -93,7 +93,7 @@ resource "aws_iam_role" "resource_aws_iam_service_role" {
   ]
 }
 EOF
-}
+} */
 
 /* resource "aws_iam_role_policy" "resource_aws_iam_service_role_policy" {
   name   = "${format("%s-%s-%s",var.project_name, var.ecs_task_iam_policy, var.env)}"
