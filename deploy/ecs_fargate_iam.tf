@@ -76,7 +76,7 @@ EOF
 }
  
 resource "aws_iam_role" "resource_aws_iam_service_role" {
-  name = "${format("%s-%s-%s",var.project_name, var.ecs_task_iam_role)}"
+  name = "${format("%s-%s",var.project_name, var.ecs_task_iam_role)}"
 
   assume_role_policy = <<EOF
 {
