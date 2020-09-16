@@ -46,7 +46,7 @@ resource "aws_ecs_task_definition" "scs_service_parts_api" {
   depends_on = [aws_cloudwatch_log_group.scs_service_parts_api,module.ecr_sync]
   requires_compatibilities= ["FARGATE"]
   task_role_arn            = "${aws_iam_role.resource_aws_iam_service_role.arn}"
-  execution_role_arn       = "${aws_iam_role.resource_aws_iam_role.arn}"
+ # execution_role_arn       = "${aws_iam_role.resource_aws_iam_role.arn}"
   network_mode ="awsvpc"
   cpu                      = "${var.fargate_cpu}"
   memory                   = "${var.fargate_memory}"

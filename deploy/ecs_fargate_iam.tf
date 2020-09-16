@@ -1,7 +1,21 @@
-data "aws_iam_role" "resource_aws_iam_role" {
+/* resource "aws_iam_role" "resource_aws_iam_role" {
   name = "${format("%s-%s",var.project_name, var.ecs_task_iam_role)}"
 
- 
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
 }
 
 resource "aws_iam_role_policy" "resource_aws_iam_role_policy" {
@@ -60,7 +74,7 @@ resource "aws_iam_role_policy" "resource_aws_iam_role_policy_autoscaling" {
 }
 EOF
 }
-
+ */
 resource "aws_iam_role" "resource_aws_iam_service_role" {
   name = "${format("%s-%s-%s",var.project_name, var.ecs_task_iam_role,var.env)}"
 
