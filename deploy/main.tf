@@ -67,7 +67,7 @@ resource "aws_ecs_task_definition" "scs_service_parts_api" {
   container_definitions = <<EOF
 [
   {
-    "name": "${var.env}-${var.app_name}-maven",
+    "name": "${var.env}-${var.app_name}-container",
     "image": "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${var.target_image_path}:${var.image_tag}",
     "essential": true,
     "cpu": ${var.fargate_cpu},
