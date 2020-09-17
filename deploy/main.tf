@@ -101,7 +101,7 @@ resource "aws_ecs_service" "scs_service_parts_api" {
   task_definition = aws_ecs_task_definition.scs_service_parts_api.arn
   desired_count   = "1"
   launch_type     = "FARGATE"
-  depends_on = [aws_cloudwatch_log_group.scs_service_parts_api,aws_lb_target_group.scsserviceparts_tg,module.ecr_sync,aws_ecs_task_definition.scs_service_parts_api,aws_ecs_cluster.scs_service_parts_api,aws_lb.load_balancer]
+  depends_on = [aws_cloudwatch_log_group.scs_service_parts_api,module.ecr_sync,aws_ecs_task_definition.scs_service_parts_api,aws_ecs_cluster.scs_service_parts_api]
   tags = {
     ApplicationId          = var.application_id
     ApplicationName        = var.application_name
@@ -203,6 +203,7 @@ resource "aws_lb_target_group" "scsserviceparts_tg" {
   }
 
   deregistration_delay = 60
+  depends_on=[aws_ecs_service.scs_service_parts_api]
 }
 
 #############################
