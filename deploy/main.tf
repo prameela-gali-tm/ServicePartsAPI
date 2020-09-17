@@ -214,12 +214,12 @@ resource "aws_lb_listener_rule" "https_route_path" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.scsserviceparts_tg.arn
   }
-/* condition {
+condition {
     host_header {
       values = ["/*"]
     }
   }
- */
+
   # condition {
    # field = "host-header"
 
