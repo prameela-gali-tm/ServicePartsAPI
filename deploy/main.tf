@@ -101,7 +101,7 @@ resource "aws_ecs_service" "scs_service_parts_api" {
   task_definition = aws_ecs_task_definition.scs_service_parts_api.arn
   desired_count   = "1"
   launch_type     = "FARGATE"
-  depends_on = [aws_cloudwatch_log_group.scs_service_parts_api,module.ecr_sync,aws_ecs_task_definition.scs_service_parts_api,aws_ecs_cluster.scs_service_parts_api]
+  depends_on = [aws_cloudwatch_log_group.scs_service_parts_api,aws_lb_target_group.scsserviceparts_tg,module.ecr_sync,aws_ecs_task_definition.scs_service_parts_api,aws_ecs_cluster.scs_service_parts_api,aws_lb.load_balancer]
   tags = {
     ApplicationId          = var.application_id
     ApplicationName        = var.application_name
@@ -203,23 +203,30 @@ resource "aws_lb_target_group" "scsserviceparts_tg" {
   }
 
   deregistration_delay = 60
-  depends_on=[aws_ecs_service.scs_service_parts_api]
 }
 
 #############################
 resource "aws_lb_listener_rule" "https_route_path" { 
-  listener_arn = aws_lb.load_balancer.arn
-  priority     = 51
+  listener_arn = aws_lb.load_balancer.arn  
   depends_on =[aws_lb_target_group.scsserviceparts_tg,aws_lb.load_balancer]
-  action {
+  default_action {
+   type = "redirect"
+ 
+   redirect {
+     port        = 443
+     protocol    = "HTTPS"
+     status_code = "HTTP_301"
+   }
+  }
+  /* action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.scsserviceparts_tg.arn
   }
 condition {
     host_header {
       values = ["/*"]
-    }
-  }
+    } 
+  }*/
 
   # condition {
    # field = "host-header"
