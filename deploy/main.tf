@@ -116,11 +116,11 @@ resource "aws_ecs_service" "scs_service_parts_api" {
     Env                    = var.env
   }
 
-   load_balancer {
+  /*  load_balancer {
     target_group_arn = aws_lb_target_group.scsserviceparts_tg.arn
     container_name   = "${var.env}-${var.app_name}-maven"
     container_port   = 8080
-  } 
+  }  */
   network_configuration{
     subnets=var.app_private_subnet_id
   }
@@ -178,7 +178,7 @@ resource "aws_lb_target_group" "scsserviceparts_tg" {
   port     = "8080"
   protocol = "HTTP"
   vpc_id   = var.vpc_id
-  target_type = "ip"
+  target_type = "instance"
   tags = {
     ApplicationId          = var.application_id
     ApplicationName        = var.application_name
