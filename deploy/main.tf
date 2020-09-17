@@ -97,7 +97,7 @@ EOF
 
 resource "aws_ecs_service" "scs_service_parts_api" {
   name            = "${var.env}-${var.app_name}-maven"
-  cluster         = var.ecs_cluster_id
+  cluster         = aws_ecs_cluster.scs_service_parts_api.id
   task_definition = aws_ecs_task_definition.scs_service_parts_api.arn
   desired_count   = "1"
   launch_type     = "FARGATE"
@@ -125,7 +125,9 @@ resource "aws_ecs_service" "scs_service_parts_api" {
     subnets=var.app_private_subnet_id
   }
 }
-
+resource "aws_ecs_cluster" "scs_service_parts_api" {
+  name = "${var.env}-cluster-${var.app_name}"
+}
 resource "aws_ecr_repository" "scs_service_parts_api" {
   name = var.target_image_path
 
