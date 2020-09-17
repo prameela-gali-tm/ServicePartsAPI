@@ -207,27 +207,19 @@ resource "aws_lb_target_group" "scsserviceparts_tg" {
 
 #############################
 resource "aws_lb_listener_rule" "https_route_path" { 
-  listener_arn = aws_lb.load_balancer.arn  
+  listener_arn = aws_lb.load_balancer.arn
+  
   depends_on =[aws_lb_target_group.scsserviceparts_tg,aws_lb.load_balancer]
-  default_action {
-   type = "redirect"
- 
-   redirect {
-     port        = 443
-     protocol    = "HTTPS"
-     status_code = "HTTP_301"
-   }
-  }
-  /* action {
+  action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.scsserviceparts_tg.arn
   }
-condition {
+/* condition {
     host_header {
       values = ["/*"]
-    } 
-  }*/
-
+    }
+  }
+ */
   # condition {
    # field = "host-header"
 
