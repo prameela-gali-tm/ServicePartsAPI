@@ -146,12 +146,19 @@ resource "aws_ecr_repository" "scs_service_parts_api" {
     Env                    = var.env
   }
 }
+resource "aws_appautoscaling_target" "ecs_target" {
+  max_capacity       = 4
+  min_capacity       = 1
+  resource_id        = "service/${aws_ecs_cluster.scs_service_parts_api.name}/${aws_ecs_service.scs_service_parts_api.name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  service_namespace  = "ecs"
+}
 
 ########################################################################################################################
 # Load Balancer Target Groups
 ########################################################################################################################
 #############################
- resource "aws_lb" "load_balancer" {
+ /* resource "aws_lb" "load_balancer" {
   name                              = "${var.env}-${var.app_name}-loadBalancer"
   load_balancer_type                = "application"
   subnets         = var.load_balance_subnet_id
@@ -227,7 +234,7 @@ condition {
     #  "tdp-sample-apiapp.*",
     #]
   #} 
-} 
+}  */
 
 #############################
 # R53 enrty
