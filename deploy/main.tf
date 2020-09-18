@@ -146,6 +146,24 @@ resource "aws_ecr_repository" "scs_service_parts_api" {
     Env                    = var.env
   }
 }
+resource "aws_ecr_lifecycle_policy" "scs_service_parts_api" {
+  repository = aws_ecr_repository.scs_service_parts_api.name
+ 
+  policy = jsonencode({
+   rules = [{
+     rulePriority = 1
+     description  = "keep last 10 images"
+     action       = {
+       type = "expire"
+     }
+     selection     = {
+       tagStatus   = "any"
+       countType   = "imageCountMoreThan"
+       countNumber = 10
+     }
+   }]
+  })
+}
 resource "aws_appautoscaling_target" "ecs_target" {
   max_capacity       = 4
   min_capacity       = 1
