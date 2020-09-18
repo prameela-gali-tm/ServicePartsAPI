@@ -355,7 +355,7 @@ resource "aws_rds_cluster" "scsserviceparts-rdscr" {
   backup_retention_period			  = "${var.backup_retention_period}"
   deletion_protection				  = "${var.deletion_protection}"
   #final_snapshot_identifier 			= "${var.rds_instance_snapshot_identifier}"
-  publicly_accessible 				= "${var.rds_instance_publicly_accessible}"
+  
  tags = {
     ApplicationId          = var.application_id
     ApplicationName        = var.application_name
@@ -385,6 +385,7 @@ resource "aws_rds_cluster_instance" "scsserviceparts-rds" {
   cluster_identifier           = "${aws_rds_cluster.scsserviceparts-rdscr.id}"
   instance_class               = "${var.rds_instance_class}"
   preferred_maintenance_window = "${var.rds_instance_preferred_maintenance_window}"
+  publicly_accessible 				= "${var.rds_instance_publicly_accessible}"
   depends_on                   = [aws_rds_cluster.scsserviceparts-rdscr]
   tags = {
     ApplicationId          = var.application_id
