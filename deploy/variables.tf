@@ -193,6 +193,10 @@ variable "backup_retention_period" {
   default     = ""
   description = "backup retention perioda in days"
 }
+variable "rds_instance_publicly_accessible" {
+  default     = ""
+  description = "backup retention perioda in days"
+}
 
 variable "deletion_protection" {
   default     = ""

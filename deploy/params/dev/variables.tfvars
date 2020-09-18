@@ -71,6 +71,7 @@ rds_instance_iam_database_authentication_enabled = "false"
 rds_instance_cluster_identifier = "tscs-dev-rdscr"
 
 rds_instance_skip_final_snapshot = "true"
+rds_instance_publicly_accessible="true"
 
 backup_retention_period			  = "5"
 deletion_protection				  = "false"

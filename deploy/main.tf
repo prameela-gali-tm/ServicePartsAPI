@@ -123,6 +123,7 @@ resource "aws_ecs_service" "scs_service_parts_api" {
   }  
   network_configuration{
     subnets=var.app_private_subnet_id
+    security_groups=[aws_security_group.ecs_tasks.id]
   }
 }
 resource "aws_ecs_cluster" "scs_service_parts_api" {
@@ -181,6 +182,7 @@ resource "aws_appautoscaling_target" "ecs_target" {
   load_balancer_type                = "application"
   subnets         = var.load_balance_subnet_id
   internal        = var.alb_internal
+  security_groups = aws_security_group.alb.id
 
    tags = {
     ApplicationId          = var.application_id
