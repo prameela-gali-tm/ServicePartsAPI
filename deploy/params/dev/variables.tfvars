@@ -64,7 +64,7 @@ rds_instance_apply_immediately = "true"
 
 rds_instance_parameter_group_name = "default.aurora11.6"
 
-rds_instance_count = "2"
+rds_instance_count = "1"
 
 rds_instance_iam_database_authentication_enabled = "false"
 
