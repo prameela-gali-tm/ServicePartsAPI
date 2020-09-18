@@ -177,7 +177,7 @@ resource "aws_appautoscaling_target" "ecs_target" {
 ########################################################################################################################
 #############################
   resource "aws_lb" "load_balancer" {
-  name                              = "${var.env}-${var.app_name}-loadBalancer"
+  name                              = "${var.env}-${var.app_name}-lb"
   load_balancer_type                = "application"
   subnets         = var.load_balance_subnet_id
   internal        = var.alb_internal
