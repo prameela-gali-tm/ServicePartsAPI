@@ -158,7 +158,7 @@ resource "aws_appautoscaling_target" "ecs_target" {
 # Load Balancer Target Groups
 ########################################################################################################################
 #############################
- /* resource "aws_lb" "load_balancer" {
+  resource "aws_lb" "load_balancer" {
   name                              = "${var.env}-${var.app_name}-loadBalancer"
   load_balancer_type                = "application"
   subnets         = var.load_balance_subnet_id
@@ -234,7 +234,7 @@ condition {
     #  "tdp-sample-apiapp.*",
     #]
   #} 
-}  */
+}  
 
 #############################
 # R53 enrty
