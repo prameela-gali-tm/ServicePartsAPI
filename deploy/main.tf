@@ -118,7 +118,7 @@ resource "aws_ecs_service" "scs_service_parts_api" {
 
     load_balancer {
     target_group_arn = aws_alb_target_group.load_balancer.arn
-    container_name   = "${var.env}-${var.app_name}-maven"
+    container_name   = "${var.env}-${var.app_name}-container"
     container_port   = 8080
   }  
   network_configuration{
