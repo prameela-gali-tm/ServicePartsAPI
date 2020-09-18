@@ -152,14 +152,14 @@ resource "aws_ecr_lifecycle_policy" "scs_service_parts_api" {
   policy = jsonencode({
    rules = [{
      rulePriority = 1
-     description  = "keep last 10 images"
+     description  = "keep last 5 images"
      action       = {
        type = "expire"
      }
      selection     = {
        tagStatus   = "any"
        countType   = "imageCountMoreThan"
-       countNumber = 10
+       countNumber = 5
      }
    }]
   })
@@ -214,14 +214,19 @@ resource "aws_alb_target_group" "load_balancer" {
    path                = "/"
    unhealthy_threshold = "2"
   }
+  depends_on=[aws_lb.load_balancer]
 }
+
 
 resource "aws_alb_listener" "http" {
   load_balancer_arn = aws_lb.load_balancer.id
   port              = 80
   protocol          = "HTTP"
- 
   default_action {
+    target_group_arn = aws_alb_target_group.load_balancer.id
+    type             = "forward"
+  }
+ /*  default_action {
    type = "redirect"
  
    redirect {
@@ -229,7 +234,7 @@ resource "aws_alb_listener" "http" {
      protocol    = "HTTPS"
      status_code = "HTTP_301"
    }
-  }
+  } */
 }
  
 /* resource "aws_alb_listener" "https" {
