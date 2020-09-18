@@ -49,7 +49,7 @@ rds_instance_engine = "aurora-postgresql"
 
 rds_instance_engine_version = "10.4"
 
-rds_instance_database_name = "scsdevdb"
+rds_instance_database_name = "SCSServicePartsDB"
 
 rds_instance_username = "root"
 rds_instance_password ="password"
@@ -58,7 +58,7 @@ rds_instance_preferred_backup_window = "04:00-05:00"
 
 rds_instance_preferred_maintenance_window = "Sun:00:00-Sun:03:00"
 
-rds_instance_port = "3306"
+rds_instance_port = "5432"
 
 rds_instance_apply_immediately = "true"
 
