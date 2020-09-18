@@ -232,7 +232,7 @@ resource "aws_alb_listener" "http" {
   }
 }
  
-resource "aws_alb_listener" "https" {
+/* resource "aws_alb_listener" "https" {
   load_balancer_arn = aws_lb.load_balancer.id
   port              = 443
   protocol          = "HTTPS"
@@ -244,7 +244,7 @@ resource "aws_alb_listener" "https" {
     target_group_arn = aws_alb_target_group.load_balancer.id
     type             = "forward"
   }
-}
+} */
 
 # Port Based Load Balancer Target Group
 /* resource "aws_lb_target_group" "scsserviceparts_tg" {
