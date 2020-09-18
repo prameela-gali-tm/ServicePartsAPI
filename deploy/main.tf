@@ -211,7 +211,7 @@ resource "aws_alb_target_group" "load_balancer" {
    protocol            = "HTTP"
    matcher             = "200"
    timeout             = "3"
-   path                = var.health_check_path
+   path                = "/"
    unhealthy_threshold = "2"
   }
 }
