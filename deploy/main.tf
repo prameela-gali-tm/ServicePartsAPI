@@ -182,7 +182,7 @@ resource "aws_appautoscaling_target" "ecs_target" {
   load_balancer_type                = "application"
   subnets         = var.load_balance_subnet_id
   internal        = var.alb_internal
-  security_groups = aws_security_group.alb.id
+  security_groups = [aws_security_group.alb.id]
 
    tags = {
     ApplicationId          = var.application_id
@@ -355,7 +355,7 @@ resource "aws_rds_cluster" "scsserviceparts-rdscr" {
   backup_retention_period			  = "${var.backup_retention_period}"
   deletion_protection				  = "${var.deletion_protection}"
   #final_snapshot_identifier 			= "${var.rds_instance_snapshot_identifier}"
-  #publicly_accessible 				= "${var.rds_instance_publicly_accessible}"
+  publicly_accessible 				= "${var.rds_instance_publicly_accessible}"
  tags = {
     ApplicationId          = var.application_id
     ApplicationName        = var.application_name
