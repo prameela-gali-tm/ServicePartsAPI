@@ -104,7 +104,6 @@ resource "aws_security_group" "rds-sg" {
     Env                    = var.env
   }
 
-  depends_on = ["aws_db_subnet_group.mtmus-sp-sbg"]
 }
 
 

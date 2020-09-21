@@ -101,7 +101,7 @@ resource "aws_ecs_service" "scs_service_parts_api" {
   task_definition = aws_ecs_task_definition.scs_service_parts_api.arn
   desired_count   = "1"
   launch_type     = "FARGATE"
-  depends_on = [aws_cloudwatch_log_group.scs_service_parts_api,module.ecr_sync,aws_ecs_task_definition.scs_service_parts_api,aws_ecs_cluster.scs_service_parts_api]
+  depends_on = [aws_cloudwatch_log_group.scs_service_parts_api,module.ecr_sync,aws_ecs_task_definition.scs_service_parts_api,aws_ecs_cluster.scs_service_parts_api,aws_security_group.ecs_tasks]
   /* tags = {
     ApplicationId          = var.application_id
     ApplicationName        = var.application_name
@@ -370,6 +370,7 @@ resource "aws_rds_cluster" "scsserviceparts-rdscr" {
     TerraformScriptVersion = var.terraform_scriptversion
     Env                    = var.env
   }
+  depends_on=[aws_security_group.rds-sg]
 }
 
 output "rds_endpoint" {
