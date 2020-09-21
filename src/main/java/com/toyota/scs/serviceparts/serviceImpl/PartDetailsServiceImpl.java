@@ -49,14 +49,25 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 				  PartDetailsModel detailsModel = new PartDetailsModel();
 				   PartEntity  partEntity = (PartEntity)list2[0];
 				   OrderEntity orderEntity = (OrderEntity)list2[1];
-				   detailsModel.setPartNumber(partEntity.getPartNumber());
-				   detailsModel.setDeliveryDueDate(partEntity.getDeliveryDueDate());
-				   detailsModel.setOrderQuantity(partEntity.getOrderQuantity());
-				   detailsModel.setOutstandingQuantity(partEntity.getOutstandingQuantity());
-				   detailsModel.setLineItemNumber(partEntity.getLineItemNumber());
-				   detailsModel.setPoNumber(orderEntity.getPoNumber());
-				   detailsModel.setOrderType(orderEntity.getOrderType());
-				   detailsModel.setVendorCode(orderEntity.getVendorCode());
+					   detailsModel.setPartNumber(partEntity.getPartNumber());
+					   detailsModel.setDeliveryDueDate(partEntity.getDeliveryDueDate());
+					   detailsModel.setOrderQuantity(partEntity.getOrderQuantity());
+					   detailsModel.setOutstandingQuantity(partEntity.getOutstandingQuantity());
+					   detailsModel.setLineItemNumber(partEntity.getLineItemNumber());
+					   detailsModel.setPoNumber(orderEntity.getPoNumber());
+					   detailsModel.setOrderType(orderEntity.getOrderType());
+					   detailsModel.setVendorCode(orderEntity.getVendorCode());
+					   detailsModel.setHomePosition(partEntity.getHomePosition());
+					   detailsModel.setPartId(partEntity.getPartId());
+					   detailsModel.setOrderId(orderEntity.getOrderId());
+					   detailsModel.setContainerID(partEntity.getContainerID());
+					   detailsModel.setDealer(partEntity.getDealer());
+					   detailsModel.setDirectShip(partEntity.getDirectShip());
+					   detailsModel.setOrderRefNumber(partEntity.getOrderRefNumber());
+					   detailsModel.setPartDesc(partEntity.getPartDesc());
+					   detailsModel.setSerialNumber(partEntity.getSerialNumber());
+					   detailsModel.setSubPartNumber(partEntity.getSubPartNumber());
+					   detailsModel.setVendorPartNumber(partEntity.getVendorPartNumber());
 				   partDetilsList.add(detailsModel);
 			  }
 		  }

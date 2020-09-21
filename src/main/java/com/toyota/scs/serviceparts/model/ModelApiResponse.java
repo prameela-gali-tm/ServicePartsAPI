@@ -24,7 +24,9 @@ public class ModelApiResponse {
 	 
 	 @JsonProperty("confirmedTrailer")
 	 private String confirmedTrailer;
-
+	 
+	 @JsonProperty("responseCaseBuildDetails")
+	 private ResponseCaseBuildModel responseCaseBuildDetails;
 	public ModelApiResponse() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -70,14 +72,24 @@ public class ModelApiResponse {
 		this.confirmedTrailer = confirmedTrailer;
 	}
 
+	public ResponseCaseBuildModel getResponseCaseBuildDetails() {
+		return responseCaseBuildDetails;
+	}
+
+	public void setResponseCaseBuildDetails(ResponseCaseBuildModel responseCaseBuildDetails) {
+		this.responseCaseBuildDetails = responseCaseBuildDetails;
+	}
+
 	public ModelApiResponse(Integer code, String confirmationNumber, List<Message> messages,
-			List<String> confirmedPurchaseOrders, String confirmedTrailer) {
+			List<String> confirmedPurchaseOrders, String confirmedTrailer,
+			ResponseCaseBuildModel responseCaseBuildDetails) {
 		super();
 		this.code = code;
 		this.confirmationNumber = confirmationNumber;
 		this.messages = messages;
 		this.confirmedPurchaseOrders = confirmedPurchaseOrders;
 		this.confirmedTrailer = confirmedTrailer;
+		this.responseCaseBuildDetails = responseCaseBuildDetails;
 	}
 
 	@Override
@@ -89,6 +101,7 @@ public class ModelApiResponse {
 		result = prime * result + ((confirmedPurchaseOrders == null) ? 0 : confirmedPurchaseOrders.hashCode());
 		result = prime * result + ((confirmedTrailer == null) ? 0 : confirmedTrailer.hashCode());
 		result = prime * result + ((messages == null) ? 0 : messages.hashCode());
+		result = prime * result + ((responseCaseBuildDetails == null) ? 0 : responseCaseBuildDetails.hashCode());
 		return result;
 	}
 
@@ -126,8 +139,15 @@ public class ModelApiResponse {
 				return false;
 		} else if (!messages.equals(other.messages))
 			return false;
+		if (responseCaseBuildDetails == null) {
+			if (other.responseCaseBuildDetails != null)
+				return false;
+		} else if (!responseCaseBuildDetails.equals(other.responseCaseBuildDetails))
+			return false;
 		return true;
 	}
+
+	
 
 	
 	

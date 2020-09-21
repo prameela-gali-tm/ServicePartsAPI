@@ -11,7 +11,7 @@ public class ServicePartConstant {
 	public static  String RFID_INVALID = "RFID number must be 12 digits.";
 	public static String RFID_SPC = "No special character are allowed in RFID.";
 
-	public static  String CASE_NUMBER_INVALID = "Case Number must be 8 digits.  Also, it must not be used in last 60 days. ";
+	public static  String CASE_NUMBER_INVALID = "Case Number must be 8 digits.Also, it must not be used in last 60 days. ";
 	public static  String CASE_NUMBER_EMPTY = "Case Number is required field.";
 	public static String CASE_NUMBER_NUMBERIC="Case Number allows only Numeric values";
 	//Case Build Unit Level
