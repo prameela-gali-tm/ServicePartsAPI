@@ -38,6 +38,11 @@ vpc_id="vpc-0369d880f6debee29"
 load_balance_subnet_id = ["subnet-0159ce27d8fdc7583", "subnet-07c1afe035fc98aa4"]
 rds_private_subnet_id = ["subnet-0985d3868f57106a7", "subnet-0b4e04f041a715e5f"]
 app_private_subnet_id = ["subnet-0c1e341b5321d36dc", "subnet-0fe5c390ba31d5f3c"]
+
+app_cidr = ["10.57.163.64/26", "10.57.163.64/26"]
+lb_cidr = ["10.57.163.192/27", "10.57.163.224/27"]
+db_cidr = ["10.57.163.0/27", "10.57.163.32/27"]
+
 alb_internal = "false"
 
 alb_idle_timeout = "50"

@@ -42,25 +42,21 @@ resource "aws_security_group" "alb" {
 }
 
 resource "aws_security_group" "ecs_tasks" {
-  name   = "${var.env}-sg-task-${var.app_name}"
+  name   = "${var.app_name}-${var.env}-sg-task"
   vpc_id = var.vpc_id
 
   ingress {
     protocol         = "tcp"
     from_port        = 8080
     to_port          = 8080
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
+    cidr_blocks      = var.lb_cidr
+  } 
+   ingress {
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "TCP"
+    cidr_blocks = var.rds_private_subnet_id
   }
-
-  egress {
-    protocol         = "-1"
-    from_port        = 0
-    to_port          = 0
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
   tags = {
     ApplicationId          = var.application_id
     ApplicationName        = var.application_name
@@ -75,6 +71,42 @@ resource "aws_security_group" "ecs_tasks" {
     Env                    = var.env
   }
 }
+# 2.Define the security group for private subnet
+resource "aws_security_group" "rds-sg" {
+  name        = "${var.app_name}-${var.env}-rds-sg"
+  description = "Security Group for RDS"
+  vpc_id      = "${var.vpc_id}"
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "TCP"
+    cidr_blocks = var.app_cidr
+  }
+
+  ingress {
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "TCP"
+    cidr_blocks = var.app_cidr
+  }
+
+  tags {
+    ApplicationId          = var.application_id
+    ApplicationName        = var.application_name
+    ProjectName            = var.project_name
+    BU                     = var.bu
+    DeptID                 = var.dept_id
+    CoreID                 = var.core_id
+    ProjectID              = var.project_id
+    CostCenter             = var.cost_center
+    CreatedBy              = var.created_by
+    TerraformScriptVersion = var.terraform_scriptversion
+    Env                    = var.env
+  }
+
+  depends_on = ["aws_db_subnet_group.mtmus-sp-sbg"]
+}
+
 
 output "alb" {
   value = aws_security_group.alb.id

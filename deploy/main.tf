@@ -346,6 +346,7 @@ resource "aws_rds_cluster" "scsserviceparts-rdscr" {
   master_password                     = "${var.rds_instance_password}"
  # master_password                     = "${data.aws_ssm_parameter.mtmus-sandbox-root.value}"
   db_subnet_group_name                = "${aws_db_subnet_group.scsserviceparts-sbg.name}"
+  vpc_security_group_ids              = ["${aws_security_group.rds-sg.id}"]
   apply_immediately                   = "${var.rds_instance_apply_immediately}"
   preferred_backup_window             = "${var.rds_instance_preferred_backup_window}"
   preferred_maintenance_window        = "${var.rds_instance_preferred_maintenance_window}"

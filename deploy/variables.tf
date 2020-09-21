@@ -23,6 +23,12 @@ variable "artifactory_password" {
 
 variable "env" {
 }
+variable "load_balance_subnet_id" {
+}
+variable "rds_private_subnet_id" {
+}
+variable "app_private_subnet_id" {
+}
 
 # The value of source_image_path will be the same which is passed in Jenkinsfile (ciMavenDocker entrypoint) docker.tag
 variable "source_image_path" {
