@@ -90,7 +90,7 @@ resource "aws_security_group" "rds-sg" {
     cidr_blocks = var.app_cidr
   }
 
-  tags {
+  tags ={
     ApplicationId          = var.application_id
     ApplicationName        = var.application_name
     ProjectName            = var.project_name
