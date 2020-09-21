@@ -27,7 +27,7 @@ variable "app_cidr" {
 }
 variable "lb_cidr" {
 }
-variable "db_cidr" {
+variable "rds_cidr" {
 }
 
 # The value of source_image_path will be the same which is passed in Jenkinsfile (ciMavenDocker entrypoint) docker.tag

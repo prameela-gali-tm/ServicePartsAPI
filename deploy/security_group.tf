@@ -55,7 +55,7 @@ resource "aws_security_group" "ecs_tasks" {
     from_port   = 5432
     to_port     = 5432
     protocol    = "TCP"
-    cidr_blocks = var.rds_private_subnet_id
+    cidr_blocks = var.rds_cidr
   }
   tags = {
     ApplicationId          = var.application_id
