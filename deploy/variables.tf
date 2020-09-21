@@ -94,18 +94,7 @@ variable "ecs_task_iam_policy_autoscaling" {
 variable "vpc_id" {
 }
 
-variable "load_balance_subnet_id" {
-   type        = "list"
-  default     = []
-}
-variable "rds_private_subnet_id" {
-   type        = "list"
-  default     = []
-}
-variable "app_private_subnet_id" {
-   type        = "list"
-  default     = []
-}
+
 variable "alb_internal" {
   default     = ""
   description = "the loadbalancer is internal or external"
