@@ -23,11 +23,11 @@ variable "artifactory_password" {
 
 variable "env" {
 }
-variable "load_balance_subnet_id" {
+variable "app_cidr" {
 }
-variable "rds_private_subnet_id" {
+variable "lb_cidr" {
 }
-variable "app_private_subnet_id" {
+variable "db_cidr" {
 }
 
 # The value of source_image_path will be the same which is passed in Jenkinsfile (ciMavenDocker entrypoint) docker.tag
@@ -94,7 +94,18 @@ variable "ecs_task_iam_policy_autoscaling" {
 variable "vpc_id" {
 }
 
-
+variable "load_balance_subnet_id" {
+   type        = "list"
+  default     = []
+}
+variable "rds_private_subnet_id" {
+   type        = "list"
+  default     = []
+}
+variable "app_private_subnet_id" {
+   type        = "list"
+  default     = []
+}
 variable "alb_internal" {
   default     = ""
   description = "the loadbalancer is internal or external"
