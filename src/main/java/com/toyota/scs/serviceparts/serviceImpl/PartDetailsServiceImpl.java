@@ -1,5 +1,6 @@
 package com.toyota.scs.serviceparts.serviceImpl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,9 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 	@Autowired
     EntityManagerFactory emf;
 	
+	private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+
+	private final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 	@Override
 	public List<PartDetailsModel> findPartDetails(String partNumber,String vendorCode) {
@@ -30,12 +34,12 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 		StringBuilder sqlQuery = new StringBuilder();
 		Query query =null;
 		if(partNumber!=null) {
-			sqlQuery.append("Select p,ord from PartEntity p inner join OrderEntity ord on ord.orderId=p.orderId where p.partNumber=?1 and ord.vendorCode=?2 order by p.deliveryDueDate asc");
+			sqlQuery.append("Select p,ord from PartEntity p inner join OrderEntity ord on ord.orderId=p.orderId where p.partNumber=?1 and ord.vendorCode=?2 order by p.deliveryDueDate asc,p.orderId asc");
 			 query = em.createQuery(sqlQuery.toString())
 					   .setParameter(1, partNumber)
 					   .setParameter(2, vendorCode);	
 		}else {
-			sqlQuery.append("Select p,ord from PartEntity p inner join OrderEntity ord on ord.orderId=p.orderId where ord.vendorCode=?1 order by p.deliveryDueDate asc");
+			sqlQuery.append("Select p,ord from PartEntity p inner join OrderEntity ord on ord.orderId=p.orderId where ord.vendorCode=?1 order by p.deliveryDueDate asc,p.orderId asc");
 			 query = em.createQuery(sqlQuery.toString())
 					   .setParameter(1, vendorCode);
 		}
@@ -50,7 +54,7 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 				   PartEntity  partEntity = (PartEntity)list2[0];
 				   OrderEntity orderEntity = (OrderEntity)list2[1];
 					   detailsModel.setPartNumber(partEntity.getPartNumber());
-					   detailsModel.setDeliveryDueDate(partEntity.getDeliveryDueDate());
+					   detailsModel.setDeliveryDueDate(DATE_FORMAT.format(partEntity.getDeliveryDueDate()));
 					   detailsModel.setOrderQuantity(partEntity.getOrderQuantity());
 					   detailsModel.setOutstandingQuantity(partEntity.getOutstandingQuantity());
 					   detailsModel.setLineItemNumber(partEntity.getLineItemNumber());

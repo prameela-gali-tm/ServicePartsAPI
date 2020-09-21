@@ -13,7 +13,7 @@ public class PartDetailsModel {
 	private String partNumber;
 	
 	@JsonProperty("deliveryDueDate")
-	private Date deliveryDueDate;
+	private String deliveryDueDate;
 	
 	@JsonProperty("orderQuantity")
 	private long orderQuantity;
@@ -70,7 +70,7 @@ public class PartDetailsModel {
 		// TODO Auto-generated constructor stub
 	}
 
-	public PartDetailsModel(String partNumber, Date deliveryDueDate, long orderQuantity, long outstandingQuantity,
+	public PartDetailsModel(String partNumber, String deliveryDueDate, long orderQuantity, long outstandingQuantity,
 			String poNumber, String orderType, String vendorCode,String lineItemNumber,String homePosition,String distinationFD) {
 		super();
 		this.partNumber = partNumber;
@@ -93,11 +93,11 @@ public class PartDetailsModel {
 		this.partNumber = partNumber;
 	}
 
-	public Date getDeliveryDueDate() {
+	public String getDeliveryDueDate() {
 		return deliveryDueDate;
 	}
 
-	public void setDeliveryDueDate(Date deliveryDueDate) {
+	public void setDeliveryDueDate(String deliveryDueDate) {
 		this.deliveryDueDate = deliveryDueDate;
 	}
 
@@ -260,8 +260,4 @@ public class PartDetailsModel {
 	public void setPartDesc(String partDesc) {
 		this.partDesc = partDesc;
 	}
-	
-	
-	
-	
 }
