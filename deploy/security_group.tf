@@ -17,6 +17,18 @@ resource "aws_security_group" "alb" {
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
+  egress {
+    protocol         = "tcp"
+    from_port        = 8080
+    to_port          = 8080
+    cidr_blocks      = var.app_cidr
+  }
+  egress {
+    protocol         = "tcp"
+    from_port        = 80
+    to_port          = 8080
+    cidr_blocks      = var.app_cidr
+  }
 
   egress {
     protocol         = "-1"
@@ -57,6 +69,18 @@ resource "aws_security_group" "ecs_tasks" {
     protocol    = "TCP"
     cidr_blocks = var.rds_cidr
   }
+  egress {
+    protocol         = "tcp"
+    from_port        = 8080
+    to_port          = 8080
+    cidr_blocks      = var.lb_cidr
+  } 
+   egress {
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "TCP"
+    cidr_blocks = var.rds_cidr
+  }
   tags = {
     ApplicationId          = var.application_id
     ApplicationName        = var.application_name
@@ -84,6 +108,12 @@ resource "aws_security_group" "rds-sg" {
   }
 
   ingress {
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "TCP"
+    cidr_blocks = var.app_cidr
+  }
+  egress {
     from_port   = 5432
     to_port     = 5432
     protocol    = "TCP"
