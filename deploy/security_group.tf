@@ -81,6 +81,12 @@ resource "aws_security_group" "ecs_tasks" {
     protocol    = "TCP"
     cidr_blocks = var.rds_cidr
   }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
   tags = {
     ApplicationId          = var.application_id
     ApplicationName        = var.application_name
