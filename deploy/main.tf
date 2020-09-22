@@ -17,7 +17,7 @@ module "ecr_sync"  {
   artifactory_password = var.artifactory_password
   source_image_url     = "docker-dev.artifactory.tmna-devops.com/${var.source_image_path}"
   target_image_url     = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${var.target_image_path}"
-  image_tag            = var.image_tag
+  image_tag            = "${var.image_tag}-1"
   aws_region           = var.aws_region
 }
 
@@ -68,7 +68,7 @@ resource "aws_ecs_task_definition" "scs_service_parts_api" {
 [
   {
     "name": "${var.env}-${var.app_name}-container",
-    "image": "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${var.target_image_path}:${var.image_tag}",
+    "image": "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${var.target_image_path}:${var.image_tag}-1",
     "essential": true,
     "cpu": ${var.fargate_cpu},
     "memory": ${var.fargate_memory},
