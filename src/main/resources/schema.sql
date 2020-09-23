@@ -1,0 +1,2 @@
+CREATE SCHEMA scv
+    AUTHORIZATION postgres;
