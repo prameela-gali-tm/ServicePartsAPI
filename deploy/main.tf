@@ -208,7 +208,7 @@ resource "aws_alb_target_group" "load_balancer" {
   vpc_id      = var.vpc_id
   target_type = "ip"
  
-  health_check {
+  /* health_check {
    healthy_threshold   = "3"
    interval            = "30"
    protocol            = "HTTP"
@@ -216,7 +216,7 @@ resource "aws_alb_target_group" "load_balancer" {
    timeout             = "3"
    path                = "/"
    unhealthy_threshold = "2"
-  }
+  } */
   depends_on=[aws_lb.load_balancer]
 }
 
