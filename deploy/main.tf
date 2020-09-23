@@ -62,7 +62,7 @@ resource "aws_ecs_task_definition" "scs_service_parts_api" {
     CreatedBy              = var.created_by
     TerraformScriptVersion = var.terraform_scriptversion
     Env                    = var.env
-    PUSHDate="9/23/2020"
+    PUSHDate="${timestamp()}"
   }
 
   container_definitions = <<EOF
