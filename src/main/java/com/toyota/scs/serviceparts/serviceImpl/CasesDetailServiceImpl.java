@@ -717,12 +717,18 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 						for (ExceptionsModel exceptionsModel : exceptions) {
 							pushMessage(vendorCode, exceptionValidation(exceptionsModel.getExceptionCode()), mesMap);
 						}
-
+						Map<String, String> duplicateValidation = new HashMap<String, String>();
 						for (UnitsModel obj : units) {
 							List<PartDetailsModel> detailsModel = null;
 							String keyValue = obj.getPartNumber() + vendorCode;
 							long outStandingQuantity = 0;
-							if (obj.getDeliveryDueDate() == null) {
+							if(duplicateValidation.containsKey(model.getCaseNumber())) {
+								pushMessage(vendorCode, ServicePartConstant.DUPLICATE_UNITS, mesMap);
+							}else {
+								duplicateValidation.put(model.getCaseNumber(),obj.getPartNumber());
+							}
+							
+							if (obj.getDeliveryDueDate() == null && valid) {
 								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode);
 								if (partDetailsMap.containsKey(keyValue)) {
 									outStandingQuantity = partDetailsMap.get(keyValue);
@@ -885,7 +891,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 			 
 
 			/// Saving the Records into Data base start here
-		//	 valid =false;/// need to remove after demo
+			 //valid =false;/// need to remove after demo
 			if (valid) {
 				String confirmationNumber = confirmationNumber(vendorCode, "C");
 				message.setConfirmationNumber(confirmationNumber);
