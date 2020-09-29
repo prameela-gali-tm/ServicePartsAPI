@@ -6,7 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,6 +37,10 @@ public class GetApiController {
 	@Autowired
 	private PalletSizeLimitRepositroy palletSizeLimitEntity;
 	
+	@Autowired
+	private KafkaTemplate<String, Object> template;
+	
+	private String topic ="SCS";
 	
 	@GetMapping("/partdetails")
 	public ResponseEntity<List<PartDetailsModel>> getPartDetails(
@@ -63,5 +69,12 @@ public class GetApiController {
 	public List<PalletSizeLimitEntity> getAllPalletSizeLimit()
 	{		
 		return (List<PalletSizeLimitEntity>) palletSizeLimitEntity.findAll();
+	}
+	
+	@GetMapping("/publish/{name}")
+	public String publishMessage(@PathVariable String name)
+	{
+		template.send(topic,"Hi "+name+" welcome to SCS ");
+		return "Data published";
 	}
 }

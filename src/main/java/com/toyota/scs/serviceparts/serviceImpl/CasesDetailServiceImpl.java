@@ -318,13 +318,16 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 		if (s.length() > 8) {
 			return ServicePartConstant.CASE_NUMBER_INVALID;
 		}
-		if (s.length() != 8 && days <= 60) {
+		if(s.length()<8) {
+			return ServicePartConstant.CASE_NUMBER_INVALID;
+		}
+		if (s.length() == 8 && days <= 60) {
 			return ServicePartConstant.CASE_NUMBER_INVALID;
 		}
 		if (!isNumeric(s)) {
 			return ServicePartConstant.CASE_NUMBER_NUMBERIC;
 		}
-		return mes;
+	return mes;
 	}
 
 	public String partNumberValidation(String s) {
@@ -379,9 +382,9 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 		if (value.length() > 5) {
 			return ServicePartConstant.PART_QUANTITY_INVALID;
 		}
-		if (s == 0) {
+		if (s <= 0) {
 			return ServicePartConstant.PART_QUANTITY_EMPTY;
-		}
+		}	
 
 		return mes;
 	}
@@ -645,25 +648,29 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 	@Override
 	public int caseNumberDaysValidation(String caseNumber) {
 		CaseEntity caseEntity = caseRepositroy.findByCaseNumber(caseNumber);
-		int diffDays = 0;
+		int diffDays = -1;
 		if (caseEntity != null) {
-			String format = "MM/dd/yyyy hh:mm a";
-			SimpleDateFormat sdf = new SimpleDateFormat(format);
-			try {
-				Date dateObj1 = sdf.parse(sdf.format(caseEntity.getModifiedDate()));
-				Date dateObj2 = sdf.parse(sdf.format(new Date()));
-				System.out.println(dateObj1);
-				System.out.println(dateObj2 + "\n");
-				// getTime() returns the number of milliseconds since January 1, 1970, 00:00:00
-				// GMT represented by this Date object
-				long diff = dateObj2.getTime() - dateObj1.getTime();
-				diffDays = (int) (diff / (24 * 60 * 60 * 1000));
-				System.out.println("difference between days: " + diffDays);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			if(caseEntity.getStatus().equalsIgnoreCase("LOAD BUILD")) {
+				String format = "MM/dd/yyyy hh:mm a";
+				SimpleDateFormat sdf = new SimpleDateFormat(format);
+				try {
+					Date dateObj1 = sdf.parse(sdf.format(caseEntity.getModifiedDate()));
+					Date dateObj2 = sdf.parse(sdf.format(new Date()));
+					System.out.println(dateObj1);
+					System.out.println(dateObj2 + "\n");
+					// getTime() returns the number of milliseconds since January 1, 1970, 00:00:00
+					// GMT represented by this Date object
+					long diff = dateObj2.getTime() - dateObj1.getTime();
+					diffDays = (int) (diff / (24 * 60 * 60 * 1000));
+					System.out.println("difference between days: " + diffDays);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}else {
+			diffDays = -99;
 		}
+	}
 		return diffDays;
 	}
 
@@ -707,7 +714,25 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 						List<PartDetailsModel> unitDetails = new ArrayList<PartDetailsModel>();
 						CaseModel model = cases.get(j);
 						int days = caseNumberDaysValidation(model.getCaseNumber());
-						pushMessage(vendorCode, caseNumberValid(model.getCaseNumber(), days), mesMap);
+						if(days>=0) {
+							pushMessage(vendorCode, caseNumberValid(model.getCaseNumber(), days), mesMap);
+						}else if(days==-99){// resting all DDD values back to original quantity 
+							CaseEntity caseEntity = caseRepositroy.findByCaseNumber(model.getCaseNumber());
+							@SuppressWarnings("unchecked")
+							List<PartTransEntity> entity =  partTransRepositroy.findByCaseId(caseEntity.getCaseId());
+							List<PartEntity> partEntityList = new ArrayList<PartEntity>();
+							for(PartTransEntity obj1:entity)
+							{
+								PartEntity pEntity= partRepositroy.findByPartId(obj1.getPartId());
+								pEntity.setOutstandingQuantity(pEntity.getOutstandingQuantity()+obj1.getFullfilledQuantity());
+								pEntity.setStatus("INSERT");
+								partEntityList.add(pEntity);
+							}
+							partRepositroy.saveAll(partEntityList);
+							partTransRepositroy.deleteAll(entity);
+							caseRepositroy.delete(caseEntity);
+						}
+						
 						List<UnitsModel> units = model.getUnits();
 						List<RfidDetailsModel> rfidDetails = model.getRfidDetails();
 						List<ExceptionsModel> exceptions = caseBuildModel.getExceptions();
@@ -727,7 +752,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 							}else {
 								duplicateValidation.put(model.getCaseNumber(),obj.getPartNumber());
 							}
-							
+							pushMessage(vendorCode, partQuantityValidation(obj.getPartQuantity()), mesMap);
 							if (obj.getDeliveryDueDate() == null && valid) {
 								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode);
 								if (partDetailsMap.containsKey(keyValue)) {
@@ -735,6 +760,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 								}
 								if (detailsModel != null && detailsModel.size() > 0) {
 									for (PartDetailsModel partDetailsModel : detailsModel) {
+										if(partDetailsModel.getOrderQuantity()>0) {
 										boolean falgIteration = false;
 										if (partWithCompleteDDD.containsKey(partDetailsModel.getPartNumber())) {
 											Map<String, PartDetailsModel> dddValues = partWithCompleteDDD
@@ -763,7 +789,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 										long remainingQuantity = partDetailsModel.getOutstandingQuantity();
 										String partialStatus = partDetailsModel.getPartialStatus();
 										long balanceQuantity = 0;
-										if (fullfillQuantity == 0) {
+										if (fullfillQuantity == 0) { 
 											if (actaulShippedQuantity >= plannedQuantity) {
 												partDetailsModel.setSupplierFullFillQuantity(plannedQuantity);
 												partDetailsModel.setOutstandingQuantity(0);
@@ -812,6 +838,8 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 															partDetailsModel);
 													if (falgIteration) {
 														partDetailsModel.setSupplierFullFillQuantity(remainingQuantity);
+													}else if(partDetailsModel.getSupplierFullFillQuantity()>0) {
+														partDetailsModel.setSupplierFullFillQuantity(remainingQuantity);
 													}
 													unitDetails.add(partDetailsModel);
 													falgIteration = false;
@@ -825,6 +853,41 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 													}
 												}
 											}
+										}else if(partialStatus != null && partialStatus.equalsIgnoreCase("INSERT") && fullfillQuantity!=0 && remainingQuantity<plannedQuantity) {
+											if(actaulShippedQuantity>=remainingQuantity) {
+												partDetailsModel.setSupplierFullFillQuantity(remainingQuantity);
+												partDetailsModel.setOutstandingQuantity(0);
+												partDetailsModel.setPartialStatus("FULL FILLED");
+												balanceQuantity = actaulShippedQuantity - remainingQuantity;
+												dddCompleteRecords.put(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber(),
+														partDetailsModel);
+												unitDetails.add(partDetailsModel);
+												if (balanceQuantity <= 0) {
+													obj.setPartQuantity(0);
+													outStandingQuantity = 0;
+													break;
+												} else {
+													obj.setPartQuantity((int) balanceQuantity);
+													outStandingQuantity = balanceQuantity;
+												}
+											}else {
+												balanceQuantity = actaulShippedQuantity - remainingQuantity;
+												partDetailsModel.setSupplierFullFillQuantity(actaulShippedQuantity);
+												partDetailsModel.setOutstandingQuantity(
+														(remainingQuantity - actaulShippedQuantity));
+												partDetailsModel.setPartialStatus("PARTIAL");
+												dddCompleteRecords.put(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber(),
+														partDetailsModel);
+												unitDetails.add(partDetailsModel);
+												if (balanceQuantity <= 0) {
+													obj.setPartQuantity(0);
+													outStandingQuantity = 0;
+													break;
+												} else {
+													obj.setPartQuantity((int) balanceQuantity);
+													outStandingQuantity = balanceQuantity;
+												}
+											}
 										}
 
 										if (!falgIteration) {
@@ -833,6 +896,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 											}
 
 										}
+									}
 									} // end of the for loop for the iteration of the DB details
 
 								} // end of the if condition for the details fetching from the data base
