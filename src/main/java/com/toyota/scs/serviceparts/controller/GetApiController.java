@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -21,6 +23,7 @@ import com.toyota.scs.serviceparts.repository.OrderRepositroy;
 import com.toyota.scs.serviceparts.repository.PalletSizeLimitRepositroy;
 import com.toyota.scs.serviceparts.repository.VendorRepositroy;
 import com.toyota.scs.serviceparts.serviceImpl.PartDetailsServiceImpl;
+import com.toyota.scs.serviceparts.serviceImpl.VendorService;
 
 @RestController
 public class GetApiController {
@@ -28,8 +31,6 @@ public class GetApiController {
 	@Autowired
 	private PartDetailsServiceImpl partdetailsService;
 	
-	@Autowired
-	private VendorRepositroy vendorRepositroy;
 	
 	@Autowired
 	private OrderRepositroy orderRepositroy;
@@ -39,6 +40,8 @@ public class GetApiController {
 	
 	@Autowired
 	private KafkaTemplate<String, Object> template;
+	
+	
 	
 	private String topic ="SCS";
 	
@@ -53,10 +56,7 @@ public class GetApiController {
 		
 	}
 	
-	@GetMapping("/findbyvendorcode")
-	public VendorEntity findByVedoreCode(@RequestParam(name="vendoreCode", required = true) String vendoreCode) {
-		return vendorRepositroy.findByVendorCodeEquals(vendoreCode);
-	}
+	
 	@GetMapping("/getallponumber")
 	public List<OrderEntity> getAllPoNumber(@RequestParam(name="vendoreCode", required = true) String vendorCode) {
 		return (List<OrderEntity>) orderRepositroy.findByVendorCode(vendorCode);
@@ -77,4 +77,6 @@ public class GetApiController {
 		template.send(topic,"Hi "+name+" welcome to SCS ");
 		return "Data published";
 	}
-}
+	
+	
+} 

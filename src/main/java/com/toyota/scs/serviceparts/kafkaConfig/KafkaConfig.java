@@ -42,19 +42,18 @@ public class KafkaConfig {
                 StringDeserializer.class); 
         map.put(ConsumerConfig 
                     .VALUE_DESERIALIZER_CLASS_CONFIG, 
-                JsonDeserializer.class); 
+                StringDeserializer.class); 
 		
-		/*
-		 * map.put("security.protocol", "SSL"); map.put("ssl.truststore.location",
-		 * "C:\\Users\\skadapa\\Desktop\\ServiceParts\\ServicePartRequirement\\AWS_broker_trust_int"
-		 * ); map.put("ssl.truststore.password", "changeit");
-		 * 
-		 * 
-		 * map.put("ssl.key.password", "changeit"); map.put("ssl.keystore.password",
-		 * "changeit"); map.put("ssl.keystore.location",
-		 * "C:\\Users\\skadapa\\Desktop\\ServiceParts\\ServicePartRequirement\\AWS_broker_certs_int"
-		 * );
-		 */
+		
+		//  map.put("security.protocol", "SSL");
+		//  map.put("ssl.truststore.location","C:\\certification\\AWS_broker_trust_int"); 
+		//  map.put("ssl.truststore.password", "changeit");
+		  
+		  
+		// map.put("ssl.key.password", "changeit"); 
+		//  map.put("ssl.keystore.password","changeit"); 
+		//  map.put("ssl.keystore.location","C:\\certification\\AWS_broker_certs_int");
+		 
         return new DefaultKafkaConsumerFactory<>(map); 
 	}
 	
