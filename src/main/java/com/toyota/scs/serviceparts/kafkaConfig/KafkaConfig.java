@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,9 +20,9 @@ public class KafkaConfig {
 
 	@Bean
 	public ConsumerFactory<String, String> consumerFactory() {
-		final String BOOTSTRAP_SERVERS = "SSL://broker01-int.qa.awskafka.toyota.com:9094,"
-				+ "SSL://broker02-int.qa.awskafka.toyota.com:9094," + "SSL://broker03-int.qa.awskafka.toyota.com:9094,"
-				+ "SSL://broker04-int.qa.awskafka.toyota.com:9094," + "SSL://broker05-int.qa.awskafka.toyota.com:9094";
+		final String BOOTSTRAP_SERVERS = "broker01-int.qa.awskafka.toyota.com:9094,"
+				+ "broker02-int.qa.awskafka.toyota.com:9094," + "broker03-int.qa.awskafka.toyota.com:9094,"
+				+ "broker04-int.qa.awskafka.toyota.com:9094," + "broker05-int.qa.awskafka.toyota.com:9094";
 		// HashMap to store the configurations
 		Map<String, Object> map = new HashMap<>();
 
@@ -34,17 +35,32 @@ public class KafkaConfig {
 		map.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
 
 		
-		  map.put("security.protocol", "SSL"); map.put("ssl.truststore.location",
-		  "C:\\Users\\alingannagari\\Desktop\\Project\\Service parts\\Kafka\\kafkaKeystore.jks"
-		  ); map.put("ssl.truststore.password", "changeit");
-		  
-		  
-			/*
-			 * map.put("ssl.key.password", "changeit");
-			 * map.put("ssl.keystore.password","changeit"); map.put("ssl.keystore.location",
-			 * "C:\\Users\\skadapa\\Desktop\\ServiceParts\\ServicePartRequirement\\AWS_broker_certs_int"
-			 * );
-			 */
+		
+		  map.put("security.protocol", "SSL"); 
+		// map.put("ssl.enabled.protocols", "TLSv1.3,TLSv1.2,TLSv1.1,TLSv1"); 
+		
+		//  map.put("ssl.enabled.protocols", "TLSv1.3,SSLv3");
+		  map.put("ssl.enabled.protocol", "TLSv1.2");
+		 
+			map.put(
+			  "ssl.truststore.location","C:\\Users\\alingannagari\\Desktop\\Project\\Service parts\\Kafka\\kafkaTruststore.jks"
+			  ); 
+		  map.put("ssl.truststore.password", "changeit");
+			 
+		  map.put("ssl.key.password", "changeit"); 
+		  map.put("ssl.keystore.type", "JKS");
+		  map.put("ssl.endpoint.identification.algorithm", "");
+		 
+		  map.put(ProducerConfig.RETRIES_CONFIG, "1");
+		
+		
+		  map.put("ssl.key.password", "changeit");
+		  map.put("ssl.keystore.password","changeit");
+		  map.put("ssl.keystore.location",
+		  "C:\\Users\\alingannagari\\Desktop\\Project\\Service parts\\Certs\\mykeystore.jks"
+		  );
+		 
+		 
 		 
 		return new DefaultKafkaConsumerFactory<>(map);
 	}
