@@ -77,7 +77,7 @@ public class VendorController {
 			vendorRepositroy.deleteById(id);
 			 return "Record was deleted succefully for given Id "+ id;
 		}else {
-			return "Record does not found for given Id "+ id;
+			return "Record does not found for given Id  "+ id;
 		}
 	}
 	
