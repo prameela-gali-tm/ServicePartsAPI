@@ -1,2 +1,2 @@
---CREATE SCHEMA scv
---    AUTHORIZATION root;
+CREATE SCHEMA scv
+    AUTHORIZATION root;
