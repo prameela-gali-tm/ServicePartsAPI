@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 
 import javax.persistence.EntityManager;
@@ -727,7 +728,8 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 							List<PartEntity> partEntityList = new ArrayList<PartEntity>();
 							for(PartTransEntity obj1:entity)
 							{
-								PartEntity pEntity= partRepositroy.findByPartId(obj1.getPartId());
+								Optional<PartEntity> pEntityOpt= partRepositroy.findById(obj1.getId());
+								PartEntity pEntity=pEntityOpt.get();
 								pEntity.setOutstandingQuantity(pEntity.getOutstandingQuantity()+obj1.getFullfilledQuantity());
 								pEntity.setStatus("INSERT");
 								partEntityList.add(pEntity);

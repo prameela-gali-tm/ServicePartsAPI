@@ -11,5 +11,5 @@ import com.toyota.scs.serviceparts.entity.PartEntity;
 public interface PartRepository extends CrudRepository<PartEntity, Long>,PagingAndSortingRepository<PartEntity, Long>,JpaSpecificationExecutor<PartEntity> {
 
 	public PartEntity findByPartNumberAndLineItemNumberAndDeliveryDueDate(String partNumber,String lineItemNumber,Date deliveryDueDate);
-	public PartEntity findByPartId(long partid);
+	
 }
