@@ -47,7 +47,7 @@ public class PartController {
 				Optional<PartEntity> obj = partRepository.findById(partEntity.getOrderId());
 				if(obj.isPresent()) {
 					PartEntity partEntity1 = obj.get();
-					partEntity1.setPartId(partEntity.getPartId());
+					partEntity1.setId(partEntity.getId());
 					partEntity1.setContainerID(partEntity.getContainerID());
 					partEntity1.setDealer(partEntity.getDealer());
 					partEntity1.setDeliveryDueDate(partEntity.getDeliveryDueDate());

@@ -43,11 +43,11 @@ public class PartTransController {
 	{
 		String returnValue="";
 		if(partTransRepositroy!=null) {
-			Optional<PartTransEntity> obj = partTransRepositroy.findById(partTransEntity.getPartTransId());
+			Optional<PartTransEntity> obj = partTransRepositroy.findById(partTransEntity.getId());
 			if(obj.isPresent()) {
 				PartTransEntity partTransRepositroy1 = obj.get();
 				if(partTransRepositroy1!=null) {
-					partTransRepositroy1.setPartTransId(partTransEntity.getPartTransId());
+					partTransRepositroy1.setId(partTransEntity.getId());
 					partTransRepositroy1.setCaseId(partTransEntity.getCaseId());
 					partTransRepositroy1.setFullfilledQuantity(partTransEntity.getFullfilledQuantity());
 					partTransRepositroy1.setModifiedBy("SYSTEM");

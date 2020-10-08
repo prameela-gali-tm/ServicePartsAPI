@@ -14,7 +14,7 @@ public class ExceptionEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name="EXCEPTION_ID")
-	private long exceptionId;
+	private long id;
 	
 	@Column(name="EXCEPTION_CODE")
 	private long exceptionCode;
@@ -32,13 +32,6 @@ public class ExceptionEntity {
 
 	
 
-	public long getExceptionId() {
-		return exceptionId;
-	}
-
-	public void setExceptionId(long exceptionId) {
-		this.exceptionId = exceptionId;
-	}
 
 	public long getExceptionCode() {
 		return exceptionCode;
@@ -70,12 +63,26 @@ public class ExceptionEntity {
 
 
 
-	public ExceptionEntity(long exceptionId, long exceptionCode, String comments, long caseId) {
+	public ExceptionEntity(long id, long exceptionCode, String comments, long caseId) {
 		super();
-		this.exceptionId = exceptionId;
+		this.id = id;
 		this.exceptionCode = exceptionCode;
 		this.comments = comments;
 		this.caseId = caseId;
+	}
+
+
+
+
+	public long getId() {
+		return id;
+	}
+
+
+
+
+	public void setId(long id) {
+		this.id = id;
 	}
 	
 	

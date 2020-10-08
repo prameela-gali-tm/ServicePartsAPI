@@ -62,8 +62,8 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 					   detailsModel.setOrderType(orderEntity.getOrderType());
 					   detailsModel.setVendorCode(orderEntity.getVendorCode());
 					   detailsModel.setHomePosition(partEntity.getHomePosition());
-					   detailsModel.setPartId(partEntity.getPartId());
-					   detailsModel.setOrderId(orderEntity.getOrderId());
+					   detailsModel.setPartId(partEntity.getId());
+					   detailsModel.setOrderId(orderEntity.getId());
 					   detailsModel.setContainerID(partEntity.getContainerID());
 					   detailsModel.setDealer(partEntity.getDealer());
 					   detailsModel.setDirectShip(partEntity.getDirectShip());

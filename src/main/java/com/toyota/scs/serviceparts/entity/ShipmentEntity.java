@@ -21,7 +21,7 @@ public class ShipmentEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name="SHIPMENT_ID")
-	private long shipmnetId;
+	private long id;
 	
 	@Column(name="ROUTE")
 	private String route;
@@ -79,12 +79,12 @@ public class ShipmentEntity implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ShipmentEntity(long shipmnetId, String route, long run, Date shipDate, String trailer, String driverFirstName,
+	public ShipmentEntity(long id, String route, long run, Date shipDate, String trailer, String driverFirstName,
 			String driverLastName, String scacCode, String supplierFirstName, String supplierLastName,
 			String trackingNumber, String confirmationNumber, String status, String geoLongitude, String geoLattitude,
 			Date modifiedDate, String modifiedBy) {
 		super();
-		this.shipmnetId = shipmnetId;
+		this.id = id;
 		this.route = route;
 		this.run = run;
 		this.shipDate = shipDate;
@@ -103,14 +103,7 @@ public class ShipmentEntity implements Serializable {
 		this.modifiedBy = modifiedBy;
 	}
 
-	public long getShipmnetId() {
-		return shipmnetId;
-	}
-
-	public void setShipmnetId(long shipmnetId) {
-		this.shipmnetId = shipmnetId;
-	}
-
+	
 	public String getRoute() {
 		return route;
 	}
@@ -237,6 +230,14 @@ public class ShipmentEntity implements Serializable {
 
 	public void setModifiedBy(String modifiedBy) {
 		this.modifiedBy = modifiedBy;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 	
 	

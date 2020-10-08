@@ -37,7 +37,7 @@ public class OrderEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name="ORDER_ID")
-	private long orderId;
+	private long id;
 	
 	@Column(name="PO_NUMBER")
 	private String poNumber;
@@ -117,13 +117,14 @@ public class OrderEntity implements Serializable {
 		this.vendorCode = vendorCode;
 	}
 
-	public long getOrderId() {
-		return orderId;
+	public long getId() {
+		return id;
 	}
 
-	public void setOrderId(long orderId) {
-		this.orderId = orderId;
+	public void setId(long id) {
+		this.id = id;
 	}
+
 	
 	
 }
