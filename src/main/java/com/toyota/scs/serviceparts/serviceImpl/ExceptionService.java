@@ -7,19 +7,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.toyota.scs.serviceparts.entity.OrderEntity;
-import com.toyota.scs.serviceparts.repository.OrderRepositroy;
+import com.toyota.scs.serviceparts.entity.ExceptionEntity;
+import com.toyota.scs.serviceparts.repository.ExceptionRepository;
 
 @Service
-public class OrderService {
+public class ExceptionService {
 
 	@Autowired
-	OrderRepositroy repositroy;
+	ExceptionRepository exceptionRepository;
 	
-	public Page getAllOrder(Integer pageNo, Integer pageSize, String sortBy){
+	public Page getAllException(Integer pageNo, Integer pageSize, String sortBy){
 		 
         Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(sortBy).ascending());
-		Page<OrderEntity> pagedResult = repositroy.findAll(paging);
+		Page<ExceptionEntity> pagedResult = exceptionRepository.findAll(paging);
         
         return pagedResult;
 	}
