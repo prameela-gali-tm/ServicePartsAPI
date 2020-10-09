@@ -42,11 +42,11 @@ public class CaseController {
 	{
 		String returnValue="";
 		if(caseEntity!=null) {
-			Optional<CaseEntity> obj = caseRepositroy.findById(caseEntity.getCaseId());
+			Optional<CaseEntity> obj = caseRepositroy.findById(caseEntity.getId());
 			if(obj.isPresent()) {
 				CaseEntity caseEntity1 = obj.get();
 				if(caseEntity1!=null) {
-					caseEntity1.setCaseId(caseEntity.getCaseId());	
+					caseEntity1.setId(caseEntity.getId());	
 					caseEntity1.setShipment(caseEntity.getShipment());
 					caseEntity1.setCaseNumber(caseEntity.getCaseNumber());
 					caseEntity1.setConfirmationNumber(caseEntity.getConfirmationNumber());

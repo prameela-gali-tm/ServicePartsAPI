@@ -48,7 +48,7 @@ public class OrderController {
 	{
 		String returnValue="";
 		if(orderEntity!=null) {
-			Optional<OrderEntity> obj = orderRepositroy.findById(orderEntity.getOrderId());
+			Optional<OrderEntity> obj = orderRepositroy.findById(orderEntity.getId());
 			if(obj.isPresent()) {
 				OrderEntity orderEntity1 = obj.get();
 				orderEntity1.setModifiedBy(orderEntity.getModifiedBy());
@@ -57,12 +57,12 @@ public class OrderController {
 				orderEntity1.setPoNumber(orderEntity.getPoNumber());
 				orderEntity1.setVendorCode(orderEntity.getVendorCode());
 				orderRepositroy.save(orderEntity1);
-				returnValue= "Record was updated successfully for the given id "+orderEntity.getOrderId();
+				returnValue= "Record was updated successfully for the given id "+orderEntity.getId();
 			}
 		}		
 		else
 		{
-			returnValue= "Record does not found for the given id " + orderEntity.getOrderId();
+			returnValue= "Record does not found for the given id " + orderEntity.getId();
 		}
 		return returnValue;
 	}

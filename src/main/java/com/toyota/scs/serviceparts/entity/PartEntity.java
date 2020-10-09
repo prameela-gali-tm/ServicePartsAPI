@@ -22,7 +22,7 @@ public class PartEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name="PART_ID")
-	private long partId;
+	private long id;
 	
 	@Column(name="PART_NUMBER")
 	private String partNumber;
@@ -107,14 +107,7 @@ public class PartEntity implements Serializable {
 	}
 
 	
-	public long getPartId() {
-		return partId;
-	}
-
-	public void setPartId(long partId) {
-		this.partId = partId;
-	}
-
+	
 	public String getPartNumber() {
 		return partNumber;
 	}
@@ -302,13 +295,13 @@ public class PartEntity implements Serializable {
 	}
 
 
-	public PartEntity(long partId, String partNumber, String lineItemNumber, Date deliveryDueDate, String partDesc,
+	public PartEntity(long id, String partNumber, String lineItemNumber, Date deliveryDueDate, String partDesc,
 			long orderQuantity, long outstandingQuantity, String vendorPartNumber, String directShip,
 			String homePosition, Date transmissionDate, String orderRefNumber, String dealer, String status,
 			String modifiedBy, Date modifiedDate, long orderId, String containerID, String serialNumber,
 			long subPartNumber) {
 		super();
-		this.partId = partId;
+		this.id = id;
 		this.partNumber = partNumber;
 		this.lineItemNumber = lineItemNumber;
 		this.deliveryDueDate = deliveryDueDate;
@@ -328,6 +321,18 @@ public class PartEntity implements Serializable {
 		this.containerID = containerID;
 		this.serialNumber = serialNumber;
 		this.subPartNumber = subPartNumber;
+	}
+
+
+
+	public long getId() {
+		return id;
+	}
+
+
+
+	public void setId(long id) {
+		this.id = id;
 	}
 	
 	

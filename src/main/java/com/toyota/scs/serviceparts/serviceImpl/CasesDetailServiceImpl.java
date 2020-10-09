@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 
 import javax.persistence.EntityManager;
@@ -191,10 +192,10 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 										vendorCode, duplicateValidation, model.getCaseNumber());
 								if (valid) {
 									PartTransEntity partTransEntity = new PartTransEntity();
-									partTransEntity.setPartId(partEntity.getPartId());
+									partTransEntity.setPartId(partEntity.getId());
 									partTransEntity.setSupplierTotal(obj.getPartQuantity());
 									partTransEntity.setTransmussionDate(new Date());
-									partTransEntity.setOrderId(entity.getOrderId());
+									partTransEntity.setOrderId(entity.getId());
 									partTransEntity.setStatus("CASE BUILD");
 									partTransEntity.setModifiedBy("sreedhar");
 									partTransEntity.setModifiedDate(new Date());
@@ -241,14 +242,14 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 						entry.getPartNumber(), entry.getPoLineItemNumber(), parseDate(entry.getDeliveryDueDate()));
 				PartTransEntity partTransEntity = null;
 				if (caseEntity != null && partEntity != null) {
-					partTransEntity = partTransRepositroy.findByCaseIdAndPartId(caseEntity.getCaseId(),
-							partEntity.getPartId());
+					partTransEntity = partTransRepositroy.findByCaseIdAndPartId(caseEntity.getId(),
+							partEntity.getId());
 				}
-				if (partTransEntity != null && partTransEntity.getCaseId() == caseEntity.getCaseId()
-						&& partTransEntity.getPartId() == partEntity.getPartId()
+				if (partTransEntity != null && partTransEntity.getCaseId() == caseEntity.getId()
+						&& partTransEntity.getPartId() == partEntity.getId()
 						&& partTransEntity.getOrderId() == partEntity.getOrderId()) {
-					obj.setPartTransId(partTransEntity.getPartTransId());
-					obj.setCaseId(caseEntity.getCaseId());
+					obj.setId(partTransEntity.getId());
+					obj.setCaseId(caseEntity.getId());
 					if (obj.getSupplierTotal() > partTransEntity.getSupplierTotal()) {
 						long differenceAmount = obj.getSupplierTotal() - partTransEntity.getSupplierTotal();
 						obj.setSupplierTotal(partTransEntity.getSupplierTotal() + differenceAmount);
@@ -272,7 +273,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 					partEntity.setTransmissionDate(new Date());
 					partEntity.setModifiedBy("sreedhar");
 					partEntity.setModifiedDate(new Date());
-					obj.setCaseId(caseEntity.getCaseId());
+					obj.setCaseId(caseEntity.getId());
 				}
 				partRepositroy.save(partEntity);
 				partTransRepositroy.save(obj);
@@ -559,7 +560,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 				duplicateValidation.put(duplicateKey, duplicateKey);
 			}
 			if (partEntity != null && entity != null) {
-				if (partEntity.getOrderId() != entity.getOrderId()) {
+				if (partEntity.getOrderId() != entity.getId()) {
 					mesMap.put(key, mes);
 					pushMessage(mes, ServicePartConstant.PART_LINE_DDD);
 				}
@@ -723,11 +724,12 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 						}else if(days==-99){// resting all DDD values back to original quantity 
 							CaseEntity caseEntity = caseRepositroy.findByCaseNumber(model.getCaseNumber());
 							@SuppressWarnings("unchecked")
-							List<PartTransEntity> entity =  partTransRepositroy.findByCaseId(caseEntity.getCaseId());
+							List<PartTransEntity> entity =  partTransRepositroy.findByCaseId(caseEntity.getId());
 							List<PartEntity> partEntityList = new ArrayList<PartEntity>();
 							for(PartTransEntity obj1:entity)
 							{
-								PartEntity pEntity= partRepositroy.findByPartId(obj1.getPartId());
+								Optional<PartEntity> pEntityopt= partRepositroy.findById(obj1.getPartId());
+								PartEntity pEntity = pEntityopt.get();
 								pEntity.setOutstandingQuantity(pEntity.getOutstandingQuantity()+obj1.getFullfilledQuantity());
 								pEntity.setStatus("INSERT");
 								partEntityList.add(pEntity);
@@ -996,7 +998,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 							for (PartDetailsModel partDetailsModel : savePartDetails) {
 								/// saving the part transaction details start here
 								PartTransEntity partTransEntity = new PartTransEntity();
-								partTransEntity.setCaseId(obj.getCaseId());
+								partTransEntity.setCaseId(obj.getId());
 								partTransEntity.setFullfilledQuantity(partDetailsModel.getSupplierFullFillQuantity());
 								partTransEntity.setModifiedBy("SYSTEM");
 								partTransEntity.setModifiedDate(new Date());
@@ -1012,7 +1014,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 
 								/// Part details updating start here
 								PartEntity partEntity = new PartEntity();
-								partEntity.setPartId(partDetailsModel.getPartId());
+								partEntity.setId(partDetailsModel.getPartId());
 								partEntity.setContainerID(partDetailsModel.getContainerID());
 								partEntity.setDealer(partDetailsModel.getDealer());
 								try {

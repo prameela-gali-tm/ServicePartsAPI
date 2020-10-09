@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.akiban.sql.parser.SetRoleNode;
 import com.toyota.scs.serviceparts.entity.ShipmentEntity;
 import com.toyota.scs.serviceparts.entity.VendorEntity;
 import com.toyota.scs.serviceparts.repository.ShipmentRepositroy;
@@ -44,12 +45,28 @@ public class ShipmentController {
 	{
 		String returnValue="";
 		if(shipmentEntity!=null) {
-			Optional<ShipmentEntity> obj = shipmentRepositroy.findById(shipmentEntity.getShipmnetId());
+			Optional<ShipmentEntity> obj = shipmentRepositroy.findById(shipmentEntity.getId());
 			if(obj.isPresent()) {
-				ShipmentEntity shipmentEntity1 = obj.get();
+				ShipmentEntity obj1 = obj.get();
 				if(shipmentEntity!=null) {
 					// need to write the save path
-					shipmentRepositroy.save(shipmentEntity1);
+					obj1.setConfirmationNumber(shipmentEntity.getConfirmationNumber());
+					obj1.setDriverFirstName(shipmentEntity.getDriverFirstName());
+					obj1.setDriverLastName(shipmentEntity.getDriverLastName());
+					obj1.setGeoLattitude(shipmentEntity.getGeoLattitude());
+					obj1.setGeoLongitude(shipmentEntity.getGeoLongitude());
+					obj1.setModifiedBy("SYSTEM");
+					obj1.setModifiedDate(new Date());
+					obj1.setRoute(shipmentEntity.getRoute());
+					obj1.setRun(shipmentEntity.getRun());
+					obj1.setScacCode(shipmentEntity.getScacCode());
+					obj1.setShipDate(new Date());
+					obj1.setStatus(shipmentEntity.getStatus());
+					obj1.setSupplierFirstName(shipmentEntity.getSupplierFirstName());
+					obj1.setSupplierLastName(shipmentEntity.getSupplierLastName());
+					obj1.setTrackingNumber(shipmentEntity.getTrackingNumber());
+					obj1.setTrailer(shipmentEntity.getTrailer());					
+					shipmentRepositroy.save(obj1);
 				}
 				returnValue= "Record was updated successfully";
 		}

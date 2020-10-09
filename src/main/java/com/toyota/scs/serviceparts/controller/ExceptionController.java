@@ -44,11 +44,11 @@ public class ExceptionController {
 	{
 		String returnValue="";
 		if(exceptionEntity!=null) {
-			Optional<ExceptionEntity> obj = exceptionRepository.findById(exceptionEntity.getExceptionId());
+			Optional<ExceptionEntity> obj = exceptionRepository.findById(exceptionEntity.getId());
 			if(obj.isPresent()) {
 				ExceptionEntity exceptionEntity1 = obj.get();
 				if(exceptionEntity1!=null) {
-					exceptionEntity1.setExceptionId(exceptionEntity.getExceptionId());
+					exceptionEntity1.setId(exceptionEntity.getId());
 					exceptionEntity1.setCaseId(exceptionEntity.getCaseId());
 					exceptionEntity1.setComments(exceptionEntity.getComments());
 					exceptionEntity1.setExceptionCode(exceptionEntity.getExceptionCode());

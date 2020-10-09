@@ -44,11 +44,16 @@ public class RoutePathNodeController {
 	{
 		String returnValue="";
 		if(routePathNodeEntity!=null) {
-			Optional<RoutePathNodeEntity> obj = pathNodeRepositroy.findById(routePathNodeEntity.getRoutePathNodeId());
+			Optional<RoutePathNodeEntity> obj = pathNodeRepositroy.findById(routePathNodeEntity.getId());
 			if(obj.isPresent()) {
 				RoutePathNodeEntity obj1 = obj.get();
 				if(routePathNodeEntity!=null) {
-					//need to write the save code
+					obj1.setCaseId(routePathNodeEntity.getCaseId());
+					obj1.setFacility(routePathNodeEntity.getFacility());
+					obj1.setModifiedBy("SYSTEM");
+					obj1.setModifiedDate(new Date());
+					obj1.setRoutePathId(routePathNodeEntity.getRoutePathId());
+					obj1.setShipmentId(routePathNodeEntity.getShipmentId());
 					pathNodeRepositroy.save(obj1);
 				}
 				returnValue= "Record was updated successfully";
