@@ -1047,15 +1047,15 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 								responseUnitsModel.setPartNumber(partDetailsModel.getPartNumber());
 								responseUnitsModel.setPoNumber(partDetailsModel.getPoNumber());
 								responseUnitsModel.setPoLineNumber(partDetailsModel.getLineItemNumber());
-								responseUnitsModel.setHomePosition(partDetailsModel.getHomePosition());
+								responseUnitsModel.setPoLineHomePosition(partDetailsModel.getHomePosition());
 								responseUnitsModel
-										.setDeliveryDueDate(partDetailsModel.getDeliveryDueDate());
-								responseUnitsModel.setPlannedOrderQuantity((int) partDetailsModel.getOrderQuantity());
+										.setPoLineDeliveryDueDate(partDetailsModel.getDeliveryDueDate());
+								responseUnitsModel.setPartPOLineQuantityOrdered((int) partDetailsModel.getOrderQuantity());
 								responseUnitsModel
-										.setOutstandingOrderQuantity(partDetailsModel.getOutstandingQuantity());
-								responseUnitsModel.setSupplierOrderQuantityFullFilled(
+										.setPartPOLineQuantityRemaining(partDetailsModel.getOutstandingQuantity());
+								responseUnitsModel.setPartPOLineQuantityAllocated(
 										partDetailsModel.getSupplierFullFillQuantity());
-								responseUnitsModel.setOrderStatus(partDetailsModel.getPartialStatus());
+								responseUnitsModel.setPartPOLineStatus(partDetailsModel.getPartialStatus());
 								responseUnitsModelsList.add(responseUnitsModel);
 								/// ends here
 							}
