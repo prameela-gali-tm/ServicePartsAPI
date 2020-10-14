@@ -72,7 +72,7 @@ public class OrderController {
 		Optional<OrderEntity> obj = orderRepositroy.findById(id);
 		if(obj.isPresent()) {
 			orderRepositroy.deleteById(id);
-			 return "Record was deleted succefully for given Id "+ id;
+			 return "Record was deleted successfully for given Id "+ id;
 		}else {
 			return "Record does not found for the given Id "+ id;
 		}

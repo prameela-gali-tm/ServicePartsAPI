@@ -12,12 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.toyota.scs.serviceparts.entity.RoutePathEntity;
 import com.toyota.scs.serviceparts.entity.VendorEntity;
 import com.toyota.scs.serviceparts.repository.RoutePathRepositroy;
 import com.toyota.scs.serviceparts.serviceImpl.RoutePathService;
-
+@RestController
 public class RoutePathController {
 
 	@Autowired
@@ -66,7 +67,7 @@ public class RoutePathController {
 		Optional<RoutePathEntity> obj= routePathRepositroy.findById(id);
 		if(obj.isPresent()) {
 			routePathRepositroy.deleteById(id);
-			 return "Record was deleted succefully for given Id "+ id;
+			 return "Record was deleted successfully for given Id "+ id;
 		}else {
 			return "Record does not found for given Id  "+ id;
 		}

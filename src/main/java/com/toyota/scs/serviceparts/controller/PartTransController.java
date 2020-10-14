@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.toyota.scs.serviceparts.entity.PartTransEntity;
 import com.toyota.scs.serviceparts.repository.PartTransRepositroy;
 import com.toyota.scs.serviceparts.serviceImpl.PartTransService;
 
+@RestController
 public class PartTransController {
 
 	@Autowired
@@ -73,7 +75,7 @@ public class PartTransController {
 		Optional<PartTransEntity> obj= partTransRepositroy.findById(id);
 		if(obj.isPresent()) {
 			partTransRepositroy.deleteById(id);
-			 return "Record was deleted succefully for given Id "+ id;
+			 return "Record was deleted successfully for given Id "+ id;
 		}else {
 			return "Record does not found for given Id "+ id;
 		}

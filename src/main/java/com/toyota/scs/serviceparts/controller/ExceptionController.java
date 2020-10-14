@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.toyota.scs.serviceparts.entity.ExceptionEntity;
 import com.toyota.scs.serviceparts.repository.ExceptionRepository;
 import com.toyota.scs.serviceparts.serviceImpl.ExceptionService;
 
+@RestController
 public class ExceptionController {
 
 	@Autowired
@@ -67,7 +69,7 @@ public class ExceptionController {
 		Optional<ExceptionEntity> obj= exceptionRepository.findById(id);
 		if(obj.isPresent()) {
 			exceptionRepository.deleteById(id);
-			 return "Record was deleted succefully for given Id "+ id;
+			 return "Record was deleted successfully for given Id "+ id;
 		}else {
 			return "Record does not found for given Id  "+ id;
 		}

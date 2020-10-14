@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.akiban.sql.parser.SetRoleNode;
 import com.toyota.scs.serviceparts.entity.ShipmentEntity;
 import com.toyota.scs.serviceparts.entity.VendorEntity;
 import com.toyota.scs.serviceparts.repository.ShipmentRepositroy;
 import com.toyota.scs.serviceparts.serviceImpl.ShipmentService;
-
+@RestController
 public class ShipmentController {
 
 	@Autowired
@@ -81,7 +82,7 @@ public class ShipmentController {
 		Optional<ShipmentEntity> obj= shipmentRepositroy.findById(id);
 		if(obj.isPresent()) {
 			shipmentRepositroy.deleteById(id);
-			 return "Record was deleted succefully for given Id "+ id;
+			 return "Record was deleted successfully for given Id "+ id;
 		}else {
 			return "Record does not found for given Id  "+ id;
 		}

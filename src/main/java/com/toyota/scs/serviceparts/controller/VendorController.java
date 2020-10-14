@@ -64,8 +64,9 @@ public class VendorController {
 				}
 				returnValue= "Record was updated successfully";
 		}
-		}else {
+		else {
 			returnValue= "Record does not found";
+		}
 		}
 		return returnValue;
 	}
@@ -75,7 +76,7 @@ public class VendorController {
 		Optional<VendorEntity> obj= vendorRepositroy.findById(id);
 		if(obj.isPresent()) {
 			vendorRepositroy.deleteById(id);
-			 return "Record was deleted succefully for given Id "+ id;
+			 return "Record was deleted successfully for given Id "+ id;
 		}else {
 			return "Record does not found for given Id  "+ id;
 		}

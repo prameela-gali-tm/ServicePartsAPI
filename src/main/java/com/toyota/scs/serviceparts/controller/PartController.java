@@ -87,7 +87,7 @@ public class PartController {
 		Optional<PartEntity> obj = partRepository.findById(id);
 		if(obj.isPresent()) {
 			partRepository.deleteById(id);
-			 return "Record was deleted succefully for given Id "+ id;
+			 return "Record was deleted successfully for given Id "+ id;
 		}else {
 			return "Record does not found for the given Id "+ id;
 		}
