@@ -326,7 +326,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 		if(s.length()<8) {
 			return ServicePartConstant.CASE_NUMBER_INVALID;
 		}
-		if (s.length() == 8 && days <= 60) {
+		if (s.length() == 8 && days >= 60) {
 			return ServicePartConstant.CASE_NUMBER_INVALID;
 		}
 		if (!isNumeric(s)) {
