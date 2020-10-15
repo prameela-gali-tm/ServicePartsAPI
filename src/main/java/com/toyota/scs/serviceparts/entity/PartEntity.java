@@ -108,7 +108,6 @@ public class PartEntity implements Serializable {
 
 	
 	
-
 	public String getPartNumber() {
 		return partNumber;
 	}
@@ -326,11 +325,9 @@ public class PartEntity implements Serializable {
 
 
 
-
 	public long getId() {
 		return id;
 	}
-
 
 
 

@@ -15,23 +15,23 @@ public class ResponseUnitsModel {
 	@JsonProperty("poLineNumber")
 	private String poLineNumber;
 	
-	@JsonProperty("homePosition")
-	private String homePosition;
+	@JsonProperty("poLineHomePosition")
+	private String poLineHomePosition;
 	
-	@JsonProperty("deliveryDueDate")
-	private String deliveryDueDate;
+	@JsonProperty("poLineDeliveryDueDate")
+	private String poLineDeliveryDueDate;
 	
-	@JsonProperty("partQuantity")
-	private Integer plannedOrderQuantity;
+	@JsonProperty("partPOLineQuantityOrdered")
+	private Integer partPOLineQuantityOrdered;
 	
-	@JsonProperty("outstandingOrderQuantity")
-	private long outstandingOrderQuantity;
+	@JsonProperty("partPOLineQuantityRemaining")
+	private long partPOLineQuantityRemaining;
 	
-	@JsonProperty("supplierOrderQuantityFullFilled")
-	private long supplierOrderQuantityFullFilled;
+	@JsonProperty("partPOLineQuantityAllocated")
+	private long partPOLineQuantityAllocated;
 	
-	@JsonProperty("orderStatus")
-	private String orderStatus;
+	@JsonProperty("partPOLineStatus")
+	private String partPOLineStatus;
 
 	public String getPartNumber() {
 		return partNumber;
@@ -57,52 +57,52 @@ public class ResponseUnitsModel {
 		this.poLineNumber = poLineNumber;
 	}
 
-	public String getHomePosition() {
-		return homePosition;
+	public String getPoLineHomePosition() {
+		return poLineHomePosition;
 	}
 
-	public void setHomePosition(String homePosition) {
-		this.homePosition = homePosition;
+	public void setPoLineHomePosition(String poLineHomePosition) {
+		this.poLineHomePosition = poLineHomePosition;
 	}
 
-	public String getDeliveryDueDate() {
-		return deliveryDueDate;
+	public String getPoLineDeliveryDueDate() {
+		return poLineDeliveryDueDate;
 	}
 
-	public void setDeliveryDueDate(String deliveryDueDate) {
-		this.deliveryDueDate = deliveryDueDate;
+	public void setPoLineDeliveryDueDate(String poLineDeliveryDueDate) {
+		this.poLineDeliveryDueDate = poLineDeliveryDueDate;
 	}
 
-	public Integer getPlannedOrderQuantity() {
-		return plannedOrderQuantity;
+	public Integer getPartPOLineQuantityOrdered() {
+		return partPOLineQuantityOrdered;
 	}
 
-	public void setPlannedOrderQuantity(Integer plannedOrderQuantity) {
-		this.plannedOrderQuantity = plannedOrderQuantity;
+	public void setPartPOLineQuantityOrdered(Integer partPOLineQuantityOrdered) {
+		this.partPOLineQuantityOrdered = partPOLineQuantityOrdered;
 	}
 
-	public long getOutstandingOrderQuantity() {
-		return outstandingOrderQuantity;
+	public long getPartPOLineQuantityRemaining() {
+		return partPOLineQuantityRemaining;
 	}
 
-	public void setOutstandingOrderQuantity(long outstandingOrderQuantity) {
-		this.outstandingOrderQuantity = outstandingOrderQuantity;
+	public void setPartPOLineQuantityRemaining(long partPOLineQuantityRemaining) {
+		this.partPOLineQuantityRemaining = partPOLineQuantityRemaining;
 	}
 
-	public long getSupplierOrderQuantityFullFilled() {
-		return supplierOrderQuantityFullFilled;
+	public long getPartPOLineQuantityAllocated() {
+		return partPOLineQuantityAllocated;
 	}
 
-	public void setSupplierOrderQuantityFullFilled(long supplierOrderQuantityFullFilled) {
-		this.supplierOrderQuantityFullFilled = supplierOrderQuantityFullFilled;
+	public void setPartPOLineQuantityAllocated(long partPOLineQuantityAllocated) {
+		this.partPOLineQuantityAllocated = partPOLineQuantityAllocated;
 	}
 
-	public String getOrderStatus() {
-		return orderStatus;
+	public String getPartPOLineStatus() {
+		return partPOLineStatus;
 	}
 
-	public void setOrderStatus(String orderStatus) {
-		this.orderStatus = orderStatus;
+	public void setPartPOLineStatus(String partPOLineStatus) {
+		this.partPOLineStatus = partPOLineStatus;
 	}
 
 	public ResponseUnitsModel() {
@@ -110,34 +110,34 @@ public class ResponseUnitsModel {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ResponseUnitsModel(String partNumber, String poNumber, String poLineNumber, String homePosition,
-			String deliveryDueDate, Integer plannedOrderQuantity, long outstandingOrderQuantity,
-			long supplierOrderQuantityFullFilled, String orderStatus) {
+	public ResponseUnitsModel(String partNumber, String poNumber, String poLineNumber, String poLineHomePosition,
+			String poLineDeliveryDueDate, Integer partPOLineQuantityOrdered, long partPOLineQuantityRemaining,
+			long partPOLineQuantityAllocated, String partPOLineStatus) {
 		super();
 		this.partNumber = partNumber;
 		this.poNumber = poNumber;
 		this.poLineNumber = poLineNumber;
-		this.homePosition = homePosition;
-		this.deliveryDueDate = deliveryDueDate;
-		this.plannedOrderQuantity = plannedOrderQuantity;
-		this.outstandingOrderQuantity = outstandingOrderQuantity;
-		this.supplierOrderQuantityFullFilled = supplierOrderQuantityFullFilled;
-		this.orderStatus = orderStatus;
+		this.poLineHomePosition = poLineHomePosition;
+		this.poLineDeliveryDueDate = poLineDeliveryDueDate;
+		this.partPOLineQuantityOrdered = partPOLineQuantityOrdered;
+		this.partPOLineQuantityRemaining = partPOLineQuantityRemaining;
+		this.partPOLineQuantityAllocated = partPOLineQuantityAllocated;
+		this.partPOLineStatus = partPOLineStatus;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((deliveryDueDate == null) ? 0 : deliveryDueDate.hashCode());
-		result = prime * result + ((homePosition == null) ? 0 : homePosition.hashCode());
-		result = prime * result + ((orderStatus == null) ? 0 : orderStatus.hashCode());
-		result = prime * result + (int) (outstandingOrderQuantity ^ (outstandingOrderQuantity >>> 32));
 		result = prime * result + ((partNumber == null) ? 0 : partNumber.hashCode());
-		result = prime * result + ((plannedOrderQuantity == null) ? 0 : plannedOrderQuantity.hashCode());
+		result = prime * result + (int) (partPOLineQuantityAllocated ^ (partPOLineQuantityAllocated >>> 32));
+		result = prime * result + ((partPOLineQuantityOrdered == null) ? 0 : partPOLineQuantityOrdered.hashCode());
+		result = prime * result + (int) (partPOLineQuantityRemaining ^ (partPOLineQuantityRemaining >>> 32));
+		result = prime * result + ((partPOLineStatus == null) ? 0 : partPOLineStatus.hashCode());
+		result = prime * result + ((poLineDeliveryDueDate == null) ? 0 : poLineDeliveryDueDate.hashCode());
+		result = prime * result + ((poLineHomePosition == null) ? 0 : poLineHomePosition.hashCode());
 		result = prime * result + ((poLineNumber == null) ? 0 : poLineNumber.hashCode());
 		result = prime * result + ((poNumber == null) ? 0 : poNumber.hashCode());
-		result = prime * result + (int) (supplierOrderQuantityFullFilled ^ (supplierOrderQuantityFullFilled >>> 32));
 		return result;
 	}
 
@@ -150,32 +150,34 @@ public class ResponseUnitsModel {
 		if (getClass() != obj.getClass())
 			return false;
 		ResponseUnitsModel other = (ResponseUnitsModel) obj;
-		if (deliveryDueDate == null) {
-			if (other.deliveryDueDate != null)
-				return false;
-		} else if (!deliveryDueDate.equals(other.deliveryDueDate))
-			return false;
-		if (homePosition == null) {
-			if (other.homePosition != null)
-				return false;
-		} else if (!homePosition.equals(other.homePosition))
-			return false;
-		if (orderStatus == null) {
-			if (other.orderStatus != null)
-				return false;
-		} else if (!orderStatus.equals(other.orderStatus))
-			return false;
-		if (outstandingOrderQuantity != other.outstandingOrderQuantity)
-			return false;
 		if (partNumber == null) {
 			if (other.partNumber != null)
 				return false;
 		} else if (!partNumber.equals(other.partNumber))
 			return false;
-		if (plannedOrderQuantity == null) {
-			if (other.plannedOrderQuantity != null)
+		if (partPOLineQuantityAllocated != other.partPOLineQuantityAllocated)
+			return false;
+		if (partPOLineQuantityOrdered == null) {
+			if (other.partPOLineQuantityOrdered != null)
 				return false;
-		} else if (!plannedOrderQuantity.equals(other.plannedOrderQuantity))
+		} else if (!partPOLineQuantityOrdered.equals(other.partPOLineQuantityOrdered))
+			return false;
+		if (partPOLineQuantityRemaining != other.partPOLineQuantityRemaining)
+			return false;
+		if (partPOLineStatus == null) {
+			if (other.partPOLineStatus != null)
+				return false;
+		} else if (!partPOLineStatus.equals(other.partPOLineStatus))
+			return false;
+		if (poLineDeliveryDueDate == null) {
+			if (other.poLineDeliveryDueDate != null)
+				return false;
+		} else if (!poLineDeliveryDueDate.equals(other.poLineDeliveryDueDate))
+			return false;
+		if (poLineHomePosition == null) {
+			if (other.poLineHomePosition != null)
+				return false;
+		} else if (!poLineHomePosition.equals(other.poLineHomePosition))
 			return false;
 		if (poLineNumber == null) {
 			if (other.poLineNumber != null)
@@ -186,8 +188,6 @@ public class ResponseUnitsModel {
 			if (other.poNumber != null)
 				return false;
 		} else if (!poNumber.equals(other.poNumber))
-			return false;
-		if (supplierOrderQuantityFullFilled != other.supplierOrderQuantityFullFilled)
 			return false;
 		return true;
 	}

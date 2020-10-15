@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.toyota.scs.serviceparts.entity.CaseEntity;
 import com.toyota.scs.serviceparts.repository.CaseRepositroy;
 import com.toyota.scs.serviceparts.serviceImpl.CaseService;
 
+@RestController
 public class CaseController {
 	@Autowired
 	CaseRepositroy caseRepositroy;
@@ -68,7 +70,7 @@ public class CaseController {
 		Optional<CaseEntity> obj= caseRepositroy.findById(id);
 		if(obj.isPresent()) {
 			caseRepositroy.deleteById(id);
-			 return "Record was deleted succefully for given Id "+ id;
+			 return "Record was deleted successfully for given Id "+ id;
 		}else {
 			return "Record does not found for given Id "+ id;
 		}

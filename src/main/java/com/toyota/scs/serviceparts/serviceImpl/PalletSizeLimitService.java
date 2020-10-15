@@ -7,19 +7,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.toyota.scs.serviceparts.entity.OrderEntity;
-import com.toyota.scs.serviceparts.repository.OrderRepositroy;
+import com.toyota.scs.serviceparts.entity.PalletSizeLimitEntity;
+import com.toyota.scs.serviceparts.repository.PalletSizeLimitRepositroy;
 
 @Service
-public class OrderService {
+public class PalletSizeLimitService {
 
 	@Autowired
-	OrderRepositroy repositroy;
+	PalletSizeLimitRepositroy palletSizeLimitRepositroy;
 	
-	public Page getAllOrder(Integer pageNo, Integer pageSize, String sortBy){
+	public Page getAllPalletSizeLimit(Integer pageNo, Integer pageSize, String sortBy){
 		 
         Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(sortBy).ascending());
-		Page<OrderEntity> pagedResult = repositroy.findAll(paging);
+		Page<PalletSizeLimitEntity> pagedResult = palletSizeLimitRepositroy.findAll(paging);
         
         return pagedResult;
 	}

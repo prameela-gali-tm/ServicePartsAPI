@@ -95,7 +95,7 @@ public class RoutePathNodeEntity implements Serializable {
 		this.modifiedBy = modifiedBy;
 	}
 
-
+	
 
 	public long getFacility() {
 		return facility;
@@ -143,6 +143,14 @@ public class RoutePathNodeEntity implements Serializable {
 
 	public void setModifiedBy(String modifiedBy) {
 		this.modifiedBy = modifiedBy;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 	
 	

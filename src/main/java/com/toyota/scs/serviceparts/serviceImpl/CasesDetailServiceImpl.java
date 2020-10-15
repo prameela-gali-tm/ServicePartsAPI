@@ -326,7 +326,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 		if(s.length()<8) {
 			return ServicePartConstant.CASE_NUMBER_INVALID;
 		}
-		if (s.length() == 8 && days <= 60) {
+		if (s.length() == 8 && days >= 60) {
 			return ServicePartConstant.CASE_NUMBER_INVALID;
 		}
 		if (!isNumeric(s)) {
@@ -728,8 +728,8 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 							List<PartEntity> partEntityList = new ArrayList<PartEntity>();
 							for(PartTransEntity obj1:entity)
 							{
-								Optional<PartEntity> pEntityOpt= partRepositroy.findById(obj1.getId());
-								PartEntity pEntity=pEntityOpt.get();
+								Optional<PartEntity> pEntityopt= partRepositroy.findById(obj1.getPartId());
+								PartEntity pEntity = pEntityopt.get();
 								pEntity.setOutstandingQuantity(pEntity.getOutstandingQuantity()+obj1.getFullfilledQuantity());
 								pEntity.setStatus("INSERT");
 								partEntityList.add(pEntity);
@@ -1047,15 +1047,15 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 								responseUnitsModel.setPartNumber(partDetailsModel.getPartNumber());
 								responseUnitsModel.setPoNumber(partDetailsModel.getPoNumber());
 								responseUnitsModel.setPoLineNumber(partDetailsModel.getLineItemNumber());
-								responseUnitsModel.setHomePosition(partDetailsModel.getHomePosition());
+								responseUnitsModel.setPoLineHomePosition(partDetailsModel.getHomePosition());
 								responseUnitsModel
-										.setDeliveryDueDate(partDetailsModel.getDeliveryDueDate());
-								responseUnitsModel.setPlannedOrderQuantity((int) partDetailsModel.getOrderQuantity());
+										.setPoLineDeliveryDueDate(partDetailsModel.getDeliveryDueDate());
+								responseUnitsModel.setPartPOLineQuantityOrdered((int) partDetailsModel.getOrderQuantity());
 								responseUnitsModel
-										.setOutstandingOrderQuantity(partDetailsModel.getOutstandingQuantity());
-								responseUnitsModel.setSupplierOrderQuantityFullFilled(
+										.setPartPOLineQuantityRemaining(partDetailsModel.getOutstandingQuantity());
+								responseUnitsModel.setPartPOLineQuantityAllocated(
 										partDetailsModel.getSupplierFullFillQuantity());
-								responseUnitsModel.setOrderStatus(partDetailsModel.getPartialStatus());
+								responseUnitsModel.setPartPOLineStatus(partDetailsModel.getPartialStatus());
 								responseUnitsModelsList.add(responseUnitsModel);
 								/// ends here
 							}

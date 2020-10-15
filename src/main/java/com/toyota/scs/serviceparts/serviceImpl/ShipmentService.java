@@ -7,18 +7,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.toyota.scs.serviceparts.entity.PartEntity;
-import com.toyota.scs.serviceparts.repository.PartRepository;
+import com.toyota.scs.serviceparts.entity.ShipmentEntity;
+import com.toyota.scs.serviceparts.repository.ShipmentRepositroy;
+
 @Service
-public class PartService {
+public class ShipmentService {
 
 	@Autowired
-	PartRepository partRepository;
+	ShipmentRepositroy shipmentRepositroy;
 	
-	public Page getAllPart(Integer pageNo, Integer pageSize, String sortBy){
+	public Page getAllShipmentDetails(Integer pageNo, Integer pageSize, String sortBy){
 		Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(sortBy).ascending());
 		 
-        Page<PartEntity> pagedResult = partRepository.findAll(paging);
+        Page<ShipmentEntity> pagedResult = shipmentRepositroy.findAll(paging);
         
         return pagedResult;
 	}

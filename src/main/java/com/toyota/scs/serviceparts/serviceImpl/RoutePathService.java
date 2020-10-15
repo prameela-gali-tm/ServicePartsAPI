@@ -7,19 +7,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.toyota.scs.serviceparts.entity.PartEntity;
-import com.toyota.scs.serviceparts.repository.PartRepository;
-@Service
-public class PartService {
+import com.toyota.scs.serviceparts.entity.RoutePathEntity;
+import com.toyota.scs.serviceparts.repository.RoutePathRepositroy;
 
-	@Autowired
-	PartRepository partRepository;
+@Service
+public class RoutePathService {
 	
-	public Page getAllPart(Integer pageNo, Integer pageSize, String sortBy){
+	@Autowired
+	RoutePathRepositroy routePathRepositroy;
+	
+	public Page getAllRoutePathDetails(Integer pageNo, Integer pageSize, String sortBy){
 		Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(sortBy).ascending());
 		 
-        Page<PartEntity> pagedResult = partRepository.findAll(paging);
+        Page<RoutePathEntity> pagedResult = routePathRepositroy.findAll(paging);
         
         return pagedResult;
 	}
+
 }

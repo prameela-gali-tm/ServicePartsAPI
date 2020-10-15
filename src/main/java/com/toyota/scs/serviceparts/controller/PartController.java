@@ -1,6 +1,7 @@
 package com.toyota.scs.serviceparts.controller;
 
 import java.util.Date;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.toyota.scs.serviceparts.entity.PartEntity;
 import com.toyota.scs.serviceparts.repository.PartRepository;
 import com.toyota.scs.serviceparts.serviceImpl.PartService;
 
+@RestController
 public class PartController {
 
 	@Autowired
@@ -84,7 +87,7 @@ public class PartController {
 		Optional<PartEntity> obj = partRepository.findById(id);
 		if(obj.isPresent()) {
 			partRepository.deleteById(id);
-			 return "Record was deleted succefully for given Id "+ id;
+			 return "Record was deleted successfully for given Id "+ id;
 		}else {
 			return "Record does not found for the given Id "+ id;
 		}
