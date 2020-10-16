@@ -101,6 +101,7 @@ public class FileLoader extends BaseTest {
 			throws JsonIOException, JsonSyntaxException, IOException, JSONException {
 		String filepath = String.format("%s/src/test/resources/Json/%s",
 				new Object[] { System.getProperty("user.dir"), path });
+		System.out.println(filepath);
 		File f = new File(filepath);
 		JSONObject JO;
 		String jsontxt = null;

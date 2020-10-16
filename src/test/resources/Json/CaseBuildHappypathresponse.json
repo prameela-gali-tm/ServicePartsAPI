@@ -1,0 +1,23 @@
+[
+    {
+        "vendorCode": "$#rlz4n",
+        "exceptions": [
+            {
+                "exceptionCode": "10",
+                "comments": ""
+            }
+           
+        ],
+        "cases": [
+            {
+                "caseNumber": "88888888",
+                "units": [
+                    {
+                        "partNumber": "PARTvMM5A0iwhhkntj",
+                        "partQuantity": 20
+                    }
+                ]
+            }
+        ]
+    }
+]

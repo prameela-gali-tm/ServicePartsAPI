@@ -1,0 +1,46 @@
+[
+    {
+
+        "vendorCode": "c1Hqv",
+        
+        "exceptions": [
+            {
+
+                "exceptionCode": "10",
+                "comments": ""
+            },
+            {
+
+                "exceptionCode": "20",
+                "comments": ""
+            }
+        ],
+        "cases": [
+            {
+
+                "caseNumber": "21800001",
+                "units": [
+                    {
+
+                        "partNumber": "part1",
+                         "partQuantity": "11"
+                                        
+                    },
+                      {
+
+                        "partNumber": "part1",
+                         "partQuantity": "11"
+                                        
+                    },
+                  
+                    {
+
+                        "partNumber": "part1",
+                         "partQuantity": "11"
+                                        
+                    }
+                ]
+            }
+        ]
+    }
+]

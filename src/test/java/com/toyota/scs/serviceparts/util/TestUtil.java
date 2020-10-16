@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -166,22 +167,27 @@ public class TestUtil extends BaseTest {
 	}
 
 	public String setupURL() {
-
 		if ((TestNGListener.className).equalsIgnoreCase("ServicePartsVendorTests")) {
 			ResourceURL = TestEnvironment.APP_SERVICE_URL + "vendors";
 		}
 		if ((TestNGListener.className).equalsIgnoreCase("ServicePartsCaseBuild")) {
 			ResourceURL = TestEnvironment.APP_SERVICE_URL + "casebuild?status=true";
 		}
+		return ResourceURL;
+	}
+
+	public String setupURL(String endpoint) {
+
+		ResourceURL = TestEnvironment.APP_SERVICE_URL + endpoint;
 
 		System.out.println(ResourceURL);
 
 		return ResourceURL;
 	}
 
-	public HttpPost prepareHTTPPostwithJsonString(String Json)
+	public HttpPost prepareHTTPPostwithJsonString(String Json, String endpoint)
 			throws JsonIOException, IOException, FilloException, InterruptedException {
-		String url = setupURL();
+		String url = setupURL(endpoint);
 		HttpPost postrequest = new HttpPost(url);
 		HashMap<String, String> header = new HashMap<String, String>();
 		if (TestEnvironment.ENVIRONMENT.equals("QAINT")) {
@@ -198,6 +204,26 @@ public class TestUtil extends BaseTest {
 
 		}
 		return postrequest;
+	}
+	public HttpGet prepareHTTGetwithJsonString(String Json, String endpoint)
+			throws JsonIOException, IOException, FilloException, InterruptedException {
+		String url = setupURL(endpoint);
+		HttpGet getrequest = new HttpGet(url);
+		HashMap<String, String> header = new HashMap<String, String>();
+		if (TestEnvironment.ENVIRONMENT.equals("QAINT")) {
+			header = Headers.AddHeadersinQAInternal();
+		} else {
+			header = Headers.AddHeaders();
+		}
+		reqjson = Json;
+		((HttpResponse) getrequest).setEntity(new StringEntity(reqjson));// setting Payload-
+		for (Map.Entry<String, String> entry : header.entrySet())// Setting
+																	// Headers
+		{
+			getrequest.addHeader(entry.getKey(), entry.getValue());
+
+		}
+		return getrequest;
 	}
 
 	public HttpPost prepareHTTPPostRequestforISDEToken(String Json)
@@ -297,7 +323,7 @@ public class TestUtil extends BaseTest {
 		} else {
 			header = Headers.AddHeaders();
 		}
-	
+
 		reqjson = FileLoader.UpdateJsonFile(reqjson);
 		postrequest.setEntity(new StringEntity(reqjson));// setting Payload-
 		for (Map.Entry<String, String> entry : header.entrySet())// Setting Headers
@@ -372,7 +398,10 @@ public class TestUtil extends BaseTest {
 			min = 10000;
 			max = 999999;
 		}
-
+		if (length == 8) {
+			min = 10000000;
+			max = 99999999;
+		}
 		int b = (int) (Math.random() * (max - min + 1) + min);
 		return b;
 	}

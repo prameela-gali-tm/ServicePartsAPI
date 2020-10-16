@@ -96,11 +96,8 @@ public class RestService {
 		JSONObject respjsonObj;
 		String respJson;
 		CloseableHttpClient HttpClient = HttpClients.createDefault();
-		System.out.println(postrequest.getFirstHeader("Authorization"));
 
 		CloseableHttpResponse httpResponse = HttpClient.execute(postrequest);
-		System.out.println("Statucode for post request.." + httpResponse.getStatusLine().getStatusCode());
-		System.out.println(httpResponse);
 		String responseString = EntityUtils.toString(httpResponse.getEntity(), "UTF-8");
 		if ((responseString.charAt(0) == '[')) {
 			respJson = responseString.substring(1, (responseString.length() - 1));

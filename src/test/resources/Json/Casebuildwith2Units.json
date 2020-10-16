@@ -1,0 +1,25 @@
+[
+	{
+		"vendorCode": "ABbfo",
+		"cases": [
+			{
+				"caseNumber": "45434516",
+				"units": [
+					{
+						"partNumber": "PARTKg0oc244782363708",
+						"partQuantity": 10
+					}
+				]
+			},
+			{
+				"caseNumber": "45434517",
+				"units": [
+					{
+						"partNumber": "PARTKg0oc244782363708",
+						"partQuantity": 10
+					}
+				]
+			}
+		]
+	}
+]

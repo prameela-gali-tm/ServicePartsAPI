@@ -12,24 +12,26 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.toyota.scs.serviceparts.entity.PartEntity;
 import com.toyota.scs.serviceparts.repository.PartRepository;
 import com.toyota.scs.serviceparts.serviceImpl.PartService;
 
+@RestController
 public class PartController {
 
 	@Autowired
 	PartRepository partRepository;
 	
 	@Autowired
-	PartService service;
+	PartService partService;
 	
 	@GetMapping("/fetchpart")
 	public Page getAllPart(@RequestParam(defaultValue = "0") Integer pageNo, 
             @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy){
-		Page pageresult = service.getAllPart(pageNo, pageSize, sortBy);
+            @RequestParam(defaultValue = "partId") String sortBy){
+		Page pageresult = partService.getAllPart(pageNo, pageSize, sortBy);
 		 
         return  pageresult; 
 	}
