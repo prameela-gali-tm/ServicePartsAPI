@@ -64,5 +64,7 @@ public class ServicePartConstant {
 	public static String ORDER_QUANTITY="Part Order Quantity is greater than planned Order Qunatity";
 	public static String DUPLICATE_UNITS ="Duplicate record exist under the same case number";
 	public static String EXCEPTION_CODE ="No special character are allowed in Exception Code.";
+	public static String SERVICE_INVALID = "Service number count does not match with give part order qunatity ";
+	public static String DUPLICATE_SERIAL_NUMBER ="Duplicate serial number present in given payload.";
 	
 }
