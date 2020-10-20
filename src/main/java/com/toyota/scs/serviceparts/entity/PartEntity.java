@@ -15,7 +15,7 @@ import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="SP_PART",uniqueConstraints = @UniqueConstraint(columnNames = {"PART_NUMBER","LINE_ITEM_NUMBER","DDD"}))
+@Table(name="SP_PART")
 public class PartEntity implements Serializable {
 	
 	

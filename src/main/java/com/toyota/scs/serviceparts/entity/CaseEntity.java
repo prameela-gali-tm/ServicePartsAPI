@@ -45,7 +45,7 @@ public class CaseEntity implements Serializable {
 	 * @JsonIgnore private Shipment Shipment;
 	 */
 	@Column(name="SHIPMENT_ID")
-	 private long Shipment;
+	 private Long shipment;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "MODIFIED_DATE")
@@ -80,13 +80,7 @@ public class CaseEntity implements Serializable {
 		this.status = status;
 	}
 
-	public long getShipment() {
-		return Shipment;
-	}
-
-	public void setShipment(long shipment) {
-		Shipment = shipment;
-	}
+	
 
 	public Date getModifiedDate() {
 		return modifiedDate;
@@ -109,14 +103,14 @@ public class CaseEntity implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CaseEntity(long id, String caseNumber, String confirmationNumber, String status, long shipment,
+	public CaseEntity(long id, String caseNumber, String confirmationNumber, String status, Long shipment,
 			Date modifiedDate, String modifiedBy) {
 		super();
 		this.id = id;
 		this.caseNumber = caseNumber;
 		this.confirmationNumber = confirmationNumber;
 		this.status = status;
-		this.Shipment = shipment;
+		this.shipment = shipment;
 		this.modifiedDate = modifiedDate;
 		this.modifiedBy = modifiedBy;
 	}
@@ -128,6 +122,15 @@ public class CaseEntity implements Serializable {
 	public void setId(long id) {
 		this.id = id;
 	}
+
+	public Long getShipment() {
+		return shipment;
+	}
+
+	public void setShipment(Long shipment) {
+		this.shipment = shipment;
+	}
+
 	
 	
 }
