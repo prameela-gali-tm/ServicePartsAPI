@@ -18,6 +18,7 @@ public class VendorEntity{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "VENDOR_ID")
 	private long id;
 	@Column(name = "VENDOR_CODE", nullable = false,unique = true)
 	private String vendorCode;
