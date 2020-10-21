@@ -26,7 +26,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name="SP_ORDER",uniqueConstraints = @UniqueConstraint(columnNames = {"PO_NUMBER","ORDER_TYPE","VENDOR_CODE"}))
+@Table(name="SP_ORDER")
 public class OrderEntity implements Serializable {
 
 	/**
