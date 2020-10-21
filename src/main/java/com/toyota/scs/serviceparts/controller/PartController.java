@@ -46,8 +46,8 @@ public class PartController {
 	{
 		String returnValue="";
 		if(partEntity!=null) {
-			if(partEntity.getOrderId()!=0) {
-				Optional<PartEntity> obj = partRepository.findById(partEntity.getOrderId());
+			if(partEntity.getId()!=0) {
+				Optional<PartEntity> obj = partRepository.findById(partEntity.getId());
 				if(obj.isPresent()) {
 					PartEntity partEntity1 = obj.get();
 					partEntity1.setId(partEntity.getId());
