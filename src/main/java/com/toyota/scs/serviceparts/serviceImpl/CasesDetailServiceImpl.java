@@ -22,6 +22,7 @@ import com.toyota.scs.serviceparts.entity.CaseEntity;
 import com.toyota.scs.serviceparts.entity.OrderEntity;
 import com.toyota.scs.serviceparts.entity.PartEntity;
 import com.toyota.scs.serviceparts.entity.PartTransEntity;
+import com.toyota.scs.serviceparts.entity.SerialNumberEntity;
 import com.toyota.scs.serviceparts.entity.VendorEntity;
 import com.toyota.scs.serviceparts.model.CaseBuildModel;
 import com.toyota.scs.serviceparts.model.CaseModel;
@@ -39,6 +40,7 @@ import com.toyota.scs.serviceparts.repository.CaseRepositroy;
 import com.toyota.scs.serviceparts.repository.OrderRepositroy;
 import com.toyota.scs.serviceparts.repository.PartRepository;
 import com.toyota.scs.serviceparts.repository.PartTransRepositroy;
+import com.toyota.scs.serviceparts.repository.SerialNumberRepository;
 import com.toyota.scs.serviceparts.repository.VendorRepositroy;
 import com.toyota.scs.serviceparts.service.CasesDetailService;
 import com.toyota.scs.serviceparts.util.DateUtils;
@@ -64,6 +66,9 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 
 	@Autowired
 	private PartDetailsServiceImpl partdetailsService;
+	
+	@Autowired
+	private SerialNumberRepository serialNumberRepositroy;
 
 	@Autowired
 	EntityManagerFactory emf;
@@ -1011,49 +1016,41 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 					valid = false;
 				}
 			}
-
-			
-			
-			
-			
-			  if (caseWithUnitDetails != null && caseWithUnitDetails.size() > 0) {
-			  TreeMap<String, List<PartDetailsModel>> sorting = new TreeMap<String,
-			  List<PartDetailsModel>>(); sorting.putAll(caseWithUnitDetails); for
-			  (Map.Entry<String, List<PartDetailsModel>> objects : sorting.entrySet()) {
-			  System.out.println(
-			  "--------------------------------------------------------------------------")
-			  ; System.out.
-			  println("-------------------------------case number------------------------------->"
-			  ); System.out.println("Case Number---------------------------" +
-			  objects.getKey()); System.out.
-			  println("--------------------------------Units details-------------------------"
-			  ); for (PartDetailsModel detailsModel : objects.getValue()) {
-			  System.out.println("Part Number-----------------------" +
-			  detailsModel.getPartNumber());
-			  System.out.println("PO NUmber-------------------------" +
-			  detailsModel.getPoNumber());
-			  System.out.println("Delivery due date ----------------" +
-			  detailsModel.getDeliveryDueDate());
-			  System.out.println("Planned Quantity in DB------------" +
-			  detailsModel.getOrderQuantity()); System.out
-			  .println("Outstading quantity---------------" +
-			  detailsModel.getOutstandingQuantity()); System.out.println(
-			  "FullFillment quantity-------------" +
-			  detailsModel.getSupplierFullFillQuantity());
-			  System.out.println("Staus-----------------------------" +
-			  detailsModel.getPartialStatus());
-			  
-			  System.out.println("Seerial number-------------------->"+detailsModel.
-			  getSerialNumberDetailsModel());} System.out.
-			  println("----------------End of Case Number details --------------------------"
-			  ); } }
-			 
-			 
-			 
-			 
-
+			/*
+			 * if (caseWithUnitDetails != null && caseWithUnitDetails.size() > 0) {
+			 * TreeMap<String, List<PartDetailsModel>> sorting = new TreeMap<String,
+			 * List<PartDetailsModel>>(); sorting.putAll(caseWithUnitDetails); for
+			 * (Map.Entry<String, List<PartDetailsModel>> objects : sorting.entrySet()) {
+			 * System.out.println(
+			 * "--------------------------------------------------------------------------")
+			 * ; System.out.
+			 * println("-------------------------------case number------------------------------->"
+			 * ); System.out.println("Case Number---------------------------" +
+			 * objects.getKey()); System.out.
+			 * println("--------------------------------Units details-------------------------"
+			 * ); for (PartDetailsModel detailsModel : objects.getValue()) {
+			 * System.out.println("Part Number-----------------------" +
+			 * detailsModel.getPartNumber());
+			 * System.out.println("PO NUmber-------------------------" +
+			 * detailsModel.getPoNumber());
+			 * System.out.println("Delivery due date ----------------" +
+			 * detailsModel.getDeliveryDueDate());
+			 * System.out.println("Planned Quantity in DB------------" +
+			 * detailsModel.getOrderQuantity()); System.out
+			 * .println("Outstading quantity---------------" +
+			 * detailsModel.getOutstandingQuantity()); System.out.println(
+			 * "FullFillment quantity-------------" +
+			 * detailsModel.getSupplierFullFillQuantity());
+			 * System.out.println("Staus-----------------------------" +
+			 * detailsModel.getPartialStatus());
+			 * 
+			 * System.out.println("Seerial number-------------------->"+detailsModel.
+			 * getSerialNumberDetailsModel());} System.out.
+			 * println("----------------End of Case Number details --------------------------"
+			 * ); } }
+			 */
 			/// Saving the Records into Data base start here
-			 valid =false;/// need to remove after demo
+			// valid =false;/// need to remove after demo
 			if (valid) {
 				String confirmationNumber = confirmationNumber(vendorCode, "C");
 				message.setConfirmationNumber(confirmationNumber);
@@ -1100,6 +1097,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 								partTransEntity.setStatus(partDetailsModel.getPartialStatus());
 								partTransEntity.setSupplierTotal(partDetailsModel.getSupplierFullFillQuantity());
 								partTransEntity.setTransmussionDate(new Date());
+								partTransEntity.setSerialNumberList(partDetailsModel.getSerialNumberDetailsModel());
 								partTransList.add(partTransEntity);
 
 								// Ends here
@@ -1158,6 +1156,18 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 						message.setResponseCaseBuildDetails(responseCaseBuildModel);
 						partRepositroy.saveAll(partList);
 						partTransRepositroy.saveAll(partTransList);
+						List<SerialNumberEntity> saveSerailEntity = new ArrayList<SerialNumberEntity>();
+						for(PartTransEntity transEntity:partTransList) {							
+							for(String serialNumberValue : transEntity.getSerialNumberList()) {
+								SerialNumberEntity entity = new SerialNumberEntity();
+								entity.setPartTransId(transEntity.getId());
+								entity.setSerialNumber(serialNumberValue);
+								entity.setModifiedBy("BATCH");
+								entity.setModifiedDate(new Date());
+								saveSerailEntity.add(entity);
+							}
+						}
+						serialNumberRepositroy.saveAll(saveSerailEntity);
 					}
 
 				}
