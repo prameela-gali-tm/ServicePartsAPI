@@ -763,14 +763,14 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 								if(serialNumberDetailsModels.size()!=obj.getPartQuantity()) {
 									pushMessage(vendorCode, ServicePartConstant.SERVICE_INVALID, mesMap);
 								}
-							}
-							for(SerialNumberDetailsModel numberDetailsModel:serialNumberDetailsModels) {
-								if(duplicateSerialNumber.containsKey(numberDetailsModel.getSerialNumber())) {
-										pushMessage(vendorCode, ServicePartConstant.DUPLICATE_SERIAL_NUMBER, mesMap);
-								}else {
-									duplicateSerialNumber.put(numberDetailsModel.getSerialNumber(), numberDetailsModel.getSerialNumber());
+								for(SerialNumberDetailsModel numberDetailsModel:serialNumberDetailsModels) {
+									if(duplicateSerialNumber.containsKey(numberDetailsModel.getSerialNumber())) {
+											pushMessage(vendorCode, ServicePartConstant.DUPLICATE_SERIAL_NUMBER, mesMap);
+									}else {
+										duplicateSerialNumber.put(numberDetailsModel.getSerialNumber(), numberDetailsModel.getSerialNumber());
+									}
 								}
-							}
+							}						
 							
 							// ends here
 							if (obj.getDeliveryDueDate() == null && valid) {
