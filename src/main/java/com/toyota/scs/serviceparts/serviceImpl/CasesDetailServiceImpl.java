@@ -36,7 +36,7 @@ import com.toyota.scs.serviceparts.model.RfidDetailsModel;
 import com.toyota.scs.serviceparts.model.SerialNumberDetailsModel;
 import com.toyota.scs.serviceparts.model.UnitsModel;
 import com.toyota.scs.serviceparts.repository.CaseRepositroy;
-import com.toyota.scs.serviceparts.repository.OrderRepositroy;
+import com.toyota.scs.serviceparts.repository.OrderRepository;
 import com.toyota.scs.serviceparts.repository.PartRepository;
 import com.toyota.scs.serviceparts.repository.PartTransRepositroy;
 import com.toyota.scs.serviceparts.repository.VendorRepositroy;
@@ -51,7 +51,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 	private VendorRepositroy vendorRepositroy;
 
 	@Autowired
-	private OrderRepositroy orderRepositroy;
+	private OrderRepository orderRepositroy;
 
 	@Autowired
 	private PartRepository partRepositroy;
@@ -512,7 +512,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 	}
 
 	public OrderEntity vendorPonumberOrderValidation(UnitsModel unitsModel, String vendorCode,
-			Map<String, Message> mesMap, OrderRepositroy orderRepositroy, Message mes) {
+			Map<String, Message> mesMap, OrderRepository orderRepositroy, Message mes) {
 		// Message mes ;
 		String key = vendorCode;
 		OrderEntity entity = new OrderEntity();

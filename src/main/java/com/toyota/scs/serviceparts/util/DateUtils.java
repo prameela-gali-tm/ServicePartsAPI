@@ -24,4 +24,18 @@ public class DateUtils {
 
 		return responseDate;
 	}
+	public static Date convertfromStringToDateFmt(final String dateFormatIn,
+			final String dateInStr) {
+		Date responseDate = null;
+		try {
+			/*System.out.println("--PR-- dateFormatIn : " + dateFormatIn
+					+ " , dateInStr : " + dateInStr);*/
+			SimpleDateFormat sdf = new SimpleDateFormat(dateInStr);
+			responseDate = sdf.parse(dateFormatIn);
+		} catch (Exception e) {
+			
+		}
+		
+		return responseDate;
+	}
 }

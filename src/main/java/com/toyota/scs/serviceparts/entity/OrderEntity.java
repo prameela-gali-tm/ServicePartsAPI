@@ -45,6 +45,17 @@ public class OrderEntity implements Serializable {
 	@Column(name="ORDER_TYPE")
 	private String orderType;
 	
+	@Column(name="FINAL_DESTINATION")
+	private String finalDestination;
+	@Column(name="DEALER_CODE")
+	private String dealerCode;
+	@Column(name="trans_code")
+	private String transCode;
+	
+	@Column(name="DIRECT_SHIP_FLAG")
+	private Boolean directShipFlag;
+	
+	
 	@Column(name="MODIFIED_BY")
 	private String modifiedBy;
 	
@@ -67,14 +78,67 @@ public class OrderEntity implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public OrderEntity(String poNumber, String orderType, String modifiedBy, Date modifiedDate, String vendorCode) {
+	
+
+
+	public OrderEntity(long id, String poNumber, String orderType, String finalDestination, String dealerCode,String transCode,
+			Boolean directShipFlag, String modifiedBy, Date modifiedDate, String vendorCode) {
 		super();
+		this.id = id;
 		this.poNumber = poNumber;
 		this.orderType = orderType;
+		this.finalDestination = finalDestination;
+		this.dealerCode = dealerCode;
+		this.transCode = transCode;
+		this.directShipFlag = directShipFlag;
 		this.modifiedBy = modifiedBy;
 		this.modifiedDate = modifiedDate;
 		this.vendorCode = vendorCode;
 	}
+
+
+
+
+	public String getFinalDestination() {
+		return finalDestination;
+	}
+
+
+
+
+	public void setFinalDestination(String finalDestination) {
+		this.finalDestination = finalDestination;
+	}
+
+
+
+
+	public String getDealerCode() {
+		return dealerCode;
+	}
+
+
+
+
+	public void setDealerCode(String dealerCode) {
+		this.dealerCode = dealerCode;
+	}
+
+
+
+
+	public Boolean getDirectShipFlag() {
+		return directShipFlag;
+	}
+
+
+
+
+	public void setDirectShipFlag(Boolean directShipFlag) {
+		this.directShipFlag = directShipFlag;
+	}
+
+
 
 
 	public String getPoNumber() {
@@ -123,6 +187,20 @@ public class OrderEntity implements Serializable {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+
+
+
+	public String getTransCode() {
+		return transCode;
+	}
+
+
+
+
+	public void setTransCode(String transCode) {
+		this.transCode = transCode;
 	}
 
 

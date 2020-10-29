@@ -8,9 +8,10 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.toyota.scs.serviceparts.entity.OrderEntity;
 
-public interface OrderRepositroy extends CrudRepository<OrderEntity, Long>,PagingAndSortingRepository<OrderEntity, Long>,JpaSpecificationExecutor<OrderEntity> {
+public interface OrderRepository extends CrudRepository<OrderEntity, Long>,PagingAndSortingRepository<OrderEntity, Long>,JpaSpecificationExecutor<OrderEntity> {
 
 	public OrderEntity findByPoNumberAndVendorCode(String poNumber,String vendorCode);
+	public OrderEntity findByPoNumberAndVendorCodeAndOrderType(String poNumber,String vendorCode,String orderType);
 	public List<OrderEntity> findByVendorCode(String vendorCode);
 	
 }

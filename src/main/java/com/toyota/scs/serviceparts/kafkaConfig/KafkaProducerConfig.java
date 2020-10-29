@@ -1,60 +1,48 @@
 package com.toyota.scs.serviceparts.kafkaConfig;
 
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.support.serializer.JsonSerializer;
 
 @EnableKafka
 @Configuration
-public class KafkaConfig {
+public class KafkaProducerConfig {
 	final String BOOTSTRAP_SERVERS = "broker01-int.qa.awskafka.toyota.com:9094,"
 			+ "broker02-int.qa.awskafka.toyota.com:9094," + "broker03-int.qa.awskafka.toyota.com:9094,"
 			+ "broker04-int.qa.awskafka.toyota.com:9094," + "broker05-int.qa.awskafka.toyota.com:9094";
-	
 	@Bean
-	public ConsumerFactory<String, String> consumerFactory() {
-		
-		// HashMap to store the configurations
+	public ProducerFactory<String, Object> producerFactory(){
 		Map<String, Object> map = new HashMap<>();
 
 		// put the host IP inn the map
-		map.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
-		/*
-		 * map.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
-		 * map.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-		 */
-		// put the group ID in the map
-		//map.put(ConsumerConfig.GROUP_ID_CONFIG, "SCS_Group_id_LOCAL_34");
-		
-		map.put(ConsumerConfig.GROUP_ID_CONFIG, UUID.randomUUID().toString());
-		map.put(ConsumerConfig.CLIENT_ID_CONFIG, "your_client_id");
-		map.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-		map.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-		map.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+		map.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
+		map.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+		map.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 
-		
-		
+
 		  map.put("security.protocol", "SSL"); 
 		// map.put("ssl.enabled.protocols", "TLSv1.3,TLSv1.2,TLSv1.1,TLSv1"); 
 		
 		//  map.put("ssl.enabled.protocols", "TLSv1.3,SSLv3");
 		//  map.put("ssl.enabled.protocol", "TLSv1.2");
-		 		map.put(
-				  "ssl.truststore.location","src\\main\\resources\\certs\\kafkaTruststore.jks"
-				  );
-			
+		 
+			map.put(
+			  "ssl.truststore.location","C:\\Users\\alingannagari\\Desktop\\Project\\Service parts\\Kafka\\kafkaTruststore.jks"
+			  ); 
 		  map.put("ssl.truststore.password", "changeit");
 			 
 		  map.put("ssl.key.password", "changeit"); 
@@ -67,19 +55,16 @@ public class KafkaConfig {
 		  map.put("ssl.key.password", "changeit");
 		  map.put("ssl.keystore.password","changeit");
 		  map.put("ssl.keystore.location",
-		  "src\\main\\resources\\certs\\mykeystore.jks"
+		  "C:\\Users\\alingannagari\\Desktop\\Project\\Service parts\\Certs\\mykeystore.jks"
 		  );
 		 
 		 
 		 
-		return new DefaultKafkaConsumerFactory<>(map);
+		return new DefaultKafkaProducerFactory<String, Object>(map);
+		
 	}
-
 	@Bean
-	public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListner() {
-		ConcurrentKafkaListenerContainerFactory<String, String> obj = new ConcurrentKafkaListenerContainerFactory<>();
-		obj.setConsumerFactory(consumerFactory());
-		return obj;
-	}
-	
+    public KafkaTemplate<String, Object> kafkaTemplate() {
+        return new KafkaTemplate<String, Object>(producerFactory());
+    }
 }
