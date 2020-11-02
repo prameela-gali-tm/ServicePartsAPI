@@ -19,7 +19,7 @@ import com.toyota.scs.serviceparts.entity.PalletSizeLimitEntity;
 import com.toyota.scs.serviceparts.entity.VendorEntity;
 import com.toyota.scs.serviceparts.model.PartDetailsModel;
 import com.toyota.scs.serviceparts.model.PurchaseOrderDetailsModel;
-import com.toyota.scs.serviceparts.repository.OrderRepositroy;
+import com.toyota.scs.serviceparts.repository.OrderRepository;
 import com.toyota.scs.serviceparts.repository.PalletSizeLimitRepositroy;
 import com.toyota.scs.serviceparts.repository.VendorRepositroy;
 import com.toyota.scs.serviceparts.serviceImpl.PartDetailsServiceImpl;
@@ -33,13 +33,14 @@ public class GetApiController {
 	
 	
 	@Autowired
-	private OrderRepositroy orderRepositroy;
+	private OrderRepository orderRepositroy;
 	
 	@Autowired
 	private PalletSizeLimitRepositroy palletSizeLimitEntity;
 	
-	@Autowired
-	private KafkaTemplate<String, Object> template;
+	/*
+	 * @Autowired private KafkaTemplate<String, Object> template;
+	 */
 	
 	
 	
@@ -71,12 +72,11 @@ public class GetApiController {
 		return (List<PalletSizeLimitEntity>) palletSizeLimitEntity.findAll();
 	}
 	
-	@GetMapping("/publish/{name}")
-	public String publishMessage(@PathVariable String name)
-	{
-		template.send(topic,"Hi "+name+" welcome to SCS ");
-		return "Data published";
-	}
+	/*
+	 * @GetMapping("/publish/{name}") public String publishMessage(@PathVariable
+	 * String name) { template.send(topic,"Hi "+name+" welcome to SCS "); return
+	 * "Data published"; }
+	 */
 	
 	
 } 
