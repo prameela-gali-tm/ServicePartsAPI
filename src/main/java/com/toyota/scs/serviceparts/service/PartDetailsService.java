@@ -7,7 +7,7 @@ import com.toyota.scs.serviceparts.model.PurchaseOrderDetailsModel;
 
 public interface PartDetailsService {
 	
-	public List<PartDetailsModel> findPartDetails(String partNumber,String vendorCode);
+	public List<PartDetailsModel> findPartDetails(String partNumber,String vendorCode,boolean directFlag, int transportCode);
 	public List<PurchaseOrderDetailsModel> getViewAllPurchaseDetails();
 	
 }

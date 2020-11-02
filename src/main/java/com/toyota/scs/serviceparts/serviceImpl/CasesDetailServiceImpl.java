@@ -121,7 +121,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 							OrderEntity entity = null;
 							List<PartDetailsModel> detailsModel = null;
 							if (obj.getDeliveryDueDate() == null) {
-								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode);
+								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode,false,3);
 								long outStandingQuantity = 0;
 								if (detailsModel != null && detailsModel.size() > 0) {
 									List<PartDetailsModel> models = new ArrayList<PartDetailsModel>();
@@ -780,7 +780,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 							
 							// ends here
 							if (obj.getDeliveryDueDate() == null && valid) {
-								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode);
+								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode,false,3);
 								if (partDetailsMap.containsKey(keyValue)) {
 									outStandingQuantity = partDetailsMap.get(keyValue);
 								}

@@ -4,10 +4,14 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SqlResultSetMapping;
+import javax.persistence.SqlResultSetMappings;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -16,6 +20,37 @@ import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name="SP_PART")
+@SqlResultSetMappings({
+	@SqlResultSetMapping(
+        name = "viewPurchaseDetails",
+        classes = @ConstructorResult(
+                targetClass = PartEntity.class,
+                columns = {
+                    @ColumnResult(name = "partNumber", type=String.class),
+                    @ColumnResult(name = "deliveryDueDate", type = Date.class),
+                    @ColumnResult(name = "orderQuantity", type = long.class),
+                    @ColumnResult(name = "outstandingQuantity", type = long.class),
+                    @ColumnResult(name = "lineItemNumber", type = String.class),
+                    @ColumnResult(name = "poNumber", type = String.class),
+                    @ColumnResult(name = "orderType", type = String.class),
+                    @ColumnResult(name = "vendorCode", type = String.class),
+                    @ColumnResult(name = "homePosition", type = String.class),
+                    @ColumnResult(name = "id", type = long.class),
+                    @ColumnResult(name = "orderId", type = long.class),
+                    @ColumnResult(name = "containerID", type = String.class),
+                    @ColumnResult(name = "dealer", type = String.class),
+                    @ColumnResult(name = "directShipFlag", type = boolean.class),
+                    @ColumnResult(name = "orderRefNumber", type = String.class),
+                    @ColumnResult(name = "partDesc", type = String.class),
+                    @ColumnResult(name = "serialNumber", type = String.class),
+                    @ColumnResult(name = "subPartNumber", type = long.class),
+                    @ColumnResult(name = "vendorPartNumber", type = String.class),
+                    @ColumnResult(name = "status", type = String.class),
+                    @ColumnResult(name = "dealerCode", type = String.class),
+                    @ColumnResult(name = "transportationCode", type = String.class),
+                    @ColumnResult(name = "finalDestination", type = String.class)
+                   }))
+})
 public class PartEntity implements Serializable {
 	
 	
@@ -100,6 +135,17 @@ public class PartEntity implements Serializable {
 	@Transient
 	private String vendorCode;	
 	
+	@Transient
+	private String dealerCode;
+	
+	@Transient
+	private String finalDestination;
+	
+	@Transient
+	private String transportationCode;
+	
+	@Transient
+	private boolean directShipFlag;
 	
 	public PartEntity() {
 		super();
@@ -333,6 +379,87 @@ public class PartEntity implements Serializable {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+
+
+	public String getDealerCode() {
+		return dealerCode;
+	}
+
+
+
+	public void setDealerCode(String dealerCode) {
+		this.dealerCode = dealerCode;
+	}
+
+
+
+	public String getFinalDestination() {
+		return finalDestination;
+	}
+
+
+
+	public void setFinalDestination(String finalDestination) {
+		this.finalDestination = finalDestination;
+	}
+
+
+
+	public String getTransportationCode() {
+		return transportationCode;
+	}
+
+
+
+	public void setTransportationCode(String transportationCode) {
+		this.transportationCode = transportationCode;
+	}
+
+
+
+	public boolean isDirectShipFlag() {
+		return directShipFlag;
+	}
+
+
+
+	public void setDirectShipFlag(boolean directShipFlag) {
+		this.directShipFlag = directShipFlag;
+	}
+
+
+
+	public PartEntity(String partNumber, Date deliveryDueDate, long orderQuantity, long outstandingQuantity,
+			String lineItemNumber, String poNumber, String orderType, String vendorCode, String homePosition, long id,
+			long orderId, String containerID, String dealer, boolean directShipFlag, String orderRefNumber,
+			String partDesc, String serialNumber, long subPartNumber, String vendorPartNumber, String status,
+			String dealerCode, String transportationCode, String finalDestination) {
+		super();
+		this.partNumber = partNumber;
+		this.deliveryDueDate = deliveryDueDate;
+		this.orderQuantity = orderQuantity;
+		this.outstandingQuantity = outstandingQuantity;
+		this.lineItemNumber = lineItemNumber;
+		this.poNumber = poNumber;
+		this.orderType = orderType;
+		this.vendorCode = vendorCode;
+		this.homePosition = homePosition;
+		this.id = id;
+		this.orderId = orderId;
+		this.containerID = containerID;
+		this.dealer = dealer;
+		this.directShipFlag = directShipFlag;
+		this.orderRefNumber = orderRefNumber;
+		this.partDesc = partDesc;
+		this.serialNumber = serialNumber;
+		this.subPartNumber = subPartNumber;
+		this.vendorPartNumber = vendorPartNumber;
+		this.status = status;
+		this.dealerCode = dealerCode;
+		this.transportationCode = transportationCode;
+		this.finalDestination = finalDestination;
 	}
 	
 	

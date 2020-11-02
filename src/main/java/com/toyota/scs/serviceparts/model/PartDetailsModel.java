@@ -36,8 +36,12 @@ public class PartDetailsModel {
 	@JsonProperty("homePosition")
 	private String homePosition;
 	
-	@JsonProperty("distinationFD")
-	private String distinationFD;
+	@JsonProperty("dealerOrDistinationFD")
+	private String dealerOrDistinationFD;
+	
+	@JsonProperty("transportationCode")
+	private int transportationCode;
+	
 	
 	@JsonIgnore
 	private long partId;
@@ -74,7 +78,7 @@ public class PartDetailsModel {
 	}
 
 	public PartDetailsModel(String partNumber, String deliveryDueDate, long orderQuantity, long outstandingQuantity,
-			String poNumber, String orderType, String vendorCode,String lineItemNumber,String homePosition,String distinationFD) {
+			String poNumber, String orderType, String vendorCode,String lineItemNumber,String homePosition,String dealerOrDistinationFD) {
 		super();
 		this.partNumber = partNumber;
 		this.deliveryDueDate = deliveryDueDate;
@@ -85,7 +89,7 @@ public class PartDetailsModel {
 		this.vendorCode = vendorCode;
 		this.lineItemNumber=lineItemNumber;
 		this.homePosition = homePosition;
-		this.distinationFD = distinationFD;
+		this.dealerOrDistinationFD = dealerOrDistinationFD;
 	}
 
 	public String getPartNumber() {
@@ -192,13 +196,7 @@ public class PartDetailsModel {
 		this.supplierFullFillQuantity = supplierFullFillQuantity;
 	}
 
-	public String getDistinationFD() {
-		return distinationFD;
-	}
-
-	public void setDistinationFD(String distinationFD) {
-		this.distinationFD = distinationFD;
-	}
+	
 
 	public String getContainerID() {
 		return containerID;
@@ -270,5 +268,21 @@ public class PartDetailsModel {
 
 	public void setSerialNumberDetailsModel(List<String> serialNumberDetailsModel) {
 		this.serialNumberDetailsModel = serialNumberDetailsModel;
+	}
+
+	public String getDealerOrDistinationFD() {
+		return dealerOrDistinationFD;
+	}
+
+	public void setDealerOrDistinationFD(String dealerOrDistinationFD) {
+		this.dealerOrDistinationFD = dealerOrDistinationFD;
+	}
+
+	public int getTransportationCode() {
+		return transportationCode;
+	}
+
+	public void setTransportationCode(int transportationCode) {
+		this.transportationCode = transportationCode;
 	}
 }
