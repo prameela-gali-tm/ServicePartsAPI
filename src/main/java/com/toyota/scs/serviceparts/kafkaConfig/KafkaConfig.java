@@ -29,7 +29,7 @@ public class KafkaConfig {
 	final String BOOTSTRAP_SERVERS = "broker01-int.qa.awskafka.toyota.com:9094,"
 			+ "broker02-int.qa.awskafka.toyota.com:9094," + "broker03-int.qa.awskafka.toyota.com:9094,"
 			+ "broker04-int.qa.awskafka.toyota.com:9094," + "broker05-int.qa.awskafka.toyota.com:9094";
-	
+
 	@Bean
 	public ConsumerFactory<String, Object> consumerFactory() {
 		
@@ -51,6 +51,7 @@ public class KafkaConfig {
 		map.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		map.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, PoDeserializer.class);
 
+	
 		
 		
 		  map.put("security.protocol", "SSL"); 
@@ -58,9 +59,8 @@ public class KafkaConfig {
 		
 		//  map.put("ssl.enabled.protocols", "TLSv1.3,SSLv3");
 		//  map.put("ssl.enabled.protocol", "TLSv1.2");
-		 		map.put(
-				  "ssl.truststore.location","src\\main\\resources\\certs\\kafkaTruststore.jks"
-				  );
+		 map.put("ssl.truststore.location","src/main/resources/certs/kafkaTruststore.jks");
+		 		
 			
 		  map.put("ssl.truststore.password", "changeit");
 			 
@@ -73,9 +73,10 @@ public class KafkaConfig {
 		
 		  map.put("ssl.key.password", "changeit");
 		  map.put("ssl.keystore.password","changeit");
-		  map.put("ssl.keystore.location",
-		  "src\\main\\resources\\certs\\mykeystore.jks"
-		  );
+			
+			  map.put("ssl.keystore.location",
+			  "src/main/resources/certs/mykeystore.jks" );
+			 
 		 
 		 
 		 
