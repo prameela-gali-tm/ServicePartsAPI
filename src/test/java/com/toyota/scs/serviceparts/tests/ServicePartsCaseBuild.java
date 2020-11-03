@@ -1174,7 +1174,7 @@ public class ServicePartsCaseBuild extends BaseTest {
 	//                                  API Spec Validations
 	//
 	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+/*	
 	
 	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
 	public void VerifyRequiredFieldsatUnitLevel(Integer row) throws Exception {
@@ -1328,7 +1328,7 @@ public class ServicePartsCaseBuild extends BaseTest {
 			Assert.fail("response doesn't show expected error message");
 		}
 	}
-
+*/
 	
 	
 	
