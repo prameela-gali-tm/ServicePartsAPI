@@ -22,7 +22,7 @@ public class RoutePathEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name="ROUTE_PATH_ID")
-	private long routePathId;
+	private long id;
 	
 	@Column(name = "ROUTE_SEQ")
 	private long routeSeq;	
@@ -39,21 +39,15 @@ public class RoutePathEntity implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public RoutePathEntity(long routePathId, long routeSeq, Date modifiedDate, String modifiedBy) {
+	public RoutePathEntity(long id, long routeSeq, Date modifiedDate, String modifiedBy) {
 		super();
-		this.routePathId = routePathId;
+		this.id = id;
 		this.routeSeq = routeSeq;
 		this.modifiedDate = modifiedDate;
 		this.modifiedBy = modifiedBy;
 	}
 
-	public long getRoutePathId() {
-		return routePathId;
-	}
 
-	public void setRoutePathId(long routePathId) {
-		this.routePathId = routePathId;
-	}
 
 	public long getRouteSeq() {
 		return routeSeq;
@@ -77,6 +71,14 @@ public class RoutePathEntity implements Serializable {
 
 	public void setModifiedBy(String modifiedBy) {
 		this.modifiedBy = modifiedBy;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 	
 	

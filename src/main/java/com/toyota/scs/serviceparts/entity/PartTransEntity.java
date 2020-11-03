@@ -31,7 +31,7 @@ public class PartTransEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name="PART_TRANS_ID")
-	private long partTransId;
+	private long id;
 	
 	@Column(name="SUPPLIER_TOTAL")
 	private long supplierTotal;
@@ -86,10 +86,10 @@ public class PartTransEntity implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public PartTransEntity(long partTransId, long supplierTotal, Date transmussionDate, String serialNumber, String status,
+	public PartTransEntity(long id, long supplierTotal, Date transmussionDate, String serialNumber, String status,
 			long fullfilledQuantity, long partId, long caseId, long orderId, Date modifiedDate, String modifiedBy) {
 		super();
-		this.partTransId = partTransId;
+		this.id = id;
 		this.supplierTotal = supplierTotal;
 		this.transmussionDate = transmussionDate;
 		this.serialNumber = serialNumber;
@@ -102,13 +102,7 @@ public class PartTransEntity implements Serializable {
 		this.modifiedBy = modifiedBy;
 	}
 
-	public long getPartTransId() {
-		return partTransId;
-	}
 
-	public void setPartTransId(long partTransId) {
-		this.partTransId = partTransId;
-	}
 
 	public long getSupplierTotal() {
 		return supplierTotal;
@@ -228,6 +222,14 @@ public class PartTransEntity implements Serializable {
 
 	public void setDeliveryDueDate(String deliveryDueDate) {
 		this.deliveryDueDate = deliveryDueDate;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 	
 	

@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.toyota.scs.serviceparts.entity.ExceptionEntity;
 import com.toyota.scs.serviceparts.repository.ExceptionRepository;
 import com.toyota.scs.serviceparts.serviceImpl.ExceptionService;
 
+@RestController
 public class ExceptionController {
 
 	@Autowired
@@ -44,11 +46,11 @@ public class ExceptionController {
 	{
 		String returnValue="";
 		if(exceptionEntity!=null) {
-			Optional<ExceptionEntity> obj = exceptionRepository.findById(exceptionEntity.getExceptionId());
+			Optional<ExceptionEntity> obj = exceptionRepository.findById(exceptionEntity.getId());
 			if(obj.isPresent()) {
 				ExceptionEntity exceptionEntity1 = obj.get();
 				if(exceptionEntity1!=null) {
-					exceptionEntity1.setExceptionId(exceptionEntity.getExceptionId());
+					exceptionEntity1.setId(exceptionEntity.getId());
 					exceptionEntity1.setCaseId(exceptionEntity.getCaseId());
 					exceptionEntity1.setComments(exceptionEntity.getComments());
 					exceptionEntity1.setExceptionCode(exceptionEntity.getExceptionCode());
@@ -67,7 +69,7 @@ public class ExceptionController {
 		Optional<ExceptionEntity> obj= exceptionRepository.findById(id);
 		if(obj.isPresent()) {
 			exceptionRepository.deleteById(id);
-			 return "Record was deleted succefully for given Id "+ id;
+			 return "Record was deleted successfully for given Id "+ id;
 		}else {
 			return "Record does not found for given Id  "+ id;
 		}

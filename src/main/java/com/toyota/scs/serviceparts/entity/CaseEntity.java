@@ -24,7 +24,7 @@ public class CaseEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name="CASE_ID")
-	private long caseId;
+	private long id;
 	
 	@Column(name="CASE_NUMBER")
 	private String caseNumber;
@@ -54,13 +54,7 @@ public class CaseEntity implements Serializable {
 	@Column(name = "MODIFIED_BY")
 	private String modifiedBy;
 
-	public long getCaseId() {
-		return caseId;
-	}
 
-	public void setCaseId(long caseId) {
-		this.caseId = caseId;
-	}
 
 	public String getCaseNumber() {
 		return caseNumber;
@@ -115,16 +109,24 @@ public class CaseEntity implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CaseEntity(long caseId, String caseNumber, String confirmationNumber, String status, long shipment,
+	public CaseEntity(long id, String caseNumber, String confirmationNumber, String status, long shipment,
 			Date modifiedDate, String modifiedBy) {
 		super();
-		this.caseId = caseId;
+		this.id = id;
 		this.caseNumber = caseNumber;
 		this.confirmationNumber = confirmationNumber;
 		this.status = status;
 		this.Shipment = shipment;
 		this.modifiedDate = modifiedDate;
 		this.modifiedBy = modifiedBy;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 	
 	

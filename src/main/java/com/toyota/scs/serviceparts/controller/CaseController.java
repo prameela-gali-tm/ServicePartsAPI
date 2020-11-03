@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.toyota.scs.serviceparts.entity.CaseEntity;
 import com.toyota.scs.serviceparts.repository.CaseRepositroy;
 import com.toyota.scs.serviceparts.serviceImpl.CaseService;
 
+@RestController
 public class CaseController {
 	@Autowired
 	CaseRepositroy caseRepositroy;
@@ -42,11 +44,11 @@ public class CaseController {
 	{
 		String returnValue="";
 		if(caseEntity!=null) {
-			Optional<CaseEntity> obj = caseRepositroy.findById(caseEntity.getCaseId());
+			Optional<CaseEntity> obj = caseRepositroy.findById(caseEntity.getId());
 			if(obj.isPresent()) {
 				CaseEntity caseEntity1 = obj.get();
 				if(caseEntity1!=null) {
-					caseEntity1.setCaseId(caseEntity.getCaseId());	
+					caseEntity1.setId(caseEntity.getId());	
 					caseEntity1.setShipment(caseEntity.getShipment());
 					caseEntity1.setCaseNumber(caseEntity.getCaseNumber());
 					caseEntity1.setConfirmationNumber(caseEntity.getConfirmationNumber());
@@ -68,7 +70,7 @@ public class CaseController {
 		Optional<CaseEntity> obj= caseRepositroy.findById(id);
 		if(obj.isPresent()) {
 			caseRepositroy.deleteById(id);
-			 return "Record was deleted succefully for given Id "+ id;
+			 return "Record was deleted successfully for given Id "+ id;
 		}else {
 			return "Record does not found for given Id "+ id;
 		}

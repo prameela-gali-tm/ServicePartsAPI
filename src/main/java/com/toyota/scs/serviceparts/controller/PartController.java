@@ -1,6 +1,7 @@
 package com.toyota.scs.serviceparts.controller;
 
 import java.util.Date;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,7 @@ public class PartController {
 				Optional<PartEntity> obj = partRepository.findById(partEntity.getOrderId());
 				if(obj.isPresent()) {
 					PartEntity partEntity1 = obj.get();
-					partEntity1.setPartId(partEntity.getPartId());
+					partEntity1.setId(partEntity.getId());
 					partEntity1.setContainerID(partEntity.getContainerID());
 					partEntity1.setDealer(partEntity.getDealer());
 					partEntity1.setDeliveryDueDate(partEntity.getDeliveryDueDate());
@@ -86,7 +87,7 @@ public class PartController {
 		Optional<PartEntity> obj = partRepository.findById(id);
 		if(obj.isPresent()) {
 			partRepository.deleteById(id);
-			 return "Record was deleted succefully for given Id "+ id;
+			 return "Record was deleted successfully for given Id "+ id;
 		}else {
 			return "Record does not found for the given Id "+ id;
 		}

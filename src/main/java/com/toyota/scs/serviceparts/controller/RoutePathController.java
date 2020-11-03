@@ -12,12 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.toyota.scs.serviceparts.entity.RoutePathEntity;
 import com.toyota.scs.serviceparts.entity.VendorEntity;
 import com.toyota.scs.serviceparts.repository.RoutePathRepositroy;
 import com.toyota.scs.serviceparts.serviceImpl.RoutePathService;
-
+@RestController
 public class RoutePathController {
 
 	@Autowired
@@ -44,11 +45,13 @@ public class RoutePathController {
 	{
 		String returnValue="";
 		if(routePathEntity!=null) {
-			Optional<RoutePathEntity> obj = routePathRepositroy.findById(routePathEntity.getRoutePathId());
+			Optional<RoutePathEntity> obj = routePathRepositroy.findById(routePathEntity.getId());
 			if(obj.isPresent()) {
 				RoutePathEntity obj1 = obj.get();
 				if(routePathEntity!=null) {
-					
+					obj1.setModifiedBy("SYSTEM");
+					obj1.setModifiedDate(new Date());
+					obj1.setRouteSeq(routePathEntity.getRouteSeq());
 					routePathRepositroy.save(obj1);
 				}
 				returnValue= "Record was updated successfully";
@@ -64,7 +67,7 @@ public class RoutePathController {
 		Optional<RoutePathEntity> obj= routePathRepositroy.findById(id);
 		if(obj.isPresent()) {
 			routePathRepositroy.deleteById(id);
-			 return "Record was deleted succefully for given Id "+ id;
+			 return "Record was deleted successfully for given Id "+ id;
 		}else {
 			return "Record does not found for given Id  "+ id;
 		}
