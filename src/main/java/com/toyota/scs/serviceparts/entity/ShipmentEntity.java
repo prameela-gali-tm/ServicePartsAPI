@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,7 +20,8 @@ import lombok.Setter;
 @Table(name="SP_SHIPMENT")
 public class ShipmentEntity implements Serializable {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="shipmentSeqGen")
+	@SequenceGenerator(name = "shipmentSeqGen", sequenceName = "SPADM.sp_shipment_seq", initialValue = 1, allocationSize = 10)
 	@Column(name="SHIPMENT_ID")
 	private long id;
 	

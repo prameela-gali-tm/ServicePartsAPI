@@ -12,7 +12,7 @@ import com.toyota.scs.serviceparts.entity.VendorEntity;
 import com.toyota.scs.serviceparts.model.CaseBuildModel;
 import com.toyota.scs.serviceparts.model.Message;
 import com.toyota.scs.serviceparts.model.UnitsModel;
-import com.toyota.scs.serviceparts.repository.OrderRepositroy;
+import com.toyota.scs.serviceparts.repository.OrderRepository;
 import com.toyota.scs.serviceparts.repository.PartRepository;
 import com.toyota.scs.serviceparts.repository.VendorRepositroy;
 

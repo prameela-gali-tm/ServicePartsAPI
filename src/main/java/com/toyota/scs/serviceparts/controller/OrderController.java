@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.toyota.scs.serviceparts.entity.OrderEntity;
-import com.toyota.scs.serviceparts.repository.OrderRepositroy;
+import com.toyota.scs.serviceparts.repository.OrderRepository;
 import com.toyota.scs.serviceparts.serviceImpl.OrderService;
 
 @RestController
 public class OrderController {
 
 	@Autowired
-	OrderRepositroy orderRepositroy;
+	OrderRepository orderRepositroy;
 	
 	@Autowired
 	OrderService service;

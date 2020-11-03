@@ -8,13 +8,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.toyota.scs.serviceparts.entity.OrderEntity;
-import com.toyota.scs.serviceparts.repository.OrderRepositroy;
+import com.toyota.scs.serviceparts.repository.OrderRepository;
 
 @Service
 public class OrderService {
 
 	@Autowired
-	OrderRepositroy repositroy;
+	OrderRepository repositroy;
 	
 	public Page getAllOrder(Integer pageNo, Integer pageSize, String sortBy){
 		 

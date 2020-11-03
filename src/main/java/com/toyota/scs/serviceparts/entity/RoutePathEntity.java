@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -20,7 +21,8 @@ import lombok.Setter;
 public class RoutePathEntity implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="routePathSizeSeqGen")
+	@SequenceGenerator(name = "routePathSizeSeqGen", sequenceName = "SPADM.sp_route_path_seq", initialValue = 1, allocationSize = 10)
 	@Column(name="ROUTE_PATH_ID")
 	private long id;
 	

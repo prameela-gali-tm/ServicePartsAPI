@@ -1,6 +1,6 @@
 package com.toyota.scs.serviceparts.model;
 
-import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -64,6 +64,9 @@ public class PartDetailsModel {
 	private long subPartNumber;
 	@JsonIgnore
 	private String partDesc;
+	
+	@JsonIgnore
+	private List<String> serialNumberDetailsModel;
 	
 	public PartDetailsModel() {
 		super();
@@ -259,5 +262,13 @@ public class PartDetailsModel {
 
 	public void setPartDesc(String partDesc) {
 		this.partDesc = partDesc;
+	}
+
+	public List<String> getSerialNumberDetailsModel() {
+		return serialNumberDetailsModel;
+	}
+
+	public void setSerialNumberDetailsModel(List<String> serialNumberDetailsModel) {
+		this.serialNumberDetailsModel = serialNumberDetailsModel;
 	}
 }

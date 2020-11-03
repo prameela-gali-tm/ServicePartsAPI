@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -15,12 +16,13 @@ import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="SP_PART",uniqueConstraints = @UniqueConstraint(columnNames = {"PART_NUMBER","LINE_ITEM_NUMBER","DDD"}))
+@Table(name="SP_PART")
 public class PartEntity implements Serializable {
 	
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="partSizeSeqGen")
+	@SequenceGenerator(name = "partSizeSeqGen", sequenceName = "SPADM.sp_part_seq", initialValue = 1, allocationSize = 10)
 	@Column(name="PART_ID")
 	private long id;
 	

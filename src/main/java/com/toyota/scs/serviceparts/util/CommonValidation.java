@@ -10,4 +10,8 @@ public class CommonValidation {
 	    String pat= "^[0-9]*$";
 	    return i.matches(pat);
 	}
+	public static boolean isNullOrEmpty(String s) {
+		
+		return s==null||s.isEmpty();
+	}
 }

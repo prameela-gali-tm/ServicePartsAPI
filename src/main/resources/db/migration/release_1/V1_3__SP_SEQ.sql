@@ -1,0 +1,11 @@
+CREATE SEQUENCE spadm."sp_order_seq"    INCREMENT 10    START 1;
+CREATE SEQUENCE spadm."sp_case_seq"    INCREMENT 10    START 1;
+CREATE SEQUENCE spadm."sp_exception_seq"    INCREMENT 10    START 1;
+CREATE SEQUENCE spadm."sp_pallet_size_seq"    INCREMENT 10    START 1;
+CREATE SEQUENCE spadm."sp_part_seq"    INCREMENT 10    START 1;
+CREATE SEQUENCE spadm."sp_part_trans_seq"    INCREMENT 10   START 1;
+CREATE SEQUENCE spadm."sp_route_path_seq"    INCREMENT 10    START 1;
+CREATE SEQUENCE spadm."sp_route_node_seq"    INCREMENT 10    START 1;
+CREATE SEQUENCE spadm."sp_serial_number_seq"    INCREMENT 10    START 1;
+CREATE SEQUENCE spadm."sp_shipment_seq"    INCREMENT 10   START 1;
+CREATE SEQUENCE spadm."sp_vendor_seq"    INCREMENT 10    START 1;

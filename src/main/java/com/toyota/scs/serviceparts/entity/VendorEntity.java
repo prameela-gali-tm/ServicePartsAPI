@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -17,7 +18,9 @@ import javax.persistence.TemporalType;
 public class VendorEntity{
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="vendorSeqGen")
+	@SequenceGenerator(name = "vendorSeqGen", sequenceName = "SPADM.sp_vendor_seq", initialValue = 1, allocationSize = 10)
+	@Column(name = "VENDOR_ID")
 	private long id;
 	@Column(name = "VENDOR_CODE", nullable = false,unique = true)
 	private String vendorCode;

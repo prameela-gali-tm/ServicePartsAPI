@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -12,7 +13,8 @@ import javax.persistence.Table;
 public class ExceptionEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="excepSeqGen")
+	@SequenceGenerator(name = "excepSeqGen", sequenceName = "SPADM.sp_exception_seq", initialValue = 1, allocationSize = 10)
 	@Column(name="EXCEPTION_ID")
 	private long id;
 	

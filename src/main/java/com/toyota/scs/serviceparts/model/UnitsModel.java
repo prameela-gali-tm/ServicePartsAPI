@@ -1,5 +1,7 @@
 package com.toyota.scs.serviceparts.model;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -33,6 +35,9 @@ public class UnitsModel {
 	@JsonProperty("subPartNumber")
 	private String subPartNumber;
 
+	@JsonProperty("serialNumberDetails")
+	private List<SerialNumberDetailsModel> serialNumberDetailsModel;
+	
 	public String getPartNumber() {
 		return partNumber;
 	}
@@ -103,14 +108,22 @@ public class UnitsModel {
 		this.subPartNumber = subPartNumber;
 	}
 	
+	public List<SerialNumberDetailsModel> getSerialNumberDetailsModel() {
+		return serialNumberDetailsModel;
+	}
+
+	public void setSerialNumberDetailsModel(List<SerialNumberDetailsModel> serialNumberDetailsModel) {
+		this.serialNumberDetailsModel = serialNumberDetailsModel;
+	}
+
 	public UnitsModel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	public UnitsModel(String partNumber, String poNumber, String poLineNumber, Integer partQuantity,
-			String homePosition, String deliveryDueDate, String containerID, String serialNumber,
-			String subPartNumber) {
+			String homePosition, String deliveryDueDate, String serialNumber, String subPartNumber,
+			List<SerialNumberDetailsModel> serialNumberDetailsModel) {
 		super();
 		this.partNumber = partNumber;
 		this.poNumber = poNumber;
@@ -118,16 +131,15 @@ public class UnitsModel {
 		this.partQuantity = partQuantity;
 		this.homePosition = homePosition;
 		this.deliveryDueDate = deliveryDueDate;
-		//this.containerID = containerID;
 		this.serialNumber = serialNumber;
 		this.subPartNumber = subPartNumber;
+		this.serialNumberDetailsModel = serialNumberDetailsModel;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		//result = prime * result + ((containerID == null) ? 0 : containerID.hashCode());
 		result = prime * result + ((deliveryDueDate == null) ? 0 : deliveryDueDate.hashCode());
 		result = prime * result + ((homePosition == null) ? 0 : homePosition.hashCode());
 		result = prime * result + ((partNumber == null) ? 0 : partNumber.hashCode());
@@ -135,6 +147,7 @@ public class UnitsModel {
 		result = prime * result + ((poLineNumber == null) ? 0 : poLineNumber.hashCode());
 		result = prime * result + ((poNumber == null) ? 0 : poNumber.hashCode());
 		result = prime * result + ((serialNumber == null) ? 0 : serialNumber.hashCode());
+		result = prime * result + ((serialNumberDetailsModel == null) ? 0 : serialNumberDetailsModel.hashCode());
 		result = prime * result + ((subPartNumber == null) ? 0 : subPartNumber.hashCode());
 		return result;
 	}
@@ -148,10 +161,6 @@ public class UnitsModel {
 		if (getClass() != obj.getClass())
 			return false;
 		UnitsModel other = (UnitsModel) obj;
-		/*
-		 * if (containerID == null) { if (other.containerID != null) return false; }
-		 * else if (!containerID.equals(other.containerID)) return false;
-		 */
 		if (deliveryDueDate == null) {
 			if (other.deliveryDueDate != null)
 				return false;
@@ -187,14 +196,18 @@ public class UnitsModel {
 				return false;
 		} else if (!serialNumber.equals(other.serialNumber))
 			return false;
+		if (serialNumberDetailsModel == null) {
+			if (other.serialNumberDetailsModel != null)
+				return false;
+		} else if (!serialNumberDetailsModel.equals(other.serialNumberDetailsModel))
+			return false;
 		if (subPartNumber == null) {
 			if (other.subPartNumber != null)
 				return false;
 		} else if (!subPartNumber.equals(other.subPartNumber))
 			return false;
 		return true;
-	}
-	
+	}	
 	
 	
 }
