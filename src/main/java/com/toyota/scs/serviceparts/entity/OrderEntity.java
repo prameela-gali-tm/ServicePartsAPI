@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -34,8 +35,9 @@ public class OrderEntity implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Id	
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="caseSeqGen")
+	@SequenceGenerator(name = "caseSeqGen", sequenceName = "SPADM.SP_ORDER_SEQ", initialValue = 1, allocationSize = 10)
 	@Column(name="ORDER_ID")
 	private long id;
 	

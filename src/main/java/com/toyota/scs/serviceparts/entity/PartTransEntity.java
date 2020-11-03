@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -29,7 +30,8 @@ import lombok.Setter;
 public class PartTransEntity implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="partTransSizeSeqGen")
+	@SequenceGenerator(name = "partTransSizeSeqGen", sequenceName = "SPADM.sp_part_trans_seq", initialValue = 1, allocationSize = 10)
 	@Column(name="PART_TRANS_ID")
 	private long id;
 	

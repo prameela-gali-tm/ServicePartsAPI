@@ -1,13 +1,16 @@
 package com.toyota.scs.serviceparts.kafkaConfig;
 
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.errors.SerializationException;
+import org.apache.kafka.common.header.Headers;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +18,10 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.toyota.scs.serviceparts.model.PolineModel;
 
 @EnableKafka
 @Configuration
@@ -24,7 +31,7 @@ public class KafkaConfig {
 			+ "broker04-int.qa.awskafka.toyota.com:9094," + "broker05-int.qa.awskafka.toyota.com:9094";
 	
 	@Bean
-	public ConsumerFactory<String, String> consumerFactory() {
+	public ConsumerFactory<String, Object> consumerFactory() {
 		
 		// HashMap to store the configurations
 		Map<String, Object> map = new HashMap<>();
@@ -42,7 +49,7 @@ public class KafkaConfig {
 		map.put(ConsumerConfig.CLIENT_ID_CONFIG, "your_client_id");
 		map.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 		map.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-		map.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+		map.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, PoDeserializer.class);
 
 		
 		
@@ -76,10 +83,33 @@ public class KafkaConfig {
 	}
 
 	@Bean
-	public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListner() {
-		ConcurrentKafkaListenerContainerFactory<String, String> obj = new ConcurrentKafkaListenerContainerFactory<>();
+	public ConcurrentKafkaListenerContainerFactory<String, List<PolineModel>> kafkaListner() {
+		ConcurrentKafkaListenerContainerFactory<String, List<PolineModel>> obj = new ConcurrentKafkaListenerContainerFactory<>();
 		obj.setConsumerFactory(consumerFactory());
 		return obj;
 	}
+	
+	static class CustomDeserializer extends JsonDeserializer<List<PolineModel>> {
+
+        @Override
+        public List<PolineModel> deserialize(String topic, Headers headers, byte[] data) {
+            return deserialize(topic, data);
+        }
+
+        @Override
+        public List<PolineModel> deserialize(String topic, byte[] data) {
+            if (data == null) {
+                return null;
+            }
+            try {
+                return objectMapper.readValue(data, new TypeReference<List<PolineModel>>() {
+                });
+            } catch (IOException e) {
+                throw new SerializationException("Can't deserialize data [" + Arrays.toString(data) +
+                        "] from topic [" + topic + "]", e);
+            }
+        }
+    }
+	
 	
 }

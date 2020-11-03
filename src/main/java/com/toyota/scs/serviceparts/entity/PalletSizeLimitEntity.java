@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -21,7 +22,8 @@ public class PalletSizeLimitEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="palletSizeSeqGen")
+	@SequenceGenerator(name = "palletSizeSeqGen", sequenceName = "SPADM.sp_pallet_size_seq", initialValue = 1, allocationSize = 10)
 	@Column(name="ID")
 	private long id;
 	
