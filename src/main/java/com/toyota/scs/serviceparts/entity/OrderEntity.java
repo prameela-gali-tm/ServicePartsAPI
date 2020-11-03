@@ -36,8 +36,8 @@ public class OrderEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id	
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="caseSeqGen")
-	@SequenceGenerator(name = "caseSeqGen", sequenceName = "SPADM.SP_ORDER_SEQ", initialValue = 1, allocationSize = 10)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="orderSeqGen")
+	@SequenceGenerator(name = "orderSeqGen", sequenceName = "SPADM.SP_ORDER_SEQ", initialValue = 1, allocationSize = 10)
 	@Column(name="ORDER_ID")
 	private long id;
 	

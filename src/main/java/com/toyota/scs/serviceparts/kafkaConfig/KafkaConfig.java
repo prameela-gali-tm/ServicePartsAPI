@@ -12,8 +12,11 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.header.Headers;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
@@ -29,7 +32,12 @@ public class KafkaConfig {
 	final String BOOTSTRAP_SERVERS = "broker01-int.qa.awskafka.toyota.com:9094,"
 			+ "broker02-int.qa.awskafka.toyota.com:9094," + "broker03-int.qa.awskafka.toyota.com:9094,"
 			+ "broker04-int.qa.awskafka.toyota.com:9094," + "broker05-int.qa.awskafka.toyota.com:9094";
-
+	@Value("classpath:certs/kafkaTruststore.jks")
+	@Autowired
+	Resource resourceTrustFile;
+	@Value("classpath:certs/mykeystore.jks")
+	@Autowired
+	Resource resourceKeyStoreFile;
 	@Bean
 	public ConsumerFactory<String, Object> consumerFactory() {
 		
@@ -59,9 +67,15 @@ public class KafkaConfig {
 		
 		//  map.put("ssl.enabled.protocols", "TLSv1.3,SSLv3");
 		//  map.put("ssl.enabled.protocol", "TLSv1.2");
-		 map.put("ssl.truststore.location","src/main/resources/certs/kafkaTruststore.jks");
+		// map.put("ssl.truststore.location","src/main/resources/certs/kafkaTruststore.jks");
+		 try {
+			map.put("ssl.truststore.location",resourceTrustFile.getFile().getAbsolutePath());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		 		
-			
+		 
 		  map.put("ssl.truststore.password", "changeit");
 			 
 		  map.put("ssl.key.password", "changeit"); 
@@ -74,8 +88,13 @@ public class KafkaConfig {
 		  map.put("ssl.key.password", "changeit");
 		  map.put("ssl.keystore.password","changeit");
 			
-			  map.put("ssl.keystore.location",
-			  "src/main/resources/certs/mykeystore.jks" );
+		//  map.put("ssl.keystore.location", "src/main/resources/certs/mykeystore.jks" );
+		  try {
+			map.put("ssl.keystore.location", resourceKeyStoreFile.getFile().getAbsolutePath() );
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 			 
 		 
 		 
