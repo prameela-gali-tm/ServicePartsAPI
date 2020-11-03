@@ -32,10 +32,10 @@ public class KafkaConfig {
 	final String BOOTSTRAP_SERVERS = "broker01-int.qa.awskafka.toyota.com:9094,"
 			+ "broker02-int.qa.awskafka.toyota.com:9094," + "broker03-int.qa.awskafka.toyota.com:9094,"
 			+ "broker04-int.qa.awskafka.toyota.com:9094," + "broker05-int.qa.awskafka.toyota.com:9094";
-	@Value("classpath:certs/kafkaTruststore.jks")
+	@Value("classpath:/certs/kafkaTruststore.jks")
 	@Autowired
 	Resource resourceTrustFile;
-	@Value("classpath:certs/mykeystore.jks")
+	@Value("classpath:/certs/mykeystore.jks")
 	@Autowired
 	Resource resourceKeyStoreFile;
 	@Bean
@@ -68,12 +68,13 @@ public class KafkaConfig {
 		//  map.put("ssl.enabled.protocols", "TLSv1.3,SSLv3");
 		//  map.put("ssl.enabled.protocol", "TLSv1.2");
 		// map.put("ssl.truststore.location","src/main/resources/certs/kafkaTruststore.jks");
-		 try {
-			map.put("ssl.truststore.location",resourceTrustFile.getFile().getAbsolutePath());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		 map.put("ssl.truststore.location","/certs/kafkaTruststore.jks");
+		/*
+		 * try {
+		 * map.put("ssl.truststore.location",resourceTrustFile.getFile().getAbsolutePath
+		 * ()); } catch (IOException e) { // TODO Auto-generated catch block
+		 * e.printStackTrace(); }
+		 */
 		 		
 		 
 		  map.put("ssl.truststore.password", "changeit");
@@ -89,13 +90,8 @@ public class KafkaConfig {
 		  map.put("ssl.keystore.password","changeit");
 			
 		//  map.put("ssl.keystore.location", "src/main/resources/certs/mykeystore.jks" );
-		  try {
-			map.put("ssl.keystore.location", resourceKeyStoreFile.getFile().getAbsolutePath() );
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-			 
+		 map.put("ssl.keystore.location", "/certs/mykeystore.jks" );
+		 
 		 
 		 
 		 
