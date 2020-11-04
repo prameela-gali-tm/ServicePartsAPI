@@ -42,9 +42,9 @@ public class KafkaConfig {
 		 * map.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 		 */
 		// put the group ID in the map
-		//map.put(ConsumerConfig.GROUP_ID_CONFIG, "SCS_Group_id_LOCAL_34");
+		map.put(ConsumerConfig.GROUP_ID_CONFIG, "SCS_Group_id_DEV");
 		
-		map.put(ConsumerConfig.GROUP_ID_CONFIG, UUID.randomUUID().toString());
+	//	map.put(ConsumerConfig.GROUP_ID_CONFIG, UUID.randomUUID().toString());
 		map.put(ConsumerConfig.CLIENT_ID_CONFIG, "your_client_id");
 		map.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 		map.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
