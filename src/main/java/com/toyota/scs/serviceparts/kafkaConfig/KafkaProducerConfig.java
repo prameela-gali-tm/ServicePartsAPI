@@ -39,10 +39,15 @@ public class KafkaProducerConfig {
 		
 		//  map.put("ssl.enabled.protocols", "TLSv1.3,SSLv3");
 		//  map.put("ssl.enabled.protocol", "TLSv1.2");
-		 
-			map.put(
-			  "ssl.truststore.location","C:\\Users\\alingannagari\\Desktop\\Project\\Service parts\\Kafka\\kafkaTruststore.jks"
-			  ); 
+		  if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
+			  map.put("ssl.truststore.location","src/main/resources/certs/kafkaTruststore.jks");
+			  map.put("ssl.keystore.location", "src/main/resources/certs/mykeystore.jks" );
+			
+		  }else {
+			  map.put("ssl.truststore.location","/certs/kafkaTruststore.jks");
+			  map.put("ssl.keystore.location", "/certs/mykeystore.jks" );
+		  }
+		
 		  map.put("ssl.truststore.password", "changeit");
 			 
 		  map.put("ssl.key.password", "changeit"); 
@@ -54,12 +59,7 @@ public class KafkaProducerConfig {
 		
 		  map.put("ssl.key.password", "changeit");
 		  map.put("ssl.keystore.password","changeit");
-		  map.put("ssl.keystore.location",
-		  "C:\\Users\\alingannagari\\Desktop\\Project\\Service parts\\Certs\\mykeystore.jks"
-		  );
-		 
-		 
-		 
+		
 		return new DefaultKafkaProducerFactory<String, Object>(map);
 		
 	}
