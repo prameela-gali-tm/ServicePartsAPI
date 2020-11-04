@@ -29,7 +29,6 @@ public class KafkaConfig {
 	final String BOOTSTRAP_SERVERS = "broker01-int.qa.awskafka.toyota.com:9094,"
 			+ "broker02-int.qa.awskafka.toyota.com:9094," + "broker03-int.qa.awskafka.toyota.com:9094,"
 			+ "broker04-int.qa.awskafka.toyota.com:9094," + "broker05-int.qa.awskafka.toyota.com:9094";
-	
 	@Bean
 	public ConsumerFactory<String, Object> consumerFactory() {
 		
@@ -43,14 +42,15 @@ public class KafkaConfig {
 		 * map.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 		 */
 		// put the group ID in the map
-		//map.put(ConsumerConfig.GROUP_ID_CONFIG, "SCS_Group_id_LOCAL_34");
+		map.put(ConsumerConfig.GROUP_ID_CONFIG, "SCS_Group_id_DEV");
 		
-		map.put(ConsumerConfig.GROUP_ID_CONFIG, UUID.randomUUID().toString());
+	//	map.put(ConsumerConfig.GROUP_ID_CONFIG, UUID.randomUUID().toString());
 		map.put(ConsumerConfig.CLIENT_ID_CONFIG, "your_client_id");
 		map.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 		map.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		map.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, PoDeserializer.class);
 
+	
 		
 		
 		  map.put("security.protocol", "SSL"); 
@@ -58,10 +58,17 @@ public class KafkaConfig {
 		
 		//  map.put("ssl.enabled.protocols", "TLSv1.3,SSLv3");
 		//  map.put("ssl.enabled.protocol", "TLSv1.2");
-		 		map.put(
-				  "ssl.truststore.location","src\\main\\resources\\certs\\kafkaTruststore.jks"
-				  );
+		  if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
+			  map.put("ssl.truststore.location","src/main/resources/certs/kafkaTruststore.jks");
+			  map.put("ssl.keystore.location", "src/main/resources/certs/mykeystore.jks" );
 			
+		  }else {
+			  map.put("ssl.truststore.location","/certs/kafkaTruststore.jks");
+			  map.put("ssl.keystore.location", "/certs/mykeystore.jks" );
+		  }
+		
+		 
+		
 		  map.put("ssl.truststore.password", "changeit");
 			 
 		  map.put("ssl.key.password", "changeit"); 
@@ -73,9 +80,9 @@ public class KafkaConfig {
 		
 		  map.put("ssl.key.password", "changeit");
 		  map.put("ssl.keystore.password","changeit");
-		  map.put("ssl.keystore.location",
-		  "src\\main\\resources\\certs\\mykeystore.jks"
-		  );
+			
+		
+		 
 		 
 		 
 		 
