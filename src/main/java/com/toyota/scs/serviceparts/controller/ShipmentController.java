@@ -1,6 +1,7 @@
 package com.toyota.scs.serviceparts.controller;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,16 @@ public class ShipmentController {
 		 
         return  pageresult; 
 	}
+	//added--new shipment load based on vendor codes and status
+	@GetMapping("/fetchshipmentdetailsbyvendorandstatus")
+	public Page getAllShipmentByVendorAndStatus(@RequestParam(defaultValue = "0") Integer pageNo, 
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy,@RequestParam List<String> vendorCode){
+		Page pageresult = service.getAllShipmentDetailsByVendorAndStatus(pageNo, pageSize, sortBy,vendorCode);
+		 
+        return  pageresult; 
+	}
+	
 	
 	@PostMapping("/fetchshipment")	// insert into vendor post
 	public ShipmentEntity saveVendorDetails(@RequestBody ShipmentEntity shipmentEntity) {
@@ -56,6 +67,8 @@ public class ShipmentController {
 					obj1.setDriverLastName(shipmentEntity.getDriverLastName());
 					obj1.setGeoLattitude(shipmentEntity.getGeoLattitude());
 					obj1.setGeoLongitude(shipmentEntity.getGeoLongitude());
+					//added 
+					obj1.setVendorCode(shipmentEntity.getVendorCode());
 					obj1.setModifiedBy("SYSTEM");
 					obj1.setModifiedDate(new Date());
 					obj1.setRoute(shipmentEntity.getRoute());
