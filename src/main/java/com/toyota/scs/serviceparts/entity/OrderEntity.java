@@ -53,6 +53,8 @@ public class OrderEntity implements Serializable {
 	private String dealerCode;
 	@Column(name="trans_code")
 	private String transCode;
+	@Column(name="dealer_order")
+	private String dealerOrder;
 	
 	@Column(name="DIRECT_SHIP_FLAG")
 	private Boolean directShipFlag;
@@ -83,8 +85,14 @@ public class OrderEntity implements Serializable {
 	
 
 
-	public OrderEntity(long id, String poNumber, String orderType, String finalDestination, String dealerCode,String transCode,
-			Boolean directShipFlag, String modifiedBy, Date modifiedDate, String vendorCode) {
+	
+
+
+
+
+	public OrderEntity(long id, String poNumber, String orderType, String finalDestination, String dealerCode,
+			String transCode, String dealerOrder, Boolean directShipFlag, String modifiedBy, Date modifiedDate,
+			String vendorCode) {
 		super();
 		this.id = id;
 		this.poNumber = poNumber;
@@ -92,11 +100,41 @@ public class OrderEntity implements Serializable {
 		this.finalDestination = finalDestination;
 		this.dealerCode = dealerCode;
 		this.transCode = transCode;
+		this.dealerOrder = dealerOrder;
 		this.directShipFlag = directShipFlag;
 		this.modifiedBy = modifiedBy;
 		this.modifiedDate = modifiedDate;
 		this.vendorCode = vendorCode;
 	}
+
+
+
+
+
+
+
+
+
+	public String getDealerOrder() {
+		return dealerOrder;
+	}
+
+
+
+
+
+
+
+
+
+	public void setDealerOrder(String dealerOrder) {
+		this.dealerOrder = dealerOrder;
+	}
+
+
+
+
+
 
 
 

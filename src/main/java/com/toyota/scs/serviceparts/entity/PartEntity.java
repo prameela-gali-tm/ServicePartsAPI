@@ -88,8 +88,13 @@ public class PartEntity implements Serializable {
 	@Column(name="SERIAL_NUMBER")
 	private String serialNumber;
 	
+	@Column(name="FINAL_DESTINATION")
+	private String finalDestination;
+	
 	@Column(name="SUB_PART_NUMBER")
 	private long subPartNumber;
+	@Column(name="EDA")
+	private Date eda;
 		  
 		  
 
@@ -296,12 +301,16 @@ public class PartEntity implements Serializable {
 		this.subPartNumber = subPartNumber;
 	}
 
+	
+
+
 
 	public PartEntity(long id, String partNumber, String lineItemNumber, Date deliveryDueDate, String partDesc,
 			long orderQuantity, long outstandingQuantity, String vendorPartNumber, String directShip,
 			String homePosition, Date transmissionDate, String orderRefNumber, String dealer, String status,
 			String modifiedBy, Date modifiedDate, long orderId, String containerID, String serialNumber,
-			long subPartNumber) {
+			String finalDestination, long subPartNumber, Date eda, String poNumber, String orderType,
+			String vendorCode) {
 		super();
 		this.id = id;
 		this.partNumber = partNumber;
@@ -322,7 +331,12 @@ public class PartEntity implements Serializable {
 		this.orderId = orderId;
 		this.containerID = containerID;
 		this.serialNumber = serialNumber;
+		this.finalDestination = finalDestination;
 		this.subPartNumber = subPartNumber;
+		this.eda = eda;
+		this.poNumber = poNumber;
+		this.orderType = orderType;
+		this.vendorCode = vendorCode;
 	}
 
 
@@ -335,6 +349,30 @@ public class PartEntity implements Serializable {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+
+
+	public String getFinalDestination() {
+		return finalDestination;
+	}
+
+
+
+	public void setFinalDestination(String finalDestination) {
+		this.finalDestination = finalDestination;
+	}
+
+
+
+	public Date getEda() {
+		return eda;
+	}
+
+
+
+	public void setEda(Date eda) {
+		this.eda = eda;
 	}
 	
 	

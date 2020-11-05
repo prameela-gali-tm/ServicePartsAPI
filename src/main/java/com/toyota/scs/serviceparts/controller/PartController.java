@@ -65,9 +65,11 @@ public class PartController {
 					partEntity1.setOutstandingQuantity(partEntity.getOutstandingQuantity());
 					partEntity1.setPartDesc(partEntity.getPartDesc());
 					partEntity1.setPartNumber(partEntity.getPartNumber());
+					partEntity1.setFinalDestination(partEntity.getFinalDestination());
 					partEntity1.setSerialNumber(partEntity.getSerialNumber());
 					partEntity1.setStatus("BATCH");
 					partEntity1.setSubPartNumber(partEntity.getSubPartNumber());
+					partEntity1.setEda(partEntity.getEda());
 					partEntity1.setTransmissionDate(partEntity.getTransmissionDate());
 					partEntity1.setVendorPartNumber(partEntity.getVendorPartNumber());
 					partRepository.save(partEntity1);

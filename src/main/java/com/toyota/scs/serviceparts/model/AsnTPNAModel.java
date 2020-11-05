@@ -17,6 +17,7 @@ public class AsnTPNAModel {
     public String caseID;
     public String ddd;
     public String hp;
+    public String lineNumber;
     public String trackingFlag;
     public int totalCount;
     public int rowNumber;
@@ -144,6 +145,14 @@ public class AsnTPNAModel {
 		this.trackingFlag = trackingFlag;
 	}
 
+	public String getLineNumber() {
+		return lineNumber;
+	}
+
+	public void setLineNumber(String lineNumber) {
+		this.lineNumber = lineNumber;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -155,6 +164,7 @@ public class AsnTPNAModel {
 		result = prime * result + ((driverFirstName == null) ? 0 : driverFirstName.hashCode());
 		result = prime * result + ((driverLastName == null) ? 0 : driverLastName.hashCode());
 		result = prime * result + ((hp == null) ? 0 : hp.hashCode());
+		result = prime * result + ((lineNumber == null) ? 0 : lineNumber.hashCode());
 		result = prime * result + ((partNumber == null) ? 0 : partNumber.hashCode());
 		result = prime * result + ((poNumber == null) ? 0 : poNumber.hashCode());
 		result = prime * result + rowNumber;
@@ -211,6 +221,11 @@ public class AsnTPNAModel {
 				return false;
 		} else if (!hp.equals(other.hp))
 			return false;
+		if (lineNumber == null) {
+			if (other.lineNumber != null)
+				return false;
+		} else if (!lineNumber.equals(other.lineNumber))
+			return false;
 		if (partNumber == null) {
 			if (other.partNumber != null)
 				return false;
@@ -262,7 +277,7 @@ public class AsnTPNAModel {
 	public AsnTPNAModel(String poNumber, int shipmentID, String scacCode, String containerNumber, int bolQty,
 			int shipmentWeight, String shipmentDate, String vendorCode, String transmissionDate, String driverFirstName,
 			String driverLastName, String partNumber, int vendorShipQty, String caseID, String ddd, String hp,
-			String trackingFlag, int totalCount, int rowNumber) {
+			String lineNumber, String trackingFlag, int totalCount, int rowNumber) {
 		super();
 		this.poNumber = poNumber;
 		this.shipmentID = shipmentID;
@@ -280,10 +295,12 @@ public class AsnTPNAModel {
 		this.caseID = caseID;
 		this.ddd = ddd;
 		this.hp = hp;
+		this.lineNumber = lineNumber;
 		this.trackingFlag = trackingFlag;
 		this.totalCount = totalCount;
 		this.rowNumber = rowNumber;
 	}
+
 	
     
     
