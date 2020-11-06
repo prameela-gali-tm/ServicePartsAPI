@@ -29,7 +29,7 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<PartDetailsModel> findPartDetails(String partNumber,String vendorCode,boolean directFlag,int transportCode) {
+	public List<PartDetailsModel> findPartDetails(String partNumber,String vendorCode,String directFlag,int transportCode,String dealerNumber,String distFD,String deliveruDueDate,String poLineNuber) {
 		EntityManager em = emf.createEntityManager();
 		StringBuilder sqlQuery = new StringBuilder();
 	//	sqlQuery.append(" select * from (");
@@ -55,7 +55,7 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 		sqlQuery.append(" pt.vendor_part_number as vendorPartNumber, ");
 		sqlQuery.append(" pt.status as status, ");
 		sqlQuery.append(" ord.dealer_code as dealerCode, ");
-		sqlQuery.append(" ord.transportation_code as transportationCode, ");
+		sqlQuery.append(" ord.trans_code as transportationCode, ");
 		sqlQuery.append(" ord.final_destination as finalDestination ");
 		sqlQuery.append(" from spadm.sp_part pt ");
 		sqlQuery.append(" join spadm.sp_order ord  ");
@@ -67,19 +67,29 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 		if(vendorCode!=null) {
 			sqlQuery.append(" and  ord.vendor_code='").append(vendorCode).append("'"); 
 			  }
-		if(directFlag) { 
+		if(directFlag!=null && directFlag.equalsIgnoreCase("Y")) { 
 			sqlQuery.append(" and  ord.direct_ship_flag =true "); 
+			sqlQuery.append(" and  ord.dealer_code ='").append(dealerNumber).append("'");	
 			}else {
 				sqlQuery.append(" and  ord.direct_ship_flag =false "); 
+				sqlQuery.append(" and  ord.final_destination = '").append(distFD).append("'");
 			  }
 		if(transportCode!=0) {
-			sqlQuery.append(" and  ord.transportation_code=").append(transportCode);
+			sqlQuery.append(" and  ord.trans_code='").append(transportCode).append("'");
 		}
+		if(deliveruDueDate!=null) {
+			sqlQuery.append(" and  pt.ddd ='").append(deliveruDueDate).append("'");
+		}
+		/*
+		 * if(poLineNuber!=null) {
+		 * sqlQuery.append(" and  pt.line_item_number='").append(poLineNuber).append("'"
+		 * ); }
+		 */
 		
 		//sqlQuery.append(" and  pt.ddd <= (current_date+3)");
 		//sqlQuery.append(" order by pt.ddd asc , ord.order_type, pt.part_number asc");
 		//sqlQuery.append(" ) as subquery  order by orderType asc");
-		sqlQuery.append(" order by pt.ddd asc");
+		sqlQuery.append(" order by pt.ddd ,pt.part_number asc");
 		  List<PartEntity> list  = new ArrayList<PartEntity>();
 		  list =  (List<PartEntity>)em.createNativeQuery(sqlQuery.toString(),"viewPurchaseDetails").getResultList();
 		  List<PartDetailsModel> partDetilsList = new ArrayList<PartDetailsModel>();
@@ -111,7 +121,7 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 			   detailsModel.setVendorPartNumber(partEntity.getVendorPartNumber());
 			   detailsModel.setSupplierFullFillQuantity(partEntity.getOrderQuantity()-partEntity.getOutstandingQuantity());
 			   detailsModel.setPartialStatus(partEntity.getStatus());
-			   if(directFlag) {
+			   if(directFlag!=null && directFlag.equalsIgnoreCase("Y")) {
 				   detailsModel.setDealerOrDistinationFD(partEntity.getDealerCode());
 			   }else {
 				   detailsModel.setDealerOrDistinationFD(partEntity.getFinalDestination()); 
