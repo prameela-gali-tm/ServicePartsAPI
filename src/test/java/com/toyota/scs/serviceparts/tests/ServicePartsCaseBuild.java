@@ -226,7 +226,7 @@ public class ServicePartsCaseBuild extends BaseTest {
 		JSONObject JOPart = new JSONObject(respPart.toString());
 //Case build 
 		String GetReq = FileLoader.readJsonFilefromProject("CaseBuildHappypathresponse.json");
-		GetReq = TestUtil.setValueintojson(GetReq, "$.vendorCode", Vendor);
+		GetReq = TestUtil.setValueintojson(GetReq,  data.get("vendorCodePath"), Vendor);
 		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partNumber", PartNumber);
 		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partQuantity", "10");
 		System.out.println(GetReq);

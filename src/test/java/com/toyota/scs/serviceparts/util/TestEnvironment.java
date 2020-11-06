@@ -47,7 +47,8 @@ public class TestEnvironment {
 
 	public static void setDevValues() {
 		ENVIRONMENT = "DEV";
-		APP_SERVICE_URL = "DEV URL";
+		APP_SERVICE_URL = "http://dev-scs-parts-lb-48427546.us-west-2.elb.amazonaws.com";
+		Filepath = System.getProperty("user.dir") + "\\src\\test\\resources\\testdata\\Scenarios1.xlsx";
 	}
 
 	public static void setQAValues() {

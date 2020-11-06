@@ -33,7 +33,7 @@ public class OrderController {
 	@GetMapping("/fetchorder")
 	public Page getAllOrder(@RequestParam(defaultValue = "0") Integer pageNo, 
             @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "orderId") String sortBy){
+            @RequestParam(defaultValue = "id") String sortBy){
 		Page pageresult = service.getAllOrder(pageNo, pageSize, sortBy);
 		 
         return  pageresult; 
