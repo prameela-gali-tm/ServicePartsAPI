@@ -17,38 +17,31 @@ public class AsnTPNAModel {
     public String caseID;
     public String ddd;
     public String hp;
+    public String lineNumber;
     public String trackingFlag;
-    public int rowCount;
-    public int lineNumber;
+    public int totalCount;
+    public int rowNumber;
     
     public AsnTPNAModel() {
     	super();
     }
-	public AsnTPNAModel(String poNumber, int shipmentID, String scacCode, String containerNumber, int bolQty,
-			int shipmentWeight, String shipmentDate, String vendorCode, String transmissionDate, String driverFirstName,
-			String driverLastName, String partNumber, int vendorShipQty, String caseID, String ddd, String hp,
-			String trackingFlag, int rowCount, int lineNumber) {
-		super();
-		this.poNumber = poNumber;
-		this.shipmentID = shipmentID;
-		this.scacCode = scacCode;
-		this.containerNumber = containerNumber;
-		this.bolQty = bolQty;
-		this.shipmentWeight = shipmentWeight;
-		this.shipmentDate = shipmentDate;
-		this.vendorCode = vendorCode;
-		this.transmissionDate = transmissionDate;
-		this.driverFirstName = driverFirstName;
-		this.driverLastName = driverLastName;
-		this.partNumber = partNumber;
-		this.vendorShipQty = vendorShipQty;
-		this.caseID = caseID;
-		this.ddd = ddd;
-		this.hp = hp;
-		this.trackingFlag = trackingFlag;
-		this.rowCount = rowCount;
-		this.lineNumber = lineNumber;
+	
+	public int getTotalCount() {
+		return totalCount;
 	}
+
+	public void setTotalCount(int totalCount) {
+		this.totalCount = totalCount;
+	}
+
+	public int getRowNumber() {
+		return rowNumber;
+	}
+
+	public void setRowNumber(int rowNumber) {
+		this.rowNumber = rowNumber;
+	}
+
 	public String getPoNumber() {
 		return poNumber;
 	}
@@ -151,18 +144,15 @@ public class AsnTPNAModel {
 	public void setTrackingFlag(String trackingFlag) {
 		this.trackingFlag = trackingFlag;
 	}
-	public int getRowCount() {
-		return rowCount;
-	}
-	public void setRowCount(int rowCount) {
-		this.rowCount = rowCount;
-	}
-	public int getLineNumber() {
+
+	public String getLineNumber() {
 		return lineNumber;
 	}
-	public void setLineNumber(int lineNumber) {
+
+	public void setLineNumber(String lineNumber) {
 		this.lineNumber = lineNumber;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -174,20 +164,22 @@ public class AsnTPNAModel {
 		result = prime * result + ((driverFirstName == null) ? 0 : driverFirstName.hashCode());
 		result = prime * result + ((driverLastName == null) ? 0 : driverLastName.hashCode());
 		result = prime * result + ((hp == null) ? 0 : hp.hashCode());
-		result = prime * result + lineNumber;
+		result = prime * result + ((lineNumber == null) ? 0 : lineNumber.hashCode());
 		result = prime * result + ((partNumber == null) ? 0 : partNumber.hashCode());
 		result = prime * result + ((poNumber == null) ? 0 : poNumber.hashCode());
-		result = prime * result + rowCount;
+		result = prime * result + rowNumber;
 		result = prime * result + ((scacCode == null) ? 0 : scacCode.hashCode());
 		result = prime * result + ((shipmentDate == null) ? 0 : shipmentDate.hashCode());
 		result = prime * result + shipmentID;
 		result = prime * result + shipmentWeight;
+		result = prime * result + totalCount;
 		result = prime * result + ((trackingFlag == null) ? 0 : trackingFlag.hashCode());
 		result = prime * result + ((transmissionDate == null) ? 0 : transmissionDate.hashCode());
 		result = prime * result + ((vendorCode == null) ? 0 : vendorCode.hashCode());
 		result = prime * result + vendorShipQty;
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -229,7 +221,10 @@ public class AsnTPNAModel {
 				return false;
 		} else if (!hp.equals(other.hp))
 			return false;
-		if (lineNumber != other.lineNumber)
+		if (lineNumber == null) {
+			if (other.lineNumber != null)
+				return false;
+		} else if (!lineNumber.equals(other.lineNumber))
 			return false;
 		if (partNumber == null) {
 			if (other.partNumber != null)
@@ -241,7 +236,7 @@ public class AsnTPNAModel {
 				return false;
 		} else if (!poNumber.equals(other.poNumber))
 			return false;
-		if (rowCount != other.rowCount)
+		if (rowNumber != other.rowNumber)
 			return false;
 		if (scacCode == null) {
 			if (other.scacCode != null)
@@ -256,6 +251,8 @@ public class AsnTPNAModel {
 		if (shipmentID != other.shipmentID)
 			return false;
 		if (shipmentWeight != other.shipmentWeight)
+			return false;
+		if (totalCount != other.totalCount)
 			return false;
 		if (trackingFlag == null) {
 			if (other.trackingFlag != null)
@@ -276,6 +273,35 @@ public class AsnTPNAModel {
 			return false;
 		return true;
 	}
+
+	public AsnTPNAModel(String poNumber, int shipmentID, String scacCode, String containerNumber, int bolQty,
+			int shipmentWeight, String shipmentDate, String vendorCode, String transmissionDate, String driverFirstName,
+			String driverLastName, String partNumber, int vendorShipQty, String caseID, String ddd, String hp,
+			String lineNumber, String trackingFlag, int totalCount, int rowNumber) {
+		super();
+		this.poNumber = poNumber;
+		this.shipmentID = shipmentID;
+		this.scacCode = scacCode;
+		this.containerNumber = containerNumber;
+		this.bolQty = bolQty;
+		this.shipmentWeight = shipmentWeight;
+		this.shipmentDate = shipmentDate;
+		this.vendorCode = vendorCode;
+		this.transmissionDate = transmissionDate;
+		this.driverFirstName = driverFirstName;
+		this.driverLastName = driverLastName;
+		this.partNumber = partNumber;
+		this.vendorShipQty = vendorShipQty;
+		this.caseID = caseID;
+		this.ddd = ddd;
+		this.hp = hp;
+		this.lineNumber = lineNumber;
+		this.trackingFlag = trackingFlag;
+		this.totalCount = totalCount;
+		this.rowNumber = rowNumber;
+	}
+
+	
     
     
     

@@ -16,6 +16,6 @@ public class KafKaProducerService {
 	
 	public void sendToKafka(List<AsnTPNAModel> tpnaList) {
 		
-		this.kafkaTemplate.send("TEST.SCS.ASN.NAPO.TOPIC", tpnaList);
+		this.kafkaTemplate.send("QA.SCS.ASN.NAPO.TOPIC", tpnaList);
 	}
 }

@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,7 +20,8 @@ import lombok.Setter;
 @Table(name="SP_SHIPMENT")
 public class ShipmentEntity implements Serializable {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="shipmentSeqGen")
+	@SequenceGenerator(name = "shipmentSeqGen", sequenceName = "SPADM.sp_shipment_seq", initialValue = 1, allocationSize = 10)
 	@Column(name="SHIPMENT_ID")
 	private long id;
 	
@@ -44,8 +46,11 @@ public class ShipmentEntity implements Serializable {
 	
 	@Column(name="SCAC_CODE")
 	private String scacCode;
-	
-	@Column(name="SUPPLIER_FIRST_NAME")
+	// added
+	@Column(name = "VENDOR_CODE")
+	private String vendorCode;
+
+	@Column(name = "SUPPLIER_FIRST_NAME")
 	private String supplierFirstName;
 	
 	@Column(name="SUPPLIER_LAST_NAME")
@@ -80,9 +85,9 @@ public class ShipmentEntity implements Serializable {
 	}
 
 	public ShipmentEntity(long id, String route, long run, Date shipDate, String trailer, String driverFirstName,
-			String driverLastName, String scacCode, String supplierFirstName, String supplierLastName,
-			String trackingNumber, String confirmationNumber, String status, String geoLongitude, String geoLattitude,
-			Date modifiedDate, String modifiedBy) {
+			String driverLastName, String scacCode, String vendorCode, String supplierFirstName,
+			String supplierLastName, String trackingNumber, String confirmationNumber, String status,
+			String geoLongitude, String geoLattitude, Date modifiedDate, String modifiedBy) {
 		super();
 		this.id = id;
 		this.route = route;
@@ -92,6 +97,7 @@ public class ShipmentEntity implements Serializable {
 		this.driverFirstName = driverFirstName;
 		this.driverLastName = driverLastName;
 		this.scacCode = scacCode;
+		this.vendorCode = vendorCode;
 		this.supplierFirstName = supplierFirstName;
 		this.supplierLastName = supplierLastName;
 		this.trackingNumber = trackingNumber;
@@ -239,6 +245,13 @@ public class ShipmentEntity implements Serializable {
 	public void setId(long id) {
 		this.id = id;
 	}
-	
-	
+
+	public String getVendorCode() {
+		return vendorCode;
+	}
+
+	public void setVendorCode(String vendorCode) {
+		this.vendorCode = vendorCode;
+	}
+
 }

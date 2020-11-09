@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,7 +29,8 @@ import lombok.Setter;
 public class RoutePathNodeEntity implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="routeNodeSeqGen")
+	@SequenceGenerator(name = "routeNodeSeqGen", sequenceName = "SPADM.sp_route_node_seq", initialValue = 1, allocationSize = 10)
 	@Column(name="ROUTE_PATH__NODE_ID")
 	private long id;
 	

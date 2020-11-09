@@ -1,5 +1,8 @@
 package com.toyota.scs.serviceparts.serviceImpl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +23,19 @@ public class ShipmentService {
 		Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(sortBy).ascending());
 		 
         Page<ShipmentEntity> pagedResult = shipmentRepositroy.findAll(paging);
+        
+        return pagedResult;
+	}
+
+	public Page getAllShipmentDetailsByVendorAndStatus(Integer pageNo, Integer pageSize, String sortBy,List<String> vendorCode) {
+		Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(sortBy).ascending());
+		 
+	List<String> status=new ArrayList<String>();
+	status.add("DRAFT");
+	status.add("SHIPMENT LOAD");
+
+		
+        Page<ShipmentEntity> pagedResult = shipmentRepositroy.findAllByVendorCodeInAndStatusIn(vendorCode,status,paging);
         
         return pagedResult;
 	}
