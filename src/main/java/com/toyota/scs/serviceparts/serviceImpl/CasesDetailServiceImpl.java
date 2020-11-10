@@ -809,16 +809,16 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 								pushMessage(vendorCode, subPartNumberValidation(obj.getSubPartNumber()), mesMap);
 							}
 							if(obj.getPoNumber()!=null) {
-								pushMessage(vendorCode, poNumberValidation(obj.getSubPartNumber()), mesMap);
+								pushMessage(vendorCode, poNumberValidation(obj.getPoNumber()), mesMap);
 							}
 							if(obj.getPoLineNumber()!=null) {
-								pushMessage(vendorCode, poLineNumberValidation(obj.getSubPartNumber()), mesMap);
+								pushMessage(vendorCode, poLineNumberValidation(obj.getPoLineNumber()), mesMap);
 							}
 							if(obj.getHomePosition()!=null) {
-								pushMessage(vendorCode, homePostionValidation(obj.getSubPartNumber()), mesMap);
+								pushMessage(vendorCode, homePostionValidation(obj.getHomePosition()), mesMap);
 							}
 							if(obj.getDeliveryDueDate()!=null) {
-								pushMessage(vendorCode, deliverDueDateValidation(obj.getSubPartNumber()), mesMap);
+								pushMessage(vendorCode, deliverDueDateValidation(obj.getDeliveryDueDate()), mesMap);
 							}
 							if (obj.getDeliveryDueDate() == null && valid) {
 								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode,"N",3,null,null,null,null);
@@ -1161,41 +1161,42 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 			}
 			
 			
-			  if (caseWithUnitDetails != null && caseWithUnitDetails.size() > 0) {
-			  TreeMap<String, List<PartDetailsModel>> sorting = new TreeMap<String,
-			  List<PartDetailsModel>>(); sorting.putAll(caseWithUnitDetails); for
-			  (Map.Entry<String, List<PartDetailsModel>> objects : sorting.entrySet()) {
-			  System.out.println(
-			  "--------------------------------------------------------------------------")
-			  ; System.out.
-			  println("-------------------------------case number------------------------------->"
-			  ); System.out.println("Case Number---------------------------" +
-			  objects.getKey()); System.out.
-			  println("--------------------------------Units details-------------------------"
-			  ); for (PartDetailsModel detailsModel : objects.getValue()) {
-			  System.out.println("Part Number-----------------------" +
-			  detailsModel.getPartNumber());
-			  System.out.println("PO NUmber-------------------------" +
-			  detailsModel.getPoNumber());
-			  System.out.println("Delivery due date ----------------" +
-			  detailsModel.getDeliveryDueDate());
-			  System.out.println("Planned Quantity in DB------------" +
-			  detailsModel.getOrderQuantity()); System.out
-			  .println("Outstading quantity---------------" +
-			  detailsModel.getOutstandingQuantity()); System.out.println(
-			  "FullFillment quantity-------------" +
-			  detailsModel.getSupplierFullFillQuantity());
-			  System.out.println("Staus-----------------------------" +
-			  detailsModel.getPartialStatus());
-			  
-			  System.out.println("Seerial number-------------------->"+detailsModel.
-			  getSerialNumberDetailsModel());} System.out.
-			  println("----------------End of Case Number details --------------------------"
-			  ); } }
-			 
+			/*
+			 * if (caseWithUnitDetails != null && caseWithUnitDetails.size() > 0) {
+			 * TreeMap<String, List<PartDetailsModel>> sorting = new TreeMap<String,
+			 * List<PartDetailsModel>>(); sorting.putAll(caseWithUnitDetails); for
+			 * (Map.Entry<String, List<PartDetailsModel>> objects : sorting.entrySet()) {
+			 * System.out.println(
+			 * "--------------------------------------------------------------------------")
+			 * ; System.out.
+			 * println("-------------------------------case number------------------------------->"
+			 * ); System.out.println("Case Number---------------------------" +
+			 * objects.getKey()); System.out.
+			 * println("--------------------------------Units details-------------------------"
+			 * ); for (PartDetailsModel detailsModel : objects.getValue()) {
+			 * System.out.println("Part Number-----------------------" +
+			 * detailsModel.getPartNumber());
+			 * System.out.println("PO NUmber-------------------------" +
+			 * detailsModel.getPoNumber());
+			 * System.out.println("Delivery due date ----------------" +
+			 * detailsModel.getDeliveryDueDate());
+			 * System.out.println("Planned Quantity in DB------------" +
+			 * detailsModel.getOrderQuantity()); System.out
+			 * .println("Outstading quantity---------------" +
+			 * detailsModel.getOutstandingQuantity()); System.out.println(
+			 * "FullFillment quantity-------------" +
+			 * detailsModel.getSupplierFullFillQuantity());
+			 * System.out.println("Staus-----------------------------" +
+			 * detailsModel.getPartialStatus());
+			 * 
+			 * System.out.println("Seerial number-------------------->"+detailsModel.
+			 * getSerialNumberDetailsModel());} System.out.
+			 * println("----------------End of Case Number details --------------------------"
+			 * ); } }
+			 */ 
 			 
 			/// Saving the Records into Data base start here
-			 valid =false;/// need to remove after demo
+			// valid =false;/// need to remove after demo
 			if (valid) {
 				String confirmationNumber = confirmationNumber(vendorCode, "C");
 				message.setConfirmationNumber(confirmationNumber);
