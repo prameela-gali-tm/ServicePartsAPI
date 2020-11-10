@@ -763,13 +763,17 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 						Map<String, String> duplicateValidation = new HashMap<String, String>();
 						// validating the direct shipment flag starts here
 						if(model.getDirectShipFlag()!=null && model.getDirectShipFlag().equals("Y")) {
-							if(model.getDealerNumber()==null) {
+							if(model.getDealerNumber()==null || model.getDealerNumber().isEmpty()) {
 								pushMessage(vendorCode, ServicePartConstant.DEALER_CODE, mesMap);
+							}else if(model.getDealerNumber()!=null && model.getDealerNumber().length()>10){
+								pushMessage(vendorCode, ServicePartConstant.DEALER_CODE_LEN, mesMap);
 							}
 						}
 						if(model.getDirectShipFlag()!=null && model.getDirectShipFlag().equalsIgnoreCase("N")) {
-							if(model.getDistFD()==null) {
+							if(model.getDistFD()==null || model.getDistFD().isEmpty()) {
 								pushMessage(vendorCode, ServicePartConstant.DIRECT_FD, mesMap);
+							}else if(model.getDistFD()!=null && model.getDistFD().length()>30) {
+								pushMessage(vendorCode, ServicePartConstant.DIRECT_FD_LEN, mesMap);
 							}
 						}
 						// validating the direct shipment flag ends here
