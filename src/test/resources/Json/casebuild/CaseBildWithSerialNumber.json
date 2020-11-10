@@ -9,25 +9,23 @@
 				"distFD": "",
 				"dealerNumber": 53232,
 				"units": [
+					
 					{
 						"partNumber": "P54G10400A",
 						"subPartNumber": "581650703100",
 						"poNumber": "TS020993",
 						"poLineNumber": "00001",
 						"poLineHomePosition": "F",
-						"partQuantity": 10,
+						"partQuantity": 2,
 						"poLineDeliveryDueDate": "2020-11-01",
-						"serialNumber": null
-					}
-				],
-				"rfidDetails": [
-					{
-						"rfid": "T11234123456",
-						"type": ""
-					},
-					{
-						"rfid": "T11234123455",
-						"type": ""
+						"serialNumberDetails": [
+							{
+								"serialNumber": "231231F36"
+							},
+							{
+								"serialNumber": "231231F37"
+							}
+						]
 					}
 				]
 			}

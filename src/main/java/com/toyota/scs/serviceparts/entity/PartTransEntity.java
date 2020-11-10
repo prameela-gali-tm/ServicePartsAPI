@@ -2,28 +2,22 @@ package com.toyota.scs.serviceparts.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Table(name="SP_PART_TRANS")
@@ -81,6 +75,10 @@ public class PartTransEntity implements Serializable {
 	
 	@Transient
 	private String deliveryDueDate;
+	
+	@Transient
+	private List<String> serialNumberList;
+	
 	
 	
 	public PartTransEntity() {
@@ -232,6 +230,14 @@ public class PartTransEntity implements Serializable {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public List<String> getSerialNumberList() {
+		return serialNumberList;
+	}
+
+	public void setSerialNumberList(List<String> serialNumberList) {
+		this.serialNumberList = serialNumberList;
 	}
 	
 	

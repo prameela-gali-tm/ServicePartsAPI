@@ -56,6 +56,10 @@ public class OrderController {
 				orderEntity1.setOrderType(orderEntity.getOrderType());
 				orderEntity1.setPoNumber(orderEntity.getPoNumber());
 				orderEntity1.setVendorCode(orderEntity.getVendorCode());
+				orderEntity1.setFinalDestination(orderEntity.getFinalDestination());
+				orderEntity1.setDealerCode(orderEntity.getDealerCode());
+				orderEntity1.setDirectShipFlag(orderEntity.getDirectShipFlag());
+				orderEntity1.setTransCode(orderEntity.getTransCode());
 				orderRepositroy.save(orderEntity1);
 				returnValue= "Record was updated successfully for the given id "+orderEntity.getId();
 			}

@@ -97,17 +97,171 @@ public class ServicePartsCaseBuildAPIspecValidation extends BaseTest {
 		dp.size();
 		return dp.iterator();
 	}
-
+	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
+	public void ValidateInvalidHomePosition(Integer row) throws Exception {
+		test = rep.startTest("ValidateInvalidVendorCode - ValidateInvalidVendorCode");
+		currentRow.set(row);
+		GetDataWithRowNum(row);
+		//Case Build request
+		String GetReq = FileLoader.readJsonFilefromProject("casebuild/caseBuildwithDetailedUnitObject.json");
+		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].distFD", "7887xn@,xn");
+		System.out.println(GetReq);
+		HttpPost HTTPPOstreqGet = tu.prepareHTTPPostwithJsonString("[" + GetReq + "]", "casebuildAPI?status=true");
+		System.out.println("Test uses file..." + GetReq);
+		JSONObject respGet = rs.sendPostwithHeaders(HTTPPOstreqGet);
+		test.log(LogStatus.INFO, "sent post request with payload-----" + Inputfile);
+		System.out.println("Reponse is----------" + respGet.toString());
+		test.log(LogStatus.INFO, "received response-----" + respGet.toString());
+		JSONObject JOGet = new JSONObject(respGet.toString());
+		System.out.println(JOGet.getString("confirmationNumber"));
+		System.out.println();
+	}
+	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
+	public void ValidateDeliveryDueDateInvalid(Integer row) throws Exception {
+		test = rep.startTest("ValidateInvalidVendorCode - ValidateInvalidVendorCode");
+		currentRow.set(row);
+		GetDataWithRowNum(row);
+		//Case Build request
+		String GetReq = FileLoader.readJsonFilefromProject("casebuild/caseBuildwithDetailedUnitObject.json");
+		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].distFD", "7887xn@,xn");
+		System.out.println(GetReq);
+		HttpPost HTTPPOstreqGet = tu.prepareHTTPPostwithJsonString("[" + GetReq + "]", "casebuildAPI?status=true");
+		System.out.println("Test uses file..." + GetReq);
+		JSONObject respGet = rs.sendPostwithHeaders(HTTPPOstreqGet);
+		test.log(LogStatus.INFO, "sent post request with payload-----" + Inputfile);
+		System.out.println("Reponse is----------" + respGet.toString());
+		test.log(LogStatus.INFO, "received response-----" + respGet.toString());
+		JSONObject JOGet = new JSONObject(respGet.toString());
+		System.out.println(JOGet.getString("confirmationNumber"));
+		System.out.println();
+	}
+	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
+	public void ValidateInvalidPONumber(Integer row) throws Exception {
+		test = rep.startTest("ValidateInvalidVendorCode - ValidateInvalidVendorCode");
+		currentRow.set(row);
+		GetDataWithRowNum(row);
+		//Case Build request
+		String GetReq = FileLoader.readJsonFilefromProject("casebuild/caseBuildwithDetailedUnitObject.json");
+		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].distFD", "7887xn@,xn");
+		System.out.println(GetReq);
+		HttpPost HTTPPOstreqGet = tu.prepareHTTPPostwithJsonString("[" + GetReq + "]", "casebuildAPI?status=true");
+		System.out.println("Test uses file..." + GetReq);
+		JSONObject respGet = rs.sendPostwithHeaders(HTTPPOstreqGet);
+		test.log(LogStatus.INFO, "sent post request with payload-----" + Inputfile);
+		System.out.println("Reponse is----------" + respGet.toString());
+		test.log(LogStatus.INFO, "received response-----" + respGet.toString());
+		JSONObject JOGet = new JSONObject(respGet.toString());
+		System.out.println(JOGet.getString("confirmationNumber"));
+		System.out.println();
+	}
+	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
+	public void ValidateInvalidPOLine(Integer row) throws Exception {
+		test = rep.startTest("ValidateInvalidVendorCode - ValidateInvalidVendorCode");
+		currentRow.set(row);
+		GetDataWithRowNum(row);
+		//Case Build request
+		String GetReq = FileLoader.readJsonFilefromProject("casebuild/caseBuildwithDetailedUnitObject.json");
+		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].distFD", "7887xn@,xn");
+		System.out.println(GetReq);
+		HttpPost HTTPPOstreqGet = tu.prepareHTTPPostwithJsonString("[" + GetReq + "]", "casebuildAPI?status=true");
+		System.out.println("Test uses file..." + GetReq);
+		JSONObject respGet = rs.sendPostwithHeaders(HTTPPOstreqGet);
+		test.log(LogStatus.INFO, "sent post request with payload-----" + Inputfile);
+		System.out.println("Reponse is----------" + respGet.toString());
+		test.log(LogStatus.INFO, "received response-----" + respGet.toString());
+		JSONObject JOGet = new JSONObject(respGet.toString());
+		System.out.println(JOGet.getString("confirmationNumber"));
+		System.out.println();
+	}
+	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
+	public void ValidateInvalidPONumberPOLine(Integer row) throws Exception {
+		test = rep.startTest("ValidateInvalidVendorCode - ValidateInvalidVendorCode");
+		currentRow.set(row);
+		GetDataWithRowNum(row);
+		//Case Build request
+		String GetReq = FileLoader.readJsonFilefromProject("casebuild/caseBuildwithDetailedUnitObject.json");
+		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].distFD", "7887xn@,xn");
+		System.out.println(GetReq);
+		HttpPost HTTPPOstreqGet = tu.prepareHTTPPostwithJsonString("[" + GetReq + "]", "casebuildAPI?status=true");
+		System.out.println("Test uses file..." + GetReq);
+		JSONObject respGet = rs.sendPostwithHeaders(HTTPPOstreqGet);
+		test.log(LogStatus.INFO, "sent post request with payload-----" + Inputfile);
+		System.out.println("Reponse is----------" + respGet.toString());
+		test.log(LogStatus.INFO, "received response-----" + respGet.toString());
+		JSONObject JOGet = new JSONObject(respGet.toString());
+		System.out.println(JOGet.getString("confirmationNumber"));
+		System.out.println();
+	}
+	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
+	public void ValidateInvalidSerialNumber(Integer row) throws Exception {
+		test = rep.startTest("ValidateInvalidVendorCode - ValidateInvalidVendorCode");
+		currentRow.set(row);
+		GetDataWithRowNum(row);
+		//Case Build request
+		String GetReq = FileLoader.readJsonFilefromProject("casebuild/caseBuildwithDetailedUnitObject.json");
+		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].distFD", "7887xn@,xn");
+		System.out.println(GetReq);
+		HttpPost HTTPPOstreqGet = tu.prepareHTTPPostwithJsonString("[" + GetReq + "]", "casebuildAPI?status=true");
+		System.out.println("Test uses file..." + GetReq);
+		JSONObject respGet = rs.sendPostwithHeaders(HTTPPOstreqGet);
+		test.log(LogStatus.INFO, "sent post request with payload-----" + Inputfile);
+		System.out.println("Reponse is----------" + respGet.toString());
+		test.log(LogStatus.INFO, "received response-----" + respGet.toString());
+		JSONObject JOGet = new JSONObject(respGet.toString());
+		System.out.println(JOGet.getString("confirmationNumber"));
+		System.out.println();
+	}
+	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
+	public void ValidateDuplicateSerialNumber(Integer row) throws Exception {
+		test = rep.startTest("ValidateInvalidVendorCode - ValidateInvalidVendorCode");
+		currentRow.set(row);
+		GetDataWithRowNum(row);
+		//Case Build request
+		String GetReq = FileLoader.readJsonFilefromProject("casebuild/caseBuildwithDetailedUnitObject.json");
+		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].distFD", "7887xn@,xn");
+		System.out.println(GetReq);
+		HttpPost HTTPPOstreqGet = tu.prepareHTTPPostwithJsonString("[" + GetReq + "]", "casebuildAPI?status=true");
+		System.out.println("Test uses file..." + GetReq);
+		JSONObject respGet = rs.sendPostwithHeaders(HTTPPOstreqGet);
+		test.log(LogStatus.INFO, "sent post request with payload-----" + Inputfile);
+		System.out.println("Reponse is----------" + respGet.toString());
+		test.log(LogStatus.INFO, "received response-----" + respGet.toString());
+		JSONObject JOGet = new JSONObject(respGet.toString());
+		System.out.println(JOGet.getString("confirmationNumber"));
+		System.out.println();
+	}
+	
+	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
+	public void ValidateInvalidUnauthorizedVendor(Integer row) throws Exception {
+		test = rep.startTest("ValidateInvalidVendorCode - ValidateInvalidVendorCode");
+		currentRow.set(row);
+		GetDataWithRowNum(row);
+		//Case Build request
+		String GetReq = FileLoader.readJsonFilefromProject("casebuild/caseBuildwithDetailedUnitObject.json");
+		GetReq = TestUtil.setValueintojson(GetReq, "$.vendorCode", "rewqrt543");
+		
+		System.out.println(GetReq);
+		HttpPost HTTPPOstreqGet = tu.prepareHTTPPostwithJsonString("[" + GetReq + "]", "casebuildAPI?status=true");
+		System.out.println("Test uses file..." + GetReq);
+		JSONObject respGet = rs.sendPostwithHeaders(HTTPPOstreqGet);
+		test.log(LogStatus.INFO, "sent post request with payload-----" + Inputfile);
+		System.out.println("Reponse is----------" + respGet.toString());
+		test.log(LogStatus.INFO, "received response-----" + respGet.toString());
+		JSONObject JOGet = new JSONObject(respGet.toString());
+		System.out.println(JOGet.getString("confirmationNumber"));
+		System.out.println();
+	}
+	
+	
+	
 	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
 	public void ValidateInvalidDistFD(Integer row) throws Exception {
 		test = rep.startTest("ValidateInvalidVendorCode - ValidateInvalidVendorCode");
 		currentRow.set(row);
 		GetDataWithRowNum(row);
-//Case Build request
+		//Case Build request
 		String GetReq = FileLoader.readJsonFilefromProject("casebuild/caseBuildwithDetailedUnitObject.json");
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].distFD", "7887");
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partNumber", PartNumber);
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partQuantity", "5");
+		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].distFD", "7887xn@,xn");
 		System.out.println(GetReq);
 		HttpPost HTTPPOstreqGet = tu.prepareHTTPPostwithJsonString("[" + GetReq + "]", "casebuildAPI?status=true");
 		System.out.println("Test uses file..." + GetReq);
@@ -120,15 +274,14 @@ public class ServicePartsCaseBuildAPIspecValidation extends BaseTest {
 		System.out.println();
 	}
 
+	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
 	public void ValidateMissingDistFD(Integer row) throws Exception {
-		test = rep.startTest("ValidateInvalidVendorCode - ValidateInvalidVendorCode");
+		test = rep.startTest("ValidateMissingDistFD - ValidateInvalidVendorCode");
 		currentRow.set(row);
 		GetDataWithRowNum(row);
-//Case Build request
+		//Case Build request
 		String GetReq = FileLoader.readJsonFilefromProject("casebuild/caseBuildwithDetailedUnitObject.json");
 		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].distFD", "");
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partNumber", PartNumber);
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partQuantity", "5");
 		System.out.println(GetReq);
 		HttpPost HTTPPOstreqGet = tu.prepareHTTPPostwithJsonString("[" + GetReq + "]", "casebuildAPI?status=true");
 		System.out.println("Test uses file..." + GetReq);
@@ -137,19 +290,16 @@ public class ServicePartsCaseBuildAPIspecValidation extends BaseTest {
 		System.out.println("Reponse is----------" + respGet.toString());
 		test.log(LogStatus.INFO, "received response-----" + respGet.toString());
 		JSONObject JOGet = new JSONObject(respGet.toString());
-		System.out.println(JOGet.getString("confirmationNumber"));
-		System.out.println();
-	}
+		}
 
+	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
 	public void ValidateDealerNumberInvalid(Integer row) throws Exception {
 		test = rep.startTest("ValidateInvalidVendorCode - ValidateInvalidVendorCode");
 		currentRow.set(row);
 		GetDataWithRowNum(row);
-//Case Build request
+		//Case Build request
 		String GetReq = FileLoader.readJsonFilefromProject("casebuild/caseBuildwithDetailedUnitObject.json");
 		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].dealerNumber", "1234565432345676543");
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partNumber", PartNumber);
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partQuantity", "5");
 		System.out.println(GetReq);
 		HttpPost HTTPPOstreqGet = tu.prepareHTTPPostwithJsonString("[" + GetReq + "]", "casebuildAPI?status=true");
 		System.out.println("Test uses file..." + GetReq);
@@ -158,19 +308,16 @@ public class ServicePartsCaseBuildAPIspecValidation extends BaseTest {
 		System.out.println("Reponse is----------" + respGet.toString());
 		test.log(LogStatus.INFO, "received response-----" + respGet.toString());
 		JSONObject JOGet = new JSONObject(respGet.toString());
-		System.out.println(JOGet.getString("confirmationNumber"));
-		System.out.println();
 	}
 
+	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
 	public void ValidateRFIDInvalid(Integer row) throws Exception {
 		test = rep.startTest("ValidateInvalidVendorCode - ValidateInvalidVendorCode");
 		currentRow.set(row);
 		GetDataWithRowNum(row);
-//Case Build request
+		//Case Build request
 		String GetReq = FileLoader.readJsonFilefromProject("casebuild/caseBuildwithDetailedUnitObject.json");
 		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].transportationCode", "7887");
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partNumber", PartNumber);
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partQuantity", "5");
 		System.out.println(GetReq);
 		HttpPost HTTPPOstreqGet = tu.prepareHTTPPostwithJsonString("[" + GetReq + "]", "casebuildAPI?status=true");
 		System.out.println("Test uses file..." + GetReq);
@@ -183,15 +330,15 @@ public class ServicePartsCaseBuildAPIspecValidation extends BaseTest {
 		System.out.println();
 	}
 
+	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
 	public void ValidateRFIDDuplicate(Integer row) throws Exception {
-		test = rep.startTest("ValidateInvalidVendorCode - ValidateInvalidVendorCode");
+		test = rep.startTest("ValidateRFIDDuplicate - ValidateRFIDDuplicate");
 		currentRow.set(row);
 		GetDataWithRowNum(row);
-//Case Build request
+		//Case Build request
 		String GetReq = FileLoader.readJsonFilefromProject("casebuild/caseBuildwithDetailedUnitObject.json");
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].transportationCode", "7887");
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partNumber", PartNumber);
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partQuantity", "5");
+		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].rfidDetails[0].rfid", "T11234123456");
+		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].rfidDetails[0].rfid", "T11234123456");
 		System.out.println(GetReq);
 		HttpPost HTTPPOstreqGet = tu.prepareHTTPPostwithJsonString("[" + GetReq + "]", "casebuildAPI?status=true");
 		System.out.println("Test uses file..." + GetReq);
@@ -204,15 +351,14 @@ public class ServicePartsCaseBuildAPIspecValidation extends BaseTest {
 		System.out.println();
 	}
 
+	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
 	public void ValidateRFIDTypeInvalid(Integer row) throws Exception {
 		test = rep.startTest("ValidateInvalidVendorCode - ValidateInvalidVendorCode");
 		currentRow.set(row);
 		GetDataWithRowNum(row);
-//Case Build request
+		//Case Build request
 		String GetReq = FileLoader.readJsonFilefromProject("casebuild/caseBuildwithDetailedUnitObject.json");
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].transportationCode", "7887");
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partNumber", PartNumber);
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partQuantity", "5");
+		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].rfidDetails[0].rfid", "T11234123456");
 		System.out.println(GetReq);
 		HttpPost HTTPPOstreqGet = tu.prepareHTTPPostwithJsonString("[" + GetReq + "]", "casebuildAPI?status=true");
 		System.out.println("Test uses file..." + GetReq);
@@ -225,14 +371,14 @@ public class ServicePartsCaseBuildAPIspecValidation extends BaseTest {
 		System.out.println();
 	}
 
+	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
 	public void ValidateInvalidPartNumber(Integer row) throws Exception {
 		test = rep.startTest("ValidateInvalidVendorCode - ValidateInvalidVendorCode");
 		currentRow.set(row);
 		GetDataWithRowNum(row);
-//Case Build request
+		//Case Build request
 		String GetReq = FileLoader.readJsonFilefromProject("casebuild/caseBuildwithDetailedUnitObject.json");
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partNumber", "753159025852");
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partQuantity", "5");
+		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partNumber", "Part753159025852678687");
 		System.out.println(GetReq);
 		HttpPost HTTPPOstreqGet = tu.prepareHTTPPostwithJsonString("[" + GetReq + "]", "casebuildAPI?status=true");
 		System.out.println("Test uses file..." + GetReq);
@@ -241,8 +387,12 @@ public class ServicePartsCaseBuildAPIspecValidation extends BaseTest {
 		System.out.println("Reponse is----------" + respGet.toString());
 		test.log(LogStatus.INFO, "received response-----" + respGet.toString());
 		JSONObject JOGet = new JSONObject(respGet.toString());
-		System.out.println(JOGet.getString("confirmationNumber"));
-		System.out.println();
+		String errMsg = TestUtil.getValuebyJpath(JOGet, "/messages[0]/message");
+		if (errMsg.contains("Part Number must be 20 digits or less")) {
+			System.out.println("test passed");
+		} else {
+			System.out.println("test failed");
+		}
 	}
 
 	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
@@ -250,10 +400,9 @@ public class ServicePartsCaseBuildAPIspecValidation extends BaseTest {
 		test = rep.startTest("ValidateInvalidVendorCode - ValidateInvalidVendorCode");
 		currentRow.set(row);
 		GetDataWithRowNum(row);
-//Case Build request
+		//Case Build request
 		String GetReq = FileLoader.readJsonFilefromProject("casebuild/caseBuildwithDetailedUnitObject.json");
 		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partNumber", "");
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partQuantity", "5");
 		System.out.println(GetReq);
 		HttpPost HTTPPOstreqGet = tu.prepareHTTPPostwithJsonString("[" + GetReq + "]", "casebuildAPI?status=true");
 		System.out.println("Test uses file..." + GetReq);
@@ -264,16 +413,23 @@ public class ServicePartsCaseBuildAPIspecValidation extends BaseTest {
 		JSONObject JOGet = new JSONObject(respGet.toString());
 		System.out.println(JOGet.getString("confirmationNumber"));
 		System.out.println();
+		String errMsg = TestUtil.getValuebyJpath(JOGet, "/messages[0]/message");
+		if (errMsg.contains("Part Number is required field")) {
+			System.out.println("test passed");
+		} else {
+			System.out.println("test failed");
+		}
 	}
 
+	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
 	public void ValidateDuplicatePartNumber(Integer row) throws Exception {
 		test = rep.startTest("ValidateInvalidVendorCode - ValidateInvalidVendorCode");
 		currentRow.set(row);
 		GetDataWithRowNum(row);
-//Case Build request
-		String GetReq = FileLoader.readJsonFilefromProject("casebuild/caseBuildwithDetailedUnitObject.json");
+		//Case Build request
+		String GetReq = FileLoader.readJsonFilefromProject("casebuild/caseBuildDetailedUnitObjects.json");
 		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partNumber", "1234567890987654321");
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partQuantity", "5");
+		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partNumber", "1234567890987654321");
 		System.out.println(GetReq);
 		HttpPost HTTPPOstreqGet = tu.prepareHTTPPostwithJsonString("[" + GetReq + "]", "casebuildAPI?status=true");
 		System.out.println("Test uses file..." + GetReq);
@@ -282,17 +438,21 @@ public class ServicePartsCaseBuildAPIspecValidation extends BaseTest {
 		System.out.println("Reponse is----------" + respGet.toString());
 		test.log(LogStatus.INFO, "received response-----" + respGet.toString());
 		JSONObject JOGet = new JSONObject(respGet.toString());
-		System.out.println(JOGet.getString("confirmationNumber"));
-		System.out.println();
+		String errMsg = TestUtil.getValuebyJpath(JOGet, "/messages[0]/message");
+		if (errMsg.contains("Duplicate record exist under the same case number")) {
+			System.out.println("test passed");
+		} else {
+			System.out.println("test failed");
+		}
 	}
 
+	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
 	public void ValidateInvalidPartQuantity(Integer row) throws Exception {
-		test = rep.startTest("ValidateInvalidVendorCode - ValidateInvalidVendorCode");
+		test = rep.startTest("ValidateInvalidPartQuantity - ValidateInvalidPartQuantity");
 		currentRow.set(row);
 		GetDataWithRowNum(row);
-//Case Build request
+		//Case Build request
 		String GetReq = FileLoader.readJsonFilefromProject("casebuild/caseBuildwithDetailedUnitObject.json");
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partNumber", PartNumber);
 		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partQuantity", "ddggg5");
 		System.out.println(GetReq);
 		HttpPost HTTPPOstreqGet = tu.prepareHTTPPostwithJsonString("[" + GetReq + "]", "casebuildAPI?status=true");
@@ -302,17 +462,16 @@ public class ServicePartsCaseBuildAPIspecValidation extends BaseTest {
 		System.out.println("Reponse is----------" + respGet.toString());
 		test.log(LogStatus.INFO, "received response-----" + respGet.toString());
 		JSONObject JOGet = new JSONObject(respGet.toString());
-		System.out.println(JOGet.getString("confirmationNumber"));
-		System.out.println();
+	
 	}
 
+	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
 	public void ValidateMissingPartQuantity(Integer row) throws Exception {
-		test = rep.startTest("ValidateInvalidVendorCode - ValidateInvalidVendorCode");
+		test = rep.startTest("ValidateInvalidPartQuantity - ValidateInvalidPartQuantity");
 		currentRow.set(row);
 		GetDataWithRowNum(row);
-//Case Build request
+		//Case Build request
 		String GetReq = FileLoader.readJsonFilefromProject("casebuild/caseBuildwithDetailedUnitObject.json");
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partNumber", PartNumber);
 		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partQuantity", "");
 		System.out.println(GetReq);
 		HttpPost HTTPPOstreqGet = tu.prepareHTTPPostwithJsonString("[" + GetReq + "]", "casebuildAPI?status=true");
@@ -322,8 +481,7 @@ public class ServicePartsCaseBuildAPIspecValidation extends BaseTest {
 		System.out.println("Reponse is----------" + respGet.toString());
 		test.log(LogStatus.INFO, "received response-----" + respGet.toString());
 		JSONObject JOGet = new JSONObject(respGet.toString());
-		System.out.println(JOGet.getString("confirmationNumber"));
-		System.out.println();
+	
 	}
 
 	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
@@ -331,11 +489,9 @@ public class ServicePartsCaseBuildAPIspecValidation extends BaseTest {
 		test = rep.startTest("ValidateInvalidVendorCode - ValidateInvalidVendorCode");
 		currentRow.set(row);
 		GetDataWithRowNum(row);
-//Case Build request
+		//Case Build request
 		String GetReq = FileLoader.readJsonFilefromProject("casebuild/caseBuildwithDetailedUnitObject.json");
 		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].transportationCode", "7887");
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partNumber", PartNumber);
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partQuantity", "5");
 		System.out.println(GetReq);
 		HttpPost HTTPPOstreqGet = tu.prepareHTTPPostwithJsonString("[" + GetReq + "]", "casebuildAPI?status=true");
 		System.out.println("Test uses file..." + GetReq);
@@ -353,13 +509,10 @@ public class ServicePartsCaseBuildAPIspecValidation extends BaseTest {
 		test = rep.startTest("ValidateInvalidVendorCode - ValidateInvalidVendorCode");
 		currentRow.set(row);
 		GetDataWithRowNum(row);
-//Case Build request
+		//Case Build request
 		String GetReq = FileLoader.readJsonFilefromProject("casebuild/caseBuildwithDetailedUnitObject.json");
 		GetReq = TestUtil.setValueintojson(GetReq, "$.vendorCode", Vendor);
-
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].transportationCode", "1");
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partNumber", PartNumber);
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partQuantity", "5");
+		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].transportationCode", "");
 		System.out.println(GetReq);
 		HttpPost HTTPPOstreqGet = tu.prepareHTTPPostwithJsonString("[" + GetReq + "]", "casebuildAPI?status=true");
 		System.out.println("Test uses file..." + GetReq);
@@ -377,7 +530,7 @@ public class ServicePartsCaseBuildAPIspecValidation extends BaseTest {
 		test = rep.startTest("ValidateInvalidVendorCode - ValidateInvalidVendorCode");
 		currentRow.set(row);
 		GetDataWithRowNum(row);
-//Case Build request
+		//Case Build request
 		String GetReq = FileLoader.readJsonFilefromProject("casebuild/caseBuildwithDetailedUnitObject.json");
 		GetReq = TestUtil.setValueintojson(GetReq, "$.vendorCode", Vendor);
 

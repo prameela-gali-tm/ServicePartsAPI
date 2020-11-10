@@ -22,6 +22,7 @@ import com.toyota.scs.serviceparts.entity.CaseEntity;
 import com.toyota.scs.serviceparts.entity.OrderEntity;
 import com.toyota.scs.serviceparts.entity.PartEntity;
 import com.toyota.scs.serviceparts.entity.PartTransEntity;
+import com.toyota.scs.serviceparts.entity.SerialNumberEntity;
 import com.toyota.scs.serviceparts.entity.VendorEntity;
 import com.toyota.scs.serviceparts.model.CaseBuildModel;
 import com.toyota.scs.serviceparts.model.CaseModel;
@@ -39,6 +40,7 @@ import com.toyota.scs.serviceparts.repository.CaseRepositroy;
 import com.toyota.scs.serviceparts.repository.OrderRepository;
 import com.toyota.scs.serviceparts.repository.PartRepository;
 import com.toyota.scs.serviceparts.repository.PartTransRepositroy;
+import com.toyota.scs.serviceparts.repository.SerialNumberRepository;
 import com.toyota.scs.serviceparts.repository.VendorRepositroy;
 import com.toyota.scs.serviceparts.service.CasesDetailService;
 import com.toyota.scs.serviceparts.util.DateUtils;
@@ -64,6 +66,9 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 
 	@Autowired
 	private PartDetailsServiceImpl partdetailsService;
+	
+	@Autowired
+	private SerialNumberRepository serialNumberRepositroy;
 
 	@Autowired
 	EntityManagerFactory emf;
@@ -116,7 +121,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 							OrderEntity entity = null;
 							List<PartDetailsModel> detailsModel = null;
 							if (obj.getDeliveryDueDate() == null) {
-								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode);
+								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode,"N",3,null,null,null,null);
 								long outStandingQuantity = 0;
 								if (detailsModel != null && detailsModel.size() > 0) {
 									List<PartDetailsModel> models = new ArrayList<PartDetailsModel>();
@@ -324,8 +329,15 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 			return ServicePartConstant.CASE_NUMBER_INVALID;
 		}
 
-		if (s.length() == 8 && days >= 60) {
-			return ServicePartConstant.CASE_NUMBER_INVALID;
+
+//		if (s.length() == 8 && days >= 60) {
+//			return ServicePartConstant.CASE_NUMBER_INVALID;
+
+		if(days!=-2) {
+			if (s.length() == 8 && days >= 60) {
+				return ServicePartConstant.CASE_NUMBER_INVALID;
+			}
+
 		}
 		if (!isNumeric(s)) {
 			return ServicePartConstant.CASE_NUMBER_NUMBERIC;
@@ -628,7 +640,13 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 			throw new IllegalArgumentException(e);
 		}
 	}
-
+	public String parseDateString(String date) {
+		date = date.replace("T", " ");
+		if(date!=null) {
+			return date.substring(0, 10);
+		}else
+			return null;
+	}
 	public java.sql.Timestamp parseTimestamp(String timestamp) {
 		try {
 			timestamp = timestamp.replace("T", " ");
@@ -716,6 +734,8 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 					for (int j = 0; j < cases.size(); j++) {
 						List<PartDetailsModel> unitDetails = new ArrayList<PartDetailsModel>();
 						CaseModel model = cases.get(j);
+						pushMessage(vendorCode, caseNumberValid(model.getCaseNumber(), -2), mesMap);
+						
 						int days = caseNumberDaysValidation(model.getCaseNumber());
 						if(days>=0) {
 							pushMessage(vendorCode, caseNumberValid(model.getCaseNumber(), days), mesMap);
@@ -747,6 +767,19 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 							pushMessage(vendorCode, exceptionValidation(exceptionsModel.getExceptionCode()), mesMap);
 						}
 						Map<String, String> duplicateValidation = new HashMap<String, String>();
+						// validating the direct shipment flag starts here
+						if(model.getDirectShipFlag()!=null && model.getDirectShipFlag().equals("Y")) {
+							if(model.getDealerNumber()==null) {
+								pushMessage(vendorCode, ServicePartConstant.DEALER_CODE, mesMap);
+							}
+						}
+						if(model.getDirectShipFlag()!=null && model.getDirectShipFlag().equalsIgnoreCase("N")) {
+							if(model.getDistFD()==null) {
+								pushMessage(vendorCode, ServicePartConstant.DIRECT_FD, mesMap);
+							}
+						}
+						// validating the direct shipment flag ends here
+						
 						for (UnitsModel obj : units) {
 							List<PartDetailsModel> detailsModel = null;
 							List<SerialNumberDetailsModel> serialNumberDetailsModels =null;
@@ -764,6 +797,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 								if(serialNumberDetailsModels.size()!=obj.getPartQuantity()) {
 									pushMessage(vendorCode, ServicePartConstant.SERVICE_INVALID, mesMap);
 								}
+							
 								for(SerialNumberDetailsModel numberDetailsModel:serialNumberDetailsModels) {
 									if(duplicateSerialNumber.containsKey(numberDetailsModel.getSerialNumber())) {
 											pushMessage(vendorCode, ServicePartConstant.DUPLICATE_SERIAL_NUMBER, mesMap);
@@ -771,11 +805,29 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 										duplicateSerialNumber.put(numberDetailsModel.getSerialNumber(), numberDetailsModel.getSerialNumber());
 									}
 								}
-							}						
+							}
 							
 							// ends here
+							if(obj.getPartNumber()!=null) {
+								pushMessage(vendorCode, partNumberValidation(obj.getPartNumber()), mesMap);
+							}
+							if(obj.getSubPartNumber()!=null) {
+								pushMessage(vendorCode, subPartNumberValidation(obj.getSubPartNumber()), mesMap);
+							}
+							if(obj.getPoNumber()!=null) {
+								pushMessage(vendorCode, poNumberValidation(obj.getPoNumber()), mesMap);
+							}
+							if(obj.getPoLineNumber()!=null) {
+								pushMessage(vendorCode, poLineNumberValidation(obj.getPoLineNumber()), mesMap);
+							}
+							if(obj.getHomePosition()!=null) {
+								pushMessage(vendorCode, homePostionValidation(obj.getHomePosition()), mesMap);
+							}
+							if(obj.getDeliveryDueDate()!=null) {
+								pushMessage(vendorCode, deliverDueDateValidation(obj.getDeliveryDueDate()), mesMap);
+							}
 							if (obj.getDeliveryDueDate() == null && valid) {
-								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode);
+								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode,"N",3,null,null,null,null);
 								if (partDetailsMap.containsKey(keyValue)) {
 									outStandingQuantity = partDetailsMap.get(keyValue);
 								}
@@ -994,7 +1046,109 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 
 								} // end of the if condition for the details fetching from the data base
 								partWithCompleteDDD.put(obj.getPartNumber(), dddCompleteRecords);
-							} // end of the if condition for the delivery due date end
+							}// end of the if condition for the delivery due date end
+							else if(valid && obj.getPoNumber()!=null && obj.getPoLineNumber()!=null && obj.getDeliveryDueDate()!=null && 
+									!obj.getPoNumber().equalsIgnoreCase("") && !obj.getPoLineNumber().equalsIgnoreCase("") && !obj.getDeliveryDueDate().equalsIgnoreCase("")) {
+								/// checking with vendor code, transportation code, direct flag, delaer or dist fd
+								String poLineItemNumber = convertPolineItemNumber(obj.getPoLineNumber());
+								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode,model.getDirectShipFlag(),3,model.getDealerNumber(),model.getDistFD(),
+																				parseDateString(obj.getDeliveryDueDate()),poLineItemNumber);
+								if(detailsModel!=null && detailsModel.size()>0) {
+									for(PartDetailsModel partDetailsModel:detailsModel) {
+										long plannedQuantity = partDetailsModel.getOrderQuantity();
+										long actaulShippedQuantity = obj.getPartQuantity();
+										long fullfillQuantity = partDetailsModel.getSupplierFullFillQuantity();
+										long remainingQuantity = partDetailsModel.getOutstandingQuantity();
+										String partialStatus = partDetailsModel.getPartialStatus();
+										long balanceQuantity = 0;
+										if(fullfillQuantity==0) {
+											if (actaulShippedQuantity <= plannedQuantity) {
+												balanceQuantity = actaulShippedQuantity - plannedQuantity;
+												partDetailsModel.setSupplierFullFillQuantity(actaulShippedQuantity);
+												if(obj.getSerialNumberDetailsModel()!=null && obj.getSerialNumberDetailsModel().size()>0) {
+													List<String> exitingSerialNumber = partDetailsModel.getSerialNumberDetailsModel();
+													if(exitingSerialNumber==null) {
+														exitingSerialNumber = new ArrayList<String>();
+													}
+													List<SerialNumberDetailsModel> removeList = new ArrayList<SerialNumberDetailsModel>();
+													for(int s=0;s<actaulShippedQuantity;s++) {
+														SerialNumberDetailsModel smodel = obj.getSerialNumberDetailsModel().get(s);
+														exitingSerialNumber.add(smodel.getSerialNumber());
+														removeList.add(smodel);
+													}
+													partDetailsModel.setSerialNumberDetailsModel(exitingSerialNumber);
+													obj.getSerialNumberDetailsModel().removeAll(removeList);
+												}
+												partDetailsModel.setOutstandingQuantity(
+														(plannedQuantity - actaulShippedQuantity));
+												if(actaulShippedQuantity==plannedQuantity) {
+													partDetailsModel.setPartialStatus("FULL FILLED");
+												}else {
+													partDetailsModel.setPartialStatus("PARTIAL");
+												}
+												dddCompleteRecords.put(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber(),
+														partDetailsModel);
+												unitDetails.add(partDetailsModel);
+												if (balanceQuantity <= 0) {
+													obj.setPartQuantity(0);
+													outStandingQuantity = 0;
+													break;
+												} else {
+													obj.setPartQuantity((int) balanceQuantity);
+													outStandingQuantity = balanceQuantity;
+												}
+
+											}else {
+												pushMessage(vendorCode, ServicePartConstant.SERVICE_INVALID, mesMap);
+											}
+										}else if (partialStatus != null && partialStatus.equalsIgnoreCase("PARTIAL")) {
+											if (remainingQuantity != 0) {
+												if (actaulShippedQuantity <= remainingQuantity) {
+													partDetailsModel.setSupplierFullFillQuantity(
+															fullfillQuantity + remainingQuantity);
+													if(actaulShippedQuantity==remainingQuantity) {
+														partDetailsModel.setOutstandingQuantity(0);
+														partDetailsModel.setPartialStatus("FULL FILLED");
+													}else {
+														partDetailsModel.setOutstandingQuantity(actaulShippedQuantity - remainingQuantity);
+														partDetailsModel.setPartialStatus("FULL FILLED");
+													}
+													if(obj.getSerialNumberDetailsModel()!=null && obj.getSerialNumberDetailsModel().size()>0) {
+														List<String> exitingSerialNumber = null;
+														if(exitingSerialNumber==null) {
+															exitingSerialNumber = new ArrayList<String>();
+														}
+														List<SerialNumberDetailsModel> removeList = new ArrayList<SerialNumberDetailsModel>();
+														for(int s=0;s<remainingQuantity;s++) {
+															SerialNumberDetailsModel smodel = obj.getSerialNumberDetailsModel().get(s);
+															exitingSerialNumber.add(smodel.getSerialNumber());
+															removeList.add(smodel);
+														}
+														partDetailsModel.setSerialNumberDetailsModel(exitingSerialNumber);
+														obj.getSerialNumberDetailsModel().removeAll(removeList);
+													}
+													balanceQuantity = actaulShippedQuantity - remainingQuantity;
+													dddCompleteRecords.put(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber(),
+															partDetailsModel);
+												   unitDetails.add(partDetailsModel);
+													if (balanceQuantity <= 0) {
+														obj.setPartQuantity(0);
+														outStandingQuantity = 0;
+														break;
+													} else {
+														obj.setPartQuantity((int) balanceQuantity);
+														outStandingQuantity = balanceQuantity;
+													}
+												}else {
+													pushMessage(vendorCode, ServicePartConstant.SERVICE_INVALID, mesMap);
+												}
+											}
+										}
+									}
+								}else {
+									pushMessage(vendorCode, ServicePartConstant.ORDER_QUANTITY, mesMap);
+								}
+							}
 							partDetailsMap.put(keyValue, outStandingQuantity);
 						} /// end of the for loop unit level
 						caseWithUnitDetails.put(model.getCaseNumber(), unitDetails);
@@ -1011,47 +1165,41 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 					valid = false;
 				}
 			}
-
 			
 			
-			
-			/*
-			 * if (caseWithUnitDetails != null && caseWithUnitDetails.size() > 0) {
-			 * TreeMap<String, List<PartDetailsModel>> sorting = new TreeMap<String,
-			 * List<PartDetailsModel>>(); sorting.putAll(caseWithUnitDetails); for
-			 * (Map.Entry<String, List<PartDetailsModel>> objects : sorting.entrySet()) {
-			 * System.out.println(
-			 * "--------------------------------------------------------------------------")
-			 * ; System.out.
-			 * println("-------------------------------case number------------------------------->"
-			 * ); System.out.println("Case Number---------------------------" +
-			 * objects.getKey()); System.out.
-			 * println("--------------------------------Units details-------------------------"
-			 * ); for (PartDetailsModel detailsModel : objects.getValue()) {
-			 * System.out.println("Part Number-----------------------" +
-			 * detailsModel.getPartNumber());
-			 * System.out.println("PO NUmber-------------------------" +
-			 * detailsModel.getPoNumber());
-			 * System.out.println("Delivery due date ----------------" +
-			 * detailsModel.getDeliveryDueDate());
-			 * System.out.println("Planned Quantity in DB------------" +
-			 * detailsModel.getOrderQuantity()); System.out
-			 * .println("Outstading quantity---------------" +
-			 * detailsModel.getOutstandingQuantity()); System.out.println(
-			 * "FullFillment quantity-------------" +
-			 * detailsModel.getSupplierFullFillQuantity());
-			 * System.out.println("Staus-----------------------------" +
-			 * detailsModel.getPartialStatus());
-			 * 
-			 * System.out.println("Seerial number-------------------->"+detailsModel.
-			 * getSerialNumberDetailsModel());} System.out.
-			 * println("----------------End of Case Number details --------------------------"
-			 * ); } }
-			 */
+			/*  if (caseWithUnitDetails != null && caseWithUnitDetails.size() > 0) {
+			  TreeMap<String, List<PartDetailsModel>> sorting = new TreeMap<String,
+			  List<PartDetailsModel>>(); sorting.putAll(caseWithUnitDetails); for
+			  (Map.Entry<String, List<PartDetailsModel>> objects : sorting.entrySet()) {
+			  System.out.println(
+			  "--------------------------------------------------------------------------")
+			  ; System.out.
+			  println("-------------------------------case number------------------------------->"
+			  ); System.out.println("Case Number---------------------------" +
+			  objects.getKey()); System.out.
+			  println("--------------------------------Units details-------------------------"
+			  ); for (PartDetailsModel detailsModel : objects.getValue()) {
+			  System.out.println("Part Number-----------------------" +
+			  detailsModel.getPartNumber());
+			  System.out.println("PO NUmber-------------------------" +
+			  detailsModel.getPoNumber());
+			  System.out.println("Delivery due date ----------------" +
+			  detailsModel.getDeliveryDueDate());
+			  System.out.println("Planned Quantity in DB------------" +
+			  detailsModel.getOrderQuantity()); System.out
+			  .println("Outstading quantity---------------" +
+			  detailsModel.getOutstandingQuantity()); System.out.println(
+			  "FullFillment quantity-------------" +
+			  detailsModel.getSupplierFullFillQuantity());
+			  System.out.println("Staus-----------------------------" +
+			  detailsModel.getPartialStatus());
+			  
+			  System.out.println("Seerial number-------------------->"+detailsModel.
+			  getSerialNumberDetailsModel());} System.out.
+			  println("----------------End of Case Number details --------------------------"
+			  ); } }*/
 			 
 			 
-			 
-
 			/// Saving the Records into Data base start here
 			// valid =false;/// need to remove after demo
 			if (valid) {
@@ -1100,6 +1248,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 								partTransEntity.setStatus(partDetailsModel.getPartialStatus());
 								partTransEntity.setSupplierTotal(partDetailsModel.getSupplierFullFillQuantity());
 								partTransEntity.setTransmussionDate(new Date());
+								partTransEntity.setSerialNumberList(partDetailsModel.getSerialNumberDetailsModel());
 								partTransList.add(partTransEntity);
 
 								// Ends here
@@ -1148,6 +1297,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 								responseUnitsModel.setPartPOLineQuantityAllocated(
 										partDetailsModel.getSupplierFullFillQuantity());
 								responseUnitsModel.setPartPOLineStatus(partDetailsModel.getPartialStatus());
+								responseUnitsModel.setSerialNumberDetailsModel(partDetailsModel.getSerialNumberDetailsModel());
 								responseUnitsModelsList.add(responseUnitsModel);
 								/// ends here
 							}
@@ -1158,6 +1308,21 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 						message.setResponseCaseBuildDetails(responseCaseBuildModel);
 						partRepositroy.saveAll(partList);
 						partTransRepositroy.saveAll(partTransList);
+						List<SerialNumberEntity> saveSerailEntity = new ArrayList<SerialNumberEntity>();
+						for(PartTransEntity transEntity:partTransList) {
+							if(transEntity!=null && transEntity.getSerialNumberList()!=null && transEntity.getSerialNumberList().size()>0) {
+								for(String serialNumberValue : transEntity.getSerialNumberList()) {
+									SerialNumberEntity entity = new SerialNumberEntity();
+									entity.setPartTransId(transEntity.getId());
+									entity.setSerialNumber(serialNumberValue);
+									entity.setModifiedBy("BATCH");
+									entity.setModifiedDate(new Date());
+									saveSerailEntity.add(entity);
+								}
+							}
+						}
+						if(saveSerailEntity!=null && saveSerailEntity.size()>0)
+							serialNumberRepositroy.saveAll(saveSerailEntity);
 					}
 
 				}
@@ -1174,4 +1339,21 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 		return message;
 	}
 
+	public String convertPolineItemNumber(String poLineNumber) {
+		String returnValue="";
+		if(poLineNumber!=null) {
+			if(poLineNumber.length()==1) {
+				returnValue ="0000"+poLineNumber;
+			}else if(poLineNumber.length()==2) {
+				returnValue ="000"+poLineNumber;
+			}else if(poLineNumber.length()==3) {
+				returnValue ="00"+poLineNumber;
+			}else if(poLineNumber.length()==4) {
+				returnValue ="0"+poLineNumber;
+			}else {
+				returnValue = poLineNumber;
+			}
+		}
+		return returnValue;
+	}
 }
