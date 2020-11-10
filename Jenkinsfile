@@ -2,6 +2,6 @@
 ciMavenDocker {
   docker                  = [file: "Dockerfile", tag: "scs/service-parts-api"]
   deploymentScripts       = [type: "deployTerraformArtifact", location: "deploy"]
-  envMapping = ["feature":["subprod"], "develop":["subprod"], "release":["subprod"], "required":false]
+  envMapping = ["feature":["dev"], "develop":["subprod"], "release":["subprod"], "required":true]
   buildNotificationEmails = "LIOS-DevOpsEngineer@internal.toyota.com"
 }
