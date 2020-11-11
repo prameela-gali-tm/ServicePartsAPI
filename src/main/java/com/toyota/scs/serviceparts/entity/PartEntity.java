@@ -49,7 +49,16 @@ import javax.persistence.Transient;
                     @ColumnResult(name = "dealerCode", type = String.class),
                     @ColumnResult(name = "transportationCode", type = String.class),
                     @ColumnResult(name = "finalDestination", type = String.class)
-                   }))
+                   })),
+	@SqlResultSetMapping(
+	        name = "viewAllPartDetails",
+	        classes = @ConstructorResult(
+	                targetClass = PartEntity.class,
+	                columns = {
+	                    @ColumnResult(name = "partNumber", type=String.class),
+	                    @ColumnResult(name = "homePosition", type = String.class),
+	                    @ColumnResult(name = "finalDesDealerCode", type = String.class)
+	                   }))
 })
 public class PartEntity implements Serializable {
 	
@@ -151,6 +160,10 @@ public class PartEntity implements Serializable {
 	
 	@Transient
 	private boolean directShipFlag;
+	
+	@Transient
+	private String finalDesDealerCode;
+	
 	
 	public PartEntity() {
 		super();
@@ -484,6 +497,27 @@ public class PartEntity implements Serializable {
 		this.dealerCode = dealerCode;
 		this.transportationCode = transportationCode;
 		this.finalDestination = finalDestination;
+	}
+
+
+
+	public String getFinalDesDealerCode() {
+		return finalDesDealerCode;
+	}
+
+
+
+	public void setFinalDesDealerCode(String finalDesDealerCode) {
+		this.finalDesDealerCode = finalDesDealerCode;
+	}
+
+
+
+	public PartEntity(String partNumber, String homePosition, String finalDesDealerCode) {
+		super();
+		this.partNumber = partNumber;
+		this.homePosition = homePosition;
+		this.finalDesDealerCode = finalDesDealerCode;
 	}
 	
 	
