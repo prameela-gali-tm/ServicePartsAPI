@@ -119,6 +119,7 @@ public class TpnaServiceImpl implements TpnaService{
 				part.setPartDesc(poline.getpART_DESC());
 				part.setFinalDestination(poline.getfINAL_DST());
 				part.setEda(edaDate);
+				part.setDealerCode(poline.getdLR_CODE());
 				part.setModifiedDate(new Date());
 				part.setHomePosition(poline.gethP());
 				part.setModifiedBy("TPNA");
