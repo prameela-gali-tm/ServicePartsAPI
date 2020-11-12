@@ -825,7 +825,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 								pushMessage(vendorCode, deliverDueDateValidation(obj.getDeliveryDueDate()), mesMap);
 							}
 							if (obj.getDeliveryDueDate() == null && valid) {
-								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode,"N",3,null,null,null,null);
+								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode,model.getDirectShipFlag(),model.getTransportationCode(),model.getDealerNumber(),model.getDistFD(),null,null);
 								if (partDetailsMap.containsKey(keyValue)) {
 									outStandingQuantity = partDetailsMap.get(keyValue);
 								}
@@ -1049,7 +1049,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 									!obj.getPoNumber().equalsIgnoreCase("") && !obj.getPoLineNumber().equalsIgnoreCase("") && !obj.getDeliveryDueDate().equalsIgnoreCase("")) {
 								/// checking with vendor code, transportation code, direct flag, delaer or dist fd
 								String poLineItemNumber = convertPolineItemNumber(obj.getPoLineNumber());
-								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode,model.getDirectShipFlag(),3,model.getDealerNumber(),model.getDistFD(),
+								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode,model.getDirectShipFlag(),model.getTransportationCode(),model.getDealerNumber(),model.getDistFD(),
 																				parseDateString(obj.getDeliveryDueDate()),poLineItemNumber);
 								if(detailsModel!=null && detailsModel.size()>0) {
 									for(PartDetailsModel partDetailsModel:detailsModel) {
@@ -1255,31 +1255,32 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 								/// Part details updating start here
 								PartEntity partEntity = new PartEntity();
 								partEntity.setId(partDetailsModel.getPartId());
-								partEntity.setContainerID(partDetailsModel.getContainerID());
-								partEntity.setDealer(partDetailsModel.getDealer());
-								try {
-									partEntity.setDeliveryDueDate(
-											DATE_FORMAT.parse(partDetailsModel.getDeliveryDueDate()));
-								} catch (ParseException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-								partEntity.setDirectShip(partDetailsModel.getDirectShip());
-								partEntity.setHomePosition(partDetailsModel.getHomePosition());
-								partEntity.setLineItemNumber(partDetailsModel.getLineItemNumber());
-								partEntity.setModifiedBy("SYSTEM");
+								/*
+								 * partEntity.setContainerID(partDetailsModel.getContainerID());
+								 * partEntity.setDealer(partDetailsModel.getDealer()); try {
+								 * partEntity.setDeliveryDueDate(
+								 * DATE_FORMAT.parse(partDetailsModel.getDeliveryDueDate())); } catch
+								 * (ParseException e) { // TODO Auto-generated catch block e.printStackTrace();
+								 * } partEntity.setDirectShip(partDetailsModel.getDirectShip());
+								 * partEntity.setHomePosition(partDetailsModel.getHomePosition());
+								 * partEntity.setLineItemNumber(partDetailsModel.getLineItemNumber());
+								 * partEntity.setModifiedBy("SYSTEM"); partEntity.setModifiedDate(new Date());
+								 * partEntity.setOrderId(partDetailsModel.getOrderId());
+								 * partEntity.setOrderQuantity(partDetailsModel.getOrderQuantity());
+								 * partEntity.setOrderRefNumber(partDetailsModel.getOrderRefNumber());
+								 * partEntity.setOutstandingQuantity(partDetailsModel.getOutstandingQuantity());
+								 * partEntity.setPartDesc(partDetailsModel.getPartDesc());
+								 * partEntity.setPartNumber(partDetailsModel.getPartNumber());
+								 * partEntity.setSerialNumber(partDetailsModel.getSerialNumber());
+								 * partEntity.setStatus(partDetailsModel.getPartialStatus());
+								 * partEntity.setSubPartNumber(partDetailsModel.getSubPartNumber());
+								 * partEntity.setTransmissionDate(new Date());
+								 * partEntity.setVendorPartNumber(partDetailsModel.getVendorPartNumber());
+								 */
+								partEntity.setModifiedBy("SYSTEM"); 
 								partEntity.setModifiedDate(new Date());
-								partEntity.setOrderId(partDetailsModel.getOrderId());
-								partEntity.setOrderQuantity(partDetailsModel.getOrderQuantity());
-								partEntity.setOrderRefNumber(partDetailsModel.getOrderRefNumber());
 								partEntity.setOutstandingQuantity(partDetailsModel.getOutstandingQuantity());
-								partEntity.setPartDesc(partDetailsModel.getPartDesc());
-								partEntity.setPartNumber(partDetailsModel.getPartNumber());
-								partEntity.setSerialNumber(partDetailsModel.getSerialNumber());
 								partEntity.setStatus(partDetailsModel.getPartialStatus());
-								partEntity.setSubPartNumber(partDetailsModel.getSubPartNumber());
-								partEntity.setTransmissionDate(new Date());
-								partEntity.setVendorPartNumber(partDetailsModel.getVendorPartNumber());
 								partList.add(partEntity);
 								// ends here
 								/// Response object building start here
