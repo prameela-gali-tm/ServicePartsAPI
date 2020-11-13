@@ -154,7 +154,7 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 		if(directFlag!=null && directFlag.equalsIgnoreCase("Y")) {
 			sqlQuery.append(" pt.dealer_code as finalDesDealerCode ");
 		}else {
-			sqlQuery.append(" pt.final_destination as finalDesDealerCode ");
+			sqlQuery.append(" ord.final_destination as finalDesDealerCode ");
 		}
 		sqlQuery.append(" from spadm.sp_part pt ");
 		sqlQuery.append(" join spadm.sp_order ord  ");
@@ -175,7 +175,7 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 			sqlQuery.append(" GROUP BY pt.part_number,pt.home_position,pt.dealer_code");
 		}else
 		{
-			sqlQuery.append(" GROUP BY pt.part_number,pt.home_position,pt.final_destination");
+			sqlQuery.append(" GROUP BY pt.part_number,pt.home_position,ord.final_destination");
 		}
 		sqlQuery.append(" order by pt.part_number asc");
 		  List<PartEntity> list  = new ArrayList<PartEntity>();
