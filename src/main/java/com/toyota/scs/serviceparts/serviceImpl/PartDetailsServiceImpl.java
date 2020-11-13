@@ -152,7 +152,7 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 		sqlQuery.append(" pt.part_number as partNumber,  ");
 		sqlQuery.append(" pt.home_position as homePosition, ");
 		if(directFlag!=null && directFlag.equalsIgnoreCase("Y")) {
-			sqlQuery.append(" ord.dealer_code as finalDesDealerCode, ");
+			sqlQuery.append(" pt.dealer_code as finalDesDealerCode ");
 		}else {
 			sqlQuery.append(" ord.final_destination as finalDesDealerCode ");
 		}
@@ -172,7 +172,7 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 			sqlQuery.append(" and  ord.trans_code='").append(transportCode).append("'");
 		}
 		if(directFlag!=null && directFlag.equalsIgnoreCase("Y")) { 
-			sqlQuery.append(" GROUP BY pt.part_number,pt.home_position,ord.dealer_code");
+			sqlQuery.append(" GROUP BY pt.part_number,pt.home_position,pt.dealer_code");
 		}else
 		{
 			sqlQuery.append(" GROUP BY pt.part_number,pt.home_position,ord.final_destination");
