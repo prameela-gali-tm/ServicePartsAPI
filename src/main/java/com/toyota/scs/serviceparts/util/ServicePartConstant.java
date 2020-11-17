@@ -69,5 +69,7 @@ public class ServicePartConstant {
 	public static String DEALER_CODE = "Dealer code is required when direct shipment flag is Y";
 	public static String RECORD_DOES_NOT_EXIST = "Record does not present for the given criteria";
 	public static String DIRECT_FD="Distination FD is required when the direct shioment flag is N";
+	public static String DEALER_CODE_LEN = "Dealer code must be 10 digits or less";
+	public static String DIRECT_FD_LEN = "Dist FD code must be 30 digits or less";
 	
 }

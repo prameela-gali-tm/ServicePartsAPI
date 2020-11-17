@@ -1,0 +1,2 @@
+ALTER TABLE spadm.SP_SHIPMENT
+    ADD COLUMN vendor_code VARCHAR(5);

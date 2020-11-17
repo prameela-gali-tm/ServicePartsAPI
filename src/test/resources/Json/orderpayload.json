@@ -1,9 +1,11 @@
 {
-	   "orderId": 5,
-            "poNumber": "32440022",
-            "orderType": "S",
-            "modifiedBy": "BATCH",
-            "modifiedDate": "2020-08-10T21:43:25.177+00:00",
-            "vendorCode": "0848A"
-        }
-
+	"orderId": 5,
+	"poNumber": "32440022",
+	"orderType": "S",
+	"modifiedBy": "BATCH",
+	"modifiedDate": "2020-08-10T21:43:25.177+00:00",
+	"vendorCode": "0848A",
+	"transCode": "3",
+	"directShipFlag": false,
+	"finalDestination": "878"
+}

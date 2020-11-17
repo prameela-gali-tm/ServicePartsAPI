@@ -24,6 +24,7 @@ public class SerialNumberEntity implements Serializable{
 
 	@Id
 
+
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="serialNumberSeqGen")
 	@SequenceGenerator(name = "serialNumberSeqGen", sequenceName = "SPADM.sp_serial_number_seq", initialValue = 1, allocationSize = 10)
 

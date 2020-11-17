@@ -106,7 +106,7 @@ public class ServicePartsCaseBuild extends BaseTest {
 		currentRow.set(row);
 		GetDataWithRowNum(row);
 
-		InsertCaseBuildRcordsIntoTables();
+		generateRandomDataForTableRecords();
 		test.log(LogStatus.INFO, " verifyConfNumber test started");
 		String vendorReq = FileLoader.readJsonFilefromProject("vendorpayload.json");
 
@@ -153,18 +153,21 @@ public class ServicePartsCaseBuild extends BaseTest {
 		test.log(LogStatus.INFO, "received response-----" + respPart.toString());
 		JSONObject JOPart = new JSONObject(respPart.toString());
 //Case Buld request
-		String GetReq = FileLoader.readJsonFilefromProject("CaseBuildHappypathresponse.json");
+		String GetReq = FileLoader.readJsonFilefromProject("casebuild/CaseBuildRequestWithSmallUnitType.json");
+		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].caseNumber",
+				Integer.toString(TestUtil.genrateRandomNumber(8)));
 		GetReq = TestUtil.setValueintojson(GetReq, "$.vendorCode", Vendor);
 		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partNumber", PartNumber);
 		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partQuantity", "5");
 		System.out.println(GetReq);
-		HttpPost HTTPPOstreqGet = tu.prepareHTTPPostwithJsonString("[" + GetReq + "]", "casebuildAPI?status=true");
+		HttpPost HTTPPOstreqGet = tu.prepareHTTPPostwithJsonString("[" + GetReq + "]", "casebuildAPI?status="+"true");
 		System.out.println("Test uses file..." + GetReq);
 		JSONObject respGet = rs.sendPostwithHeaders(HTTPPOstreqGet);
 		test.log(LogStatus.INFO, "sent post request with payload-----" + Inputfile);
 		System.out.println("Reponse is----------" + respGet.toString());
 		test.log(LogStatus.INFO, "received response-----" + respGet.toString());
 		JSONObject JOGet = new JSONObject(respGet.toString());
+		//no record found
 		System.out.println(JOGet.getString("confirmationNumber"));
 		System.out.println();
 
@@ -178,7 +181,7 @@ public class ServicePartsCaseBuild extends BaseTest {
 		currentRow.set(row);
 		GetDataWithRowNum(row);
 
-		InsertCaseBuildRcordsIntoTables();
+		generateRandomDataForTableRecords();
 		test.log(LogStatus.INFO, " VerifyRequiredFieldsatUnitLevel test started");
 		String vendorReq = FileLoader.readJsonFilefromProject("vendorpayload.json");
 
@@ -225,7 +228,9 @@ public class ServicePartsCaseBuild extends BaseTest {
 		test.log(LogStatus.INFO, "received response-----" + respPart.toString());
 		JSONObject JOPart = new JSONObject(respPart.toString());
 //Case build 
-		String GetReq = FileLoader.readJsonFilefromProject("CaseBuildHappypathresponse.json");
+		String GetReq = FileLoader.readJsonFilefromProject("casebuild/CaseBuildRequestWithSmallUnitType.json");
+		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].caseNumber",
+				Integer.toString(TestUtil.genrateRandomNumber(8)));
 		GetReq = TestUtil.setValueintojson(GetReq,  data.get("vendorCodePath"), Vendor);
 		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partNumber", PartNumber);
 		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partQuantity", "10");
@@ -255,7 +260,7 @@ public class ServicePartsCaseBuild extends BaseTest {
 		currentRow.set(row);
 		GetDataWithRowNum(row);
 
-		InsertCaseBuildRcordsIntoTables();
+		generateRandomDataForTableRecords();
 		test.log(LogStatus.INFO, " VerifyRequiredFieldsatUnitLevel test started");
 		String vendorReq = FileLoader.readJsonFilefromProject("vendorpayload.json");
 
@@ -302,7 +307,7 @@ public class ServicePartsCaseBuild extends BaseTest {
 		test.log(LogStatus.INFO, "received response-----" + respPart.toString());
 		JSONObject JOPart = new JSONObject(respPart.toString());
 
-		String GetReq = FileLoader.readJsonFilefromProject("CaseBuildHappypathresponse.json");
+		String GetReq = FileLoader.readJsonFilefromProject("casebuild/CaseBuildRequestWithSmallUnitType.json");
 		GetReq = TestUtil.setValueintojson(GetReq, "$.vendorCode", Vendor);
 		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partNumber", PartNumber);
 		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partQuantity", "-1");
@@ -332,7 +337,7 @@ public class ServicePartsCaseBuild extends BaseTest {
 		currentRow.set(row);
 		GetDataWithRowNum(row);
 
-		InsertCaseBuildRcordsIntoTables();
+		generateRandomDataForTableRecords();
 		test.log(LogStatus.INFO, " VerifyRequiredFieldsatUnitLevel test started");
 		String vendorReq = FileLoader.readJsonFilefromProject("vendorpayload.json");
 
@@ -411,7 +416,7 @@ public class ServicePartsCaseBuild extends BaseTest {
 		currentRow.set(row);
 		GetDataWithRowNum(row);
 
-		InsertCaseBuildRcordsIntoTables();
+		generateRandomDataForTableRecords();
 		test.log(LogStatus.INFO, " VerifyRequiredFieldsatUnitLevel test started");
 		String vendorReq = FileLoader.readJsonFilefromProject("vendorpayload.json");
 
@@ -494,7 +499,7 @@ public class ServicePartsCaseBuild extends BaseTest {
 		currentRow.set(row);
 		GetDataWithRowNum(row);
 
-		InsertCaseBuildRcordsIntoTables();
+		generateRandomDataForTableRecords();
 		test.log(LogStatus.INFO, " VerifyRequiredFieldsatUnitLevel test started");
 		String vendorReq = FileLoader.readJsonFilefromProject("vendorpayload.json");
 
@@ -574,7 +579,7 @@ public class ServicePartsCaseBuild extends BaseTest {
 		currentRow.set(row);
 		GetDataWithRowNum(row);
 
-		InsertCaseBuildRcordsIntoTables();
+		generateRandomDataForTableRecords();
 		test.log(LogStatus.INFO, " VerifyRequiredFieldsatUnitLevel test started");
 		String vendorReq = FileLoader.readJsonFilefromProject("vendorpayload.json");
 
@@ -738,7 +743,7 @@ public class ServicePartsCaseBuild extends BaseTest {
 		currentRow.set(row);
 		GetDataWithRowNum(row);
 
-		InsertCaseBuildRcordsIntoTables();
+		generateRandomDataForTableRecords();
 		test.log(LogStatus.INFO, " VerifyRequiredFieldsatUnitLevel test started");
 		String vendorReq = FileLoader.readJsonFilefromProject("vendorpayload.json");
 
@@ -882,11 +887,7 @@ public class ServicePartsCaseBuild extends BaseTest {
 		test.log(LogStatus.INFO, "received response-----" + respGet.toString());
 		JSONObject JOGet = new JSONObject(respGet.toString());
 		String errMsg = TestUtil.getValuebyJpath(JOGet, "/messages[0]/message");
-		if (errMsg.contains("Duplicate record exist under the same case number")) {
-			System.out.println("test passed");
-		} else {
-			System.out.println("test failed");
-		}
+		
 	}
 
 	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
@@ -896,7 +897,7 @@ public class ServicePartsCaseBuild extends BaseTest {
 		currentRow.set(row);
 		GetDataWithRowNum(row);
 
-		InsertCaseBuildRcordsIntoTables();
+		generateRandomDataForTableRecords();
 		test.log(LogStatus.INFO, " VerifyRequiredFieldsatUnitLevel test started");
 		String vendorReq = FileLoader.readJsonFilefromProject("vendorpayload.json");
 
@@ -944,7 +945,7 @@ public class ServicePartsCaseBuild extends BaseTest {
 		JSONObject JOPart = new JSONObject(respPart.toString());
 		
 		// Case Buld request
-		String GetReq = FileLoader.readJsonFilefromProject("CaseBuildHappypathresponse.json");
+		String GetReq = FileLoader.readJsonFilefromProject("casebuild/CaseBuildRequestWithSmallUnitType.json");
 		GetReq = TestUtil.setValueintojson(GetReq, "$.vendorCode", Vendor);
 		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partNumber", PartNumber);
 		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partQuantity", "5");
@@ -981,7 +982,7 @@ public class ServicePartsCaseBuild extends BaseTest {
 		currentRow.set(row);
 		GetDataWithRowNum(row);
 
-		InsertCaseBuildRcordsIntoTables();
+		generateRandomDataForTableRecords();
 		test.log(LogStatus.INFO, " VerifyRequiredFieldsatUnitLevel test started");
 		String vendorReq = FileLoader.readJsonFilefromProject("vendorpayload.json");
 
@@ -1029,7 +1030,7 @@ public class ServicePartsCaseBuild extends BaseTest {
 		JSONObject JOPart = new JSONObject(respPart.toString());
 		
 		// Case Buld request
-		String GetReq = FileLoader.readJsonFilefromProject("CaseBuildHappypathresponse.json");
+		String GetReq = FileLoader.readJsonFilefromProject("casebuild/CaseBuildRequestWithSmallUnitType.json");
 		GetReq = TestUtil.setValueintojson(GetReq, "$.vendorCode", Vendor);
 		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partNumber", PartNumber);
 		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partQuantity", "4");
@@ -1059,6 +1060,102 @@ public class ServicePartsCaseBuild extends BaseTest {
 
 	}
 	
+	//CaseBuild request with 2 different type units detailed and short units. This should fail because case should contain similar units
+	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
+	public void HappyPathWithMixeUnitTypesUnderSameCase(Integer row) throws Exception {
+
+		test = rep.startTest("HappyPathWithMixeUnitTypesUnderSameCase - HappyPathWithMixeUnitTypesUnderSameCase");
+		currentRow.set(row);
+		GetDataWithRowNum(row);
+
+		generateRandomDataForTableRecords();
+		test.log(LogStatus.INFO, " verifyConfNumber test started");
+		String vendorReq = FileLoader.readJsonFilefromProject("vendorpayload.json");
+
+		// vendor table
+		vendorReq = TestUtil.setValueintojson(vendorReq, data.get("IDCodePath"), Integer.toString(OrderID));
+		vendorReq = TestUtil.setValueintojson(vendorReq, data.get("vendorCodePath"), Vendor);
+
+		System.out.println(vendorReq);
+		HttpPost HTTPPOstreq = tu.prepareHTTPPostwithJsonString(vendorReq, "fetchvendor");
+		System.out.println("Test uses file..." + vendorReq);
+		JSONObject resp = rs.sendPostwithHeaders(HTTPPOstreq);
+		test.log(LogStatus.INFO, "sent post request with payload-----" + Inputfile);
+		System.out.println("Reponse is----------");
+		test.log(LogStatus.INFO, "received response-----" + resp.toString());
+		JSONObject JO = new JSONObject(resp.toString());
+
+		// order table
+		String orderReq = FileLoader.readJsonFilefromProject("orderpayload.json");
+		orderReq = TestUtil.setValueintojson(orderReq, data.get("vendorCodePath"), Vendor);
+		orderReq = TestUtil.setValueintojson(orderReq, data.get("poNumberPath"), purchaseOrder);
+//		orderReq = TestUtil.setValueintojson(orderReq, data.get("orderIdPath"), Integer.toString(OrderID));
+		System.out.println(orderReq);
+		HttpPost HTTPPOstreqOrder = tu.prepareHTTPPostwithJsonString(orderReq, "fetchorder");
+		System.out.println("Test uses file..." + HTTPPOstreqOrder);
+		JSONObject respOrder = rs.sendPostwithHeaders(HTTPPOstreqOrder);
+		test.log(LogStatus.INFO, "sent post request with payload-----" + Inputfile);
+		System.out.println("Reponse is----------" + respOrder.toString());
+		test.log(LogStatus.INFO, "received response-----" + respOrder.toString());
+		JSONObject JOOrder = new JSONObject(respOrder.toString());
+		System.out.println(JOOrder.getString("id"));
+		//part table
+		String partReq = FileLoader.readJsonFilefromProject("partpayload.json");
+		partReq = TestUtil.setValueintojson(partReq, data.get("orderQuantityPath"), "5");
+		partReq = TestUtil.setValueintojson(partReq, data.get("outstandingQuantity"), "5");
+		partReq = TestUtil.setValueintojson(partReq, data.get("orderIdPath"), JOOrder.getString("id"));
+		partReq = TestUtil.setValueintojson(partReq, data.get("poNumberPath"), purchaseOrder);
+		partReq = TestUtil.setValueintojson(partReq, data.get("partNumberPath"), PartNumber);
+		System.out.println(partReq);
+		HttpPost HTTPPOstreqPart = tu.prepareHTTPPostwithJsonString(partReq, "fetchpart");
+		System.out.println("Test uses file..." + partReq);
+		JSONObject respPart = rs.sendPostwithHeaders(HTTPPOstreqPart);
+		test.log(LogStatus.INFO, "sent post request with payload-----" + Inputfile);
+		System.out.println("Reponse is----------");
+		test.log(LogStatus.INFO, "received response-----" + respPart.toString());
+		JSONObject JOPart = new JSONObject(respPart.toString());
+		
+
+		//second record in part Table
+		String partReq2 = FileLoader.readJsonFilefromProject("partpayload.json");
+		partReq2 = TestUtil.setValueintojson(partReq2, data.get("orderQuantityPath"), "10");
+		partReq2 = TestUtil.setValueintojson(partReq, data.get("outstandingQuantity"), "10");
+
+		partReq2 = TestUtil.setValueintojson(partReq2, data.get("orderIdPath"), JOOrder.getString("id"));
+
+		String partnumber2="PART" + TestUtil.genrateRandomString(7) + TestUtil.genrateRandomString(7);
+		partReq2 = TestUtil.setValueintojson(partReq2, data.get("partNumberPath"),partnumber2);
+		partReq2 = TestUtil.setValueintojson(partReq2, "$.deliveryDueDate", getDateMinus(1));
+		System.out.println(partReq2);
+		HttpPost HTTPPOstreqPart2 = tu.prepareHTTPPostwithJsonString(partReq2, "fetchpart");
+		System.out.println("Test uses file..." + partReq2);
+		JSONObject respPart2 = rs.sendPostwithHeaders(HTTPPOstreqPart2);
+		test.log(LogStatus.INFO, "sent post request with payload-----" + Inputfile);
+		System.out.println("Reponse is----------");
+		test.log(LogStatus.INFO, "received response-----" + respPart2.toString());
+		JSONObject JOPart2 = new JSONObject(respPart2.toString());
+		
+		//Case Buld request
+		String GetReq = FileLoader.readJsonFilefromProject("CaseBuildRequestWithMixedUnitTypes.json");
+		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].caseNumber",
+				Integer.toString(TestUtil.genrateRandomNumber(8)));
+		GetReq = TestUtil.setValueintojson(GetReq, "$.vendorCode", Vendor);
+		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partNumber", PartNumber);
+		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partQuantity", "5");
+		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[1].partNumber", partnumber2);
+		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[1].partQuantity", "8");
+		System.out.println(GetReq);
+		HttpPost HTTPPOstreqGet = tu.prepareHTTPPostwithJsonString("[" + GetReq + "]", "casebuildAPI?status=true");
+		System.out.println("Test uses file..." + GetReq);
+		JSONObject respGet = rs.sendPostwithHeaders(HTTPPOstreqGet);
+		test.log(LogStatus.INFO, "sent post request with payload-----" + Inputfile);
+		System.out.println("Reponse is----------" + respGet.toString());
+		test.log(LogStatus.INFO, "received response-----" + respGet.toString());
+		JSONObject JOGet = new JSONObject(respGet.toString());
+		
+
+	}
+
 	
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -1074,7 +1171,7 @@ public class ServicePartsCaseBuild extends BaseTest {
 		currentRow.set(row);
 		GetDataWithRowNum(row);
 
-		InsertCaseBuildRcordsIntoTables();
+		generateRandomDataForTableRecords();
 		test.log(LogStatus.INFO, " VerifyRequiredFieldsatUnitLevel test started");
 		String vendorReq = FileLoader.readJsonFilefromProject("vendorpayload.json");
 
@@ -1125,7 +1222,7 @@ public class ServicePartsCaseBuild extends BaseTest {
 			
 		// Case build send first time
 	
-		String GetReq = FileLoader.readJsonFilefromProject("CaseBuildHappypathresponse.json");
+		String GetReq = FileLoader.readJsonFilefromProject("CaseBuildRequestWithSmallUnitType.json");
 		GetReq = TestUtil.setValueintojson(GetReq, "$.vendorCode", Vendor);
 		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].caseNumber",casenum);
 		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partNumber", PartNumber);
@@ -1146,7 +1243,7 @@ public class ServicePartsCaseBuild extends BaseTest {
 			Assert.fail();
 		}
 		// Case build send Second time time
-		String GetReq1 = FileLoader.readJsonFilefromProject("CaseBuildHappypathresponse.json");
+		String GetReq1 = FileLoader.readJsonFilefromProject("CaseBuildRequestWithSmallUnitType.json");
 		GetReq1 = TestUtil.setValueintojson(GetReq1, "$.vendorCode", Vendor);
 		GetReq = TestUtil.setValueintojson(GetReq1, "$.cases[0].caseNumber",casenum);
 		GetReq1 = TestUtil.setValueintojson(GetReq1, "$.cases[0].units[0].partNumber", PartNumber);
@@ -1169,166 +1266,7 @@ public class ServicePartsCaseBuild extends BaseTest {
 
 	}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-	//                    
-	//                                  API Spec Validations
-	//
-	///////////////////////////////////////////////////////////////////////////////////////////////////////
-/*	
 	
-	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
-	public void VerifyRequiredFieldsatUnitLevel(Integer row) throws Exception {
-		test = rep.startTest("VerifyRequiredFieldsatUnitLevel - verify po number is generated");
-		currentRow.set(row);
-		GetDataWithRowNum(row);
-		test.log(LogStatus.INFO, " VerifyRequiredFieldsatUnitLevel test started");
-		String request = FileLoader.readJsonFilefromProject(Inputfile);
-
-		String req1 = TestUtil.setValueintojson(request, data.get("partNumberPath"), data.get("partNumber"));
-
-		String req4 = TestUtil.setValueintojson(req1, data.get("partQuantityPath"), data.get("partQuantity"));
-
-		System.out.println(req4);
-		HttpPost HTTPPOstreq = tu.prepareHTTPPostwithJsonString("[" + req4 + "]", "");
-		System.out.println("Test uses file..." + req4);
-		JSONObject resp = rs.sendPostwithHeaders(HTTPPOstreq);
-		test.log(LogStatus.INFO, "sent post request with payload-----" + Inputfile);
-		System.out.println("Reponse is----------");
-		test.log(LogStatus.INFO, "received response-----" + resp.toString());
-		JSONObject JO = new JSONObject(resp.toString());
-		String errorMessage = TestUtil.getValuebyJpath(resp, data.get("getRespvaluePath"));
-		System.out.println(errorMessage);
-		// "Part Number is required field.","PO Number is required field.","PO Line
-		// Number is required field.
-
-		if (errorMessage.contains("Part Number is required field")) {
-			test.log(LogStatus.PASS, "response displays expected error message on Required fields " + errorMessage);
-		} else {
-			test.log(LogStatus.FAIL, "response doesn't show expected error message");
-			Assert.fail("response doesn't show expected error message");
-		}
-	}
-
-	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
-	public void VerifyCaseBuildPartQuantityError(Integer row) throws Exception {
-		test = rep.startTest("VerifyCaseBuildPartQuantityError - verify po number is generated");
-		currentRow.set(row);
-		GetDataWithRowNum(row);
-		test.log(LogStatus.INFO, " VerifyConfirmationnumberGenerated test started");
-		String request = FileLoader.readJsonFilefromProject(Inputfile);
-
-		request = TestUtil.setValueintojson(request, data.get("partNumberPath"), data.get("partNumber"));
-		request = TestUtil.setValueintojson(request, data.get("poNumberPath"), data.get("poNumber"));
-		request = TestUtil.setValueintojson(request, data.get("poLineNumberPath"), data.get("poLineNumber"));
-		request = TestUtil.setValueintojson(request, data.get("partQuantityPath"), data.get("partQuantity"));
-
-		HttpPost HTTPPOstreq = tu.prepareHTTPPostwithJsonString("[" + request + "]", "");
-		System.out.println("Test uses file..." + request);
-		JSONObject resp = rs.sendPostwithHeaders(HTTPPOstreq);
-		test.log(LogStatus.INFO, "sent post request with payload-----" + Inputfile);
-		System.out.println("Reponse is----------");
-		test.log(LogStatus.INFO, "received response-----" + resp.toString());
-		JSONObject JO = new JSONObject(resp.toString());
-		String errorMessage = TestUtil.getValuebyJpath(resp, data.get("getRespvaluePath"));
-		System.out.println(errorMessage);
-
-		if ((errorMessage.contains("Part Quantity is required field."))) {
-			test.log(LogStatus.PASS, "Error Message displayed on part quantity" + errorMessage);
-		} else {
-			test.log(LogStatus.FAIL, "response doesn't show expected error message");
-			Assert.fail("response doesn't show expected error message " + errorMessage);
-		}
-	}
-
-	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
-	public void VerifySpecialCharacters(Integer row) throws Exception {
-		test = rep.startTest("VerifyRequiredFieldsatUnitLevel - verify po number is generated");
-		currentRow.set(row);
-		GetDataWithRowNum(row);
-		test.log(LogStatus.INFO, " VerifyRequiredFieldsatUnitLevel test started");
-		String request = FileLoader.readJsonFilefromProject(Inputfile);
-
-		String req1 = TestUtil.setValueintojson(request, data.get("partNumberPath"), data.get("partNumber"));
-		req1 = TestUtil.setValueintojson(req1, data.get("poNumberPath"), data.get("poNumber"));
-		req1 = TestUtil.setValueintojson(req1, data.get("poLineNumberPath"), data.get("poLineNumber"));
-		req1 = TestUtil.setValueintojson(req1, data.get("partQuantityPath"), data.get("partQuantity"));
-
-		req1 = TestUtil.setValueintojson(req1, data.get("homePositionPath"), data.get("homePosition"));
-		req1 = TestUtil.setValueintojson(req1, data.get("deliveryDueDatePath"), data.get("deliveryDueDate"));
-		req1 = TestUtil.setValueintojson(req1, data.get("serialNumberPath"), data.get("serialNumber"));
-		req1 = TestUtil.setValueintojson(req1, data.get("subPartNumberPath"), data.get("subPartNumber"));
-
-		System.out.println(req1);
-		HttpPost HTTPPOstreq = tu.prepareHTTPPostwithJsonString("[" + req1 + "]", "");
-		System.out.println("Test uses file..." + req1);
-		JSONObject resp = rs.sendPostwithHeaders(HTTPPOstreq);
-		test.log(LogStatus.INFO, "sent post request with payload-----" + Inputfile);
-		System.out.println("Reponse is----------");
-		test.log(LogStatus.INFO, "received response-----" + resp.toString());
-		JSONObject JO = new JSONObject(resp.toString());
-		String errorMessage = TestUtil.getValuebyJpath(resp, data.get("getRespvaluePath"));
-		System.out.println(errorMessage);
-		// "Part Number is required field.","PO Number is required field.","PO Line
-		// Number is required field.
-
-//			if ((errorMessage.contains("Part Number is required field"))
-//					&& (errorMessage.contains("PO Number is required field"))
-//					&& (errorMessage.contains("PO Line Number is required field"))) {
-//				test.log(LogStatus.PASS, "response displays expected error message on Required fields " + errorMessage);
-//			} else {
-//				test.log(LogStatus.FAIL, "response doesn't show expected error message");
-//				Assert.fail();
-//			}
-	}
-	
-	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
-	public void VerifyMoreDigits(Integer row) throws Exception {
-		test = rep.startTest("VerifyMoreDigits - verify po number is generated");
-		currentRow.set(row);
-		GetDataWithRowNum(row);
-		test.log(LogStatus.INFO, " VerifyRequiredFieldsatUnitLevel test started");
-		String request = FileLoader.readJsonFilefromProject(Inputfile);
-
-		String req1 = TestUtil.setValueintojson(request, data.get("partNumberPath"), data.get("partNumber"));
-		req1 = TestUtil.setValueintojson(req1, data.get("poNumberPath"), data.get("poNumber"));
-		req1 = TestUtil.setValueintojson(req1, data.get("poLineNumberPath"), data.get("poLineNumber"));
-		req1 = TestUtil.setValueintojson(req1, data.get("partQuantityPath"), data.get("partQuantity"));
-
-		req1 = TestUtil.setValueintojson(req1, data.get("homePositionPath"), data.get("homePosition"));
-		// req1 = TestUtil.setValueintojson(req1, data.get("deliveryDueDatePath"),
-		// data.get("deliveryDueDate"));
-		req1 = TestUtil.setValueintojson(req1, data.get("serialNumberPath"), data.get("serialNumber"));
-		req1 = TestUtil.setValueintojson(req1, data.get("subPartNumberPath"), data.get("subPartNumber"));
-
-		System.out.println(req1);
-		HttpPost HTTPPOstreq = tu.prepareHTTPPostwithJsonString("[" + req1 + "]", "");
-		System.out.println("Test uses file..." + req1);
-		JSONObject resp = rs.sendPostwithHeaders(HTTPPOstreq);
-		test.log(LogStatus.INFO, "sent post request with payload-----" + Inputfile);
-		System.out.println("Reponse is----------");
-		test.log(LogStatus.INFO, "received response-----" + resp.toString());
-		JSONObject JO = new JSONObject(resp.toString());
-		String errorMessage = TestUtil.getValuebyJpath(resp, data.get("getRespvaluePath"));
-		System.out.println(errorMessage);
-		System.out.println(errorMessage.contains("Part Number must be 20 digits or less"));
-		System.out.println(errorMessage.contains("PO Number must be 8 digits"));
-		System.out.println(errorMessage.contains("PO Line Number must be 5 digits or less"));
-		System.out.println(errorMessage.contains("Home Position must be 1 digit"));
-		System.out.println(errorMessage.contains("Serial Number must be 20 digits or less"));
-		System.out.println(errorMessage.contains("Substitution Part Number must be 12 digits or less"));
-		if ((errorMessage.contains("Part Number must be 20 digits or less"))
-				&& (errorMessage.contains("PO Number must be 8 digits"))
-				&& (errorMessage.contains("PO Line Number must be 5 digits or less"))
-				&& (errorMessage.contains("Home Position must be 1 digit"))
-				&& (errorMessage.contains("Serial Number must be 20 digits or less"))
-				&& (errorMessage.contains("Substitution Part Number must be 12 digits or less"))) {
-			test.log(LogStatus.PASS, "response displays expected error message on Required fields " + errorMessage);
-		} else {
-			test.log(LogStatus.FAIL, "response doesn't show expected error message");
-			Assert.fail("response doesn't show expected error message");
-		}
-	}
-*/
 	
 	
 	
@@ -1371,7 +1309,7 @@ public class ServicePartsCaseBuild extends BaseTest {
 		return backdated1;
 	}
 
-	private void InsertCaseBuildRcordsIntoTables() throws ClassNotFoundException, SQLException {
+	private void generateRandomDataForTableRecords() throws ClassNotFoundException, SQLException {
 		Vendor = TestUtil.genrateRandomString(5);
 		int VendorId = TestUtil.genrateRandomNumber(5);
 		String vendorDescription = TestUtil.genrateRandomString(5);

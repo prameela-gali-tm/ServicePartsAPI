@@ -65,7 +65,7 @@ public class PartDetailsModel {
 	@JsonIgnore
 	private String serialNumber;
 	@JsonIgnore
-	private long subPartNumber;
+	private Long subPartNumber;
 	@JsonIgnore
 	private String partDesc;
 	
@@ -246,11 +246,13 @@ public class PartDetailsModel {
 		this.serialNumber = serialNumber;
 	}
 
-	public long getSubPartNumber() {
+	
+
+	public Long getSubPartNumber() {
 		return subPartNumber;
 	}
 
-	public void setSubPartNumber(long subPartNumber) {
+	public void setSubPartNumber(Long subPartNumber) {
 		this.subPartNumber = subPartNumber;
 	}
 

@@ -769,13 +769,17 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 						Map<String, String> duplicateValidation = new HashMap<String, String>();
 						// validating the direct shipment flag starts here
 						if(model.getDirectShipFlag()!=null && model.getDirectShipFlag().equals("Y")) {
-							if(model.getDealerNumber()==null) {
+							if(model.getDealerNumber()==null || model.getDealerNumber().isEmpty()) {
 								pushMessage(vendorCode, ServicePartConstant.DEALER_CODE, mesMap);
+							}else if(model.getDealerNumber()!=null && model.getDealerNumber().length()>10){
+								pushMessage(vendorCode, ServicePartConstant.DEALER_CODE_LEN, mesMap);
 							}
 						}
 						if(model.getDirectShipFlag()!=null && model.getDirectShipFlag().equalsIgnoreCase("N")) {
-							if(model.getDistFD()==null) {
+							if(model.getDistFD()==null || model.getDistFD().isEmpty()) {
 								pushMessage(vendorCode, ServicePartConstant.DIRECT_FD, mesMap);
+							}else if(model.getDistFD()!=null && model.getDistFD().length()>30) {
+								pushMessage(vendorCode, ServicePartConstant.DIRECT_FD_LEN, mesMap);
 							}
 						}
 						// validating the direct shipment flag ends here
@@ -827,7 +831,8 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 								pushMessage(vendorCode, deliverDueDateValidation(obj.getDeliveryDueDate()), mesMap);
 							}
 							if (obj.getDeliveryDueDate() == null && valid) {
-								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode,"N",3,null,null,null,null);
+								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode,"N",3,model.getDealerNumber(),model.getDistFD(),
+										 null,null);
 								if (partDetailsMap.containsKey(keyValue)) {
 									outStandingQuantity = partDetailsMap.get(keyValue);
 								}
@@ -1167,6 +1172,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 			}
 			
 			
+
 			/*  if (caseWithUnitDetails != null && caseWithUnitDetails.size() > 0) {
 			  TreeMap<String, List<PartDetailsModel>> sorting = new TreeMap<String,
 			  List<PartDetailsModel>>(); sorting.putAll(caseWithUnitDetails); for
@@ -1199,6 +1205,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 			  println("----------------End of Case Number details --------------------------"
 			  ); } }*/
 			 
+
 			 
 			/// Saving the Records into Data base start here
 			// valid =false;/// need to remove after demo
@@ -1256,7 +1263,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 								/// Part details updating start here
 								PartEntity partEntity = new PartEntity();
 								partEntity.setId(partDetailsModel.getPartId());
-								partEntity.setContainerID(partDetailsModel.getContainerID());
+							/*	partEntity.setContainerID(partDetailsModel.getContainerID());
 								partEntity.setDealer(partDetailsModel.getDealer());
 								try {
 									partEntity.setDeliveryDueDate(
@@ -1281,7 +1288,13 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 								partEntity.setSubPartNumber(partDetailsModel.getSubPartNumber());
 								partEntity.setTransmissionDate(new Date());
 								partEntity.setVendorPartNumber(partDetailsModel.getVendorPartNumber());
+								partEntity.setEda(new Date());*/
+								partEntity.setModifiedBy("SYSTEM");
+								partEntity.setModifiedDate(new Date());
+								partEntity.setOutstandingQuantity(partDetailsModel.getOutstandingQuantity());
+								partEntity.setStatus(partDetailsModel.getPartialStatus());
 								partList.add(partEntity);
+								
 								// ends here
 								/// Response object building start here
 								ResponseUnitsModel responseUnitsModel = new ResponseUnitsModel();

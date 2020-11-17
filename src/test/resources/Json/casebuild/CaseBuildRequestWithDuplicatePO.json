@@ -1,15 +1,19 @@
 [
-	{
-		"vendorCode": "0MZDA",
-		"cases": [
-			{
-				"caseNumber": "12343211",
-				"transportationCode": 3,
-				"directShipFlag": "Y",
-				"distFD": "",
-				"dealerNumber": 53232,
-				"units": [
-					{
+    {
+        "vendorCode": "$#rlz4n",
+        "exceptions": [
+            {
+                "exceptionCode": "10",
+                "comments": ""
+            }
+           
+        ],
+        "cases": [
+            {
+                "caseNumber": "88888888",
+                "units": [
+                    {
+
 						"partNumber": "P54G10400A",
 						"subPartNumber": "581650703100",
 						"poNumber": "TS020993",
@@ -18,8 +22,8 @@
 						"partQuantity": 10,
 						"poLineDeliveryDueDate": "2020-11-01",
 						"serialNumber": null
-					},
-					{
+					} ,               
+                    {
 						"partNumber": "P54G10400A",
 						"subPartNumber": "581650703100",
 						"poNumber": "TS020993",
@@ -29,19 +33,8 @@
 						"poLineDeliveryDueDate": "2020-11-01",
 						"serialNumber": null
 					}
-				],
-				            "rfidDetails":[
-               {
-                  "rfid":"T11234123456",
-                  "type":""
-               },
-               {
-                  "rfid":"T11234123455",
-                  "type":""
-               }
-            ]
-				
-			}
-		]
-	}
+                ]
+            }
+        ]
+    }
 ]

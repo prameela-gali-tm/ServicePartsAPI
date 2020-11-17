@@ -19,9 +19,11 @@ public class VendorEntity{
 
 	@Id
 
+
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="vendorSeqGen")
 	@SequenceGenerator(name = "vendorSeqGen", sequenceName = "SPADM.sp_vendor_seq", initialValue = 1, allocationSize = 10)
 	@Column(name = "VENDOR_ID")
+
 
 	private long id;
 	@Column(name = "VENDOR_CODE", nullable = false,unique = true)

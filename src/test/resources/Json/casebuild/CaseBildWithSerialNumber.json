@@ -4,9 +4,9 @@
 		"cases": [
 			{
 				"caseNumber": "12343211",
-				"transportationCode": 1,
+				"transportationCode": 3,
 				"directShipFlag": "Y",
-				"distFD": "",
+				"distFD": "898",
 				"dealerNumber": 53232,
 				"units": [
 					

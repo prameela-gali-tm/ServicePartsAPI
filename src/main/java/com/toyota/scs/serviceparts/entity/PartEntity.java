@@ -10,17 +10,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
 import javax.persistence.SequenceGenerator;
-
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.SqlResultSetMappings;
-
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name="SP_PART")
@@ -53,7 +49,16 @@ import javax.persistence.UniqueConstraint;
                     @ColumnResult(name = "dealerCode", type = String.class),
                     @ColumnResult(name = "transportationCode", type = String.class),
                     @ColumnResult(name = "finalDestination", type = String.class)
-                   }))
+                   })),
+	@SqlResultSetMapping(
+	        name = "viewAllPartDetails",
+	        classes = @ConstructorResult(
+	                targetClass = PartEntity.class,
+	                columns = {
+	                    @ColumnResult(name = "partNumber", type=String.class),
+	                    @ColumnResult(name = "homePosition", type = String.class),
+	                    @ColumnResult(name = "finalDesDealerCode", type = String.class)
+	                   }))
 })
 public class PartEntity implements Serializable {
 	
@@ -126,8 +131,13 @@ public class PartEntity implements Serializable {
 	@Column(name="SERIAL_NUMBER")
 	private String serialNumber;
 	
+	@Column(name="FINAL_DESTINATION")
+	private String finalDestination;
+	
 	@Column(name="SUB_PART_NUMBER")
 	private long subPartNumber;
+	@Column(name="EDA")
+	private Date eda;
 		  
 		  
 
@@ -143,14 +153,17 @@ public class PartEntity implements Serializable {
 	@Transient
 	private String dealerCode;
 	
-	@Transient
-	private String finalDestination;
+	
 	
 	@Transient
 	private String transportationCode;
 	
 	@Transient
 	private boolean directShipFlag;
+	
+	@Transient
+	private String finalDesDealerCode;
+	
 	
 	public PartEntity() {
 		super();
@@ -345,12 +358,16 @@ public class PartEntity implements Serializable {
 		this.subPartNumber = subPartNumber;
 	}
 
+	
+
+
 
 	public PartEntity(long id, String partNumber, String lineItemNumber, Date deliveryDueDate, String partDesc,
 			long orderQuantity, long outstandingQuantity, String vendorPartNumber, String directShip,
 			String homePosition, Date transmissionDate, String orderRefNumber, String dealer, String status,
 			String modifiedBy, Date modifiedDate, long orderId, String containerID, String serialNumber,
-			long subPartNumber) {
+			String finalDestination, long subPartNumber, Date eda, String poNumber, String orderType,
+			String vendorCode) {
 		super();
 		this.id = id;
 		this.partNumber = partNumber;
@@ -371,7 +388,12 @@ public class PartEntity implements Serializable {
 		this.orderId = orderId;
 		this.containerID = containerID;
 		this.serialNumber = serialNumber;
+		this.finalDestination = finalDestination;
 		this.subPartNumber = subPartNumber;
+		this.eda = eda;
+		this.poNumber = poNumber;
+		this.orderType = orderType;
+		this.vendorCode = vendorCode;
 	}
 
 
@@ -384,6 +406,16 @@ public class PartEntity implements Serializable {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public Date getEda() {
+		return eda;
+	}
+
+
+
+	public void setEda(Date eda) {
+		this.eda = eda;
 	}
 
 
@@ -465,6 +497,27 @@ public class PartEntity implements Serializable {
 		this.dealerCode = dealerCode;
 		this.transportationCode = transportationCode;
 		this.finalDestination = finalDestination;
+	}
+
+
+
+	public String getFinalDesDealerCode() {
+		return finalDesDealerCode;
+	}
+
+
+
+	public void setFinalDesDealerCode(String finalDesDealerCode) {
+		this.finalDesDealerCode = finalDesDealerCode;
+	}
+
+
+
+	public PartEntity(String partNumber, String homePosition, String finalDesDealerCode) {
+		super();
+		this.partNumber = partNumber;
+		this.homePosition = homePosition;
+		this.finalDesDealerCode = finalDesDealerCode;
 	}
 	
 	

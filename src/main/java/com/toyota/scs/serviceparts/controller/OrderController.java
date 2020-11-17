@@ -55,6 +55,7 @@ public class OrderController {
 				orderEntity1.setModifiedDate(new Date());
 				orderEntity1.setOrderType(orderEntity.getOrderType());
 				orderEntity1.setPoNumber(orderEntity.getPoNumber());
+				orderEntity1.setDealerOrder(orderEntity.getDealerOrder());
 				orderEntity1.setVendorCode(orderEntity.getVendorCode());
 				orderEntity1.setFinalDestination(orderEntity.getFinalDestination());
 				orderEntity1.setDealerCode(orderEntity.getDealerCode());

@@ -11,7 +11,7 @@
 	"transmissionDate": "2020-08-26T17:22:41.498+00:00",
 	"orderRefNumber": null,
 	"dealer": "kjkk",
-	"status": "new",
+	"status": "INSERT",
 	"modifiedBy": "BATCH",
 	"modifiedDate": "2020-08-26T17:22:41.498+00:00",
 	"orderId": 9999,
