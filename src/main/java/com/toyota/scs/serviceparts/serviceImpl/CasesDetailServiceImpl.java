@@ -720,6 +720,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 				if (i == 0) {
 					vendorCode = caseBuildModel.getVendorCode();
 				}
+				vendorCodeValiadation(caseBuildModel, mesMap, vendorRepositroy, mes);
 				List<CaseModel> cases = caseBuildModel.getCases();
 				if (cases != null && cases.size() > 0) {
 					Map<String, Map<String, PartDetailsModel>> partWithCompleteDDD = new HashMap<String, Map<String, PartDetailsModel>>();
@@ -1043,6 +1044,9 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 									} // end of the for loop for the iteration of the DB details
 
 								} // end of the if condition for the details fetching from the data base
+								else {
+									pushMessage(vendorCode, ServicePartConstant.NO_RECORDS, mesMap);
+								}
 								partWithCompleteDDD.put(obj.getPartNumber(), dddCompleteRecords);
 							}// end of the if condition for the delivery due date end
 							else if(valid && obj.getPoNumber()!=null && obj.getPoLineNumber()!=null && obj.getDeliveryDueDate()!=null && 
@@ -1144,7 +1148,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 										}
 									}
 								}else {
-									pushMessage(vendorCode, ServicePartConstant.ORDER_QUANTITY, mesMap);
+									pushMessage(vendorCode, ServicePartConstant.NO_RECORDS, mesMap);
 								}
 							}
 							partDetailsMap.put(keyValue, outStandingQuantity);
