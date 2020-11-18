@@ -123,6 +123,7 @@ public class TpnaServiceImpl implements TpnaService{
 				part.setModifiedDate(new Date());
 				part.setHomePosition(poline.gethP());
 				part.setModifiedBy("TPNA");
+				part.setStatus("INSERT");
 				partRepo.save(part);
 			}
 		}
