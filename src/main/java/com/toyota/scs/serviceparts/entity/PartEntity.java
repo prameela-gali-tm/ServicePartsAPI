@@ -38,7 +38,6 @@ import javax.persistence.Transient;
                     @ColumnResult(name = "id", type = long.class),
                     @ColumnResult(name = "orderId", type = long.class),
                     @ColumnResult(name = "containerID", type = String.class),
-                    @ColumnResult(name = "dealer", type = String.class),
                     @ColumnResult(name = "directShipFlag", type = boolean.class),
                     @ColumnResult(name = "orderRefNumber", type = String.class),
                     @ColumnResult(name = "partDesc", type = String.class),
@@ -91,8 +90,6 @@ public class PartEntity implements Serializable {
 	@Column(name="VENDOR_PART_NUMBER")
 	private String vendorPartNumber;
 	
-	@Column(name="DIRECT_SHIP")
-	private String directShip;
 	
 	@Column(name="HOME_POSITION")
 	private String homePosition;
@@ -104,8 +101,6 @@ public class PartEntity implements Serializable {
 	@Column(name="ORDER_REF_NUMBER")
 	private String orderRefNumber;
 	
-	@Column(name="DEALER")
-	private String dealer;
 	 
 	@Column(name="STATUS") 
 	private String status;
@@ -131,8 +126,6 @@ public class PartEntity implements Serializable {
 	@Column(name="SERIAL_NUMBER")
 	private String serialNumber;
 	
-	@Column(name="FINAL_DESTINATION")
-	private String finalDestination;
 	
 	@Column(name="SUB_PART_NUMBER")
 	private long subPartNumber;
@@ -163,6 +156,10 @@ public class PartEntity implements Serializable {
 	
 	@Transient
 	private String finalDesDealerCode;
+	
+	@Transient
+	private String finalDestination;
+	
 	
 	
 	public PartEntity() {
@@ -214,14 +211,7 @@ public class PartEntity implements Serializable {
 		this.vendorPartNumber = vendorPartNumber;
 	}
 
-	public String getDirectShip() {
-		return directShip;
-	}
-
-	public void setDirectShip(String directShip) {
-		this.directShip = directShip;
-	}
-
+	
 	public String getHomePosition() {
 		return homePosition;
 	}
@@ -246,14 +236,7 @@ public class PartEntity implements Serializable {
 		this.orderRefNumber = orderRefNumber;
 	}
 
-	public String getDealer() {
-		return dealer;
-	}
-
-	public void setDealer(String dealer) {
-		this.dealer = dealer;
-	}
-
+	
 	public String getStatus() {
 		return status;
 	}
@@ -364,7 +347,7 @@ public class PartEntity implements Serializable {
 
 	public PartEntity(long id, String partNumber, String lineItemNumber, Date deliveryDueDate, String partDesc,
 			long orderQuantity, long outstandingQuantity, String vendorPartNumber, String directShip,
-			String homePosition, Date transmissionDate, String orderRefNumber, String dealer, String status,
+			String homePosition, Date transmissionDate, String orderRefNumber, String status,
 			String modifiedBy, Date modifiedDate, long orderId, String containerID, String serialNumber,
 			String finalDestination, long subPartNumber, Date eda, String poNumber, String orderType,
 			String vendorCode) {
@@ -377,18 +360,15 @@ public class PartEntity implements Serializable {
 		this.orderQuantity = orderQuantity;
 		this.outstandingQuantity = outstandingQuantity;
 		this.vendorPartNumber = vendorPartNumber;
-		this.directShip = directShip;
 		this.homePosition = homePosition;
 		this.transmissionDate = transmissionDate;
 		this.orderRefNumber = orderRefNumber;
-		this.dealer = dealer;
 		this.status = status;
 		this.modifiedBy = modifiedBy;
 		this.modifiedDate = modifiedDate;
 		this.orderId = orderId;
 		this.containerID = containerID;
 		this.serialNumber = serialNumber;
-		this.finalDestination = finalDestination;
 		this.subPartNumber = subPartNumber;
 		this.eda = eda;
 		this.poNumber = poNumber;
@@ -432,16 +412,7 @@ public class PartEntity implements Serializable {
 
 
 
-	public String getFinalDestination() {
-		return finalDestination;
-	}
-
-
-
-	public void setFinalDestination(String finalDestination) {
-		this.finalDestination = finalDestination;
-	}
-
+	
 
 
 	public String getTransportationCode() {
@@ -470,7 +441,7 @@ public class PartEntity implements Serializable {
 
 	public PartEntity(String partNumber, Date deliveryDueDate, long orderQuantity, long outstandingQuantity,
 			String lineItemNumber, String poNumber, String orderType, String vendorCode, String homePosition, long id,
-			long orderId, String containerID, String dealer, boolean directShipFlag, String orderRefNumber,
+			long orderId, String containerID, boolean directShipFlag, String orderRefNumber,
 			String partDesc, String serialNumber, long subPartNumber, String vendorPartNumber, String status,
 			String dealerCode, String transportationCode, String finalDestination) {
 		super();
@@ -486,7 +457,6 @@ public class PartEntity implements Serializable {
 		this.id = id;
 		this.orderId = orderId;
 		this.containerID = containerID;
-		this.dealer = dealer;
 		this.directShipFlag = directShipFlag;
 		this.orderRefNumber = orderRefNumber;
 		this.partDesc = partDesc;
@@ -518,6 +488,18 @@ public class PartEntity implements Serializable {
 		this.partNumber = partNumber;
 		this.homePosition = homePosition;
 		this.finalDesDealerCode = finalDesDealerCode;
+	}
+
+
+
+	public String getFinalDestination() {
+		return finalDestination;
+	}
+
+
+
+	public void setFinalDestination(String finalDestination) {
+		this.finalDestination = finalDestination;
 	}
 	
 	

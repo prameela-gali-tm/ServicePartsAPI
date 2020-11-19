@@ -77,6 +77,9 @@ public class OrderEntity implements Serializable {
 	@Column(name="VENDOR_CODE")
 	private String vendorCode;
 
+	@Column(name = "FINAL_DESTINATION_DESC")
+	private String finalDestDesc;
+	
 	public OrderEntity() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -241,6 +244,30 @@ public class OrderEntity implements Serializable {
 
 	public void setTransCode(String transCode) {
 		this.transCode = transCode;
+	}
+
+
+
+
+
+
+
+
+
+	public String getFinalDestDesc() {
+		return finalDestDesc;
+	}
+
+
+
+
+
+
+
+
+
+	public void setFinalDestDesc(String finalDestDesc) {
+		this.finalDestDesc = finalDestDesc;
 	}
 
 
