@@ -76,7 +76,9 @@ public class TpnaServiceImpl implements TpnaService{
 				 }
 				 
 				 currentOrd.setFinalDestination(poline.getdISTFD());
+				 currentOrd.setFinalDestDesc(poline.getfINAL_DST());
 				 currentOrd.setTransCode(poline.gettRANSP_CD());
+				 currentOrd.setDealerCode(poline.getdLR_CODE());
 				 currentOrd.setDealerOrder(poline.getdLR_ORD_REF_NUM());
 				 currentOrd.setModifiedDate(new Date());
 				 currentOrd.setModifiedBy("TPNA");
@@ -115,11 +117,10 @@ public class TpnaServiceImpl implements TpnaService{
 				part.setPartNumber(partNumber);
 				part.setHomePosition(poline.gethP());
 				part.setOrderQuantity(Long.valueOf(poline.getoRD_QTY_PER_DDD()));
+				part.setOutstandingQuantity(Long.valueOf(poline.getoRD_QTY_PER_DDD()));
 				part.setVendorPartNumber(poline.gettOYOTA_PART_NUM());
 				part.setPartDesc(poline.getpART_DESC());
-				part.setFinalDestination(poline.getfINAL_DST());
 				part.setEda(edaDate);
-				part.setDealerCode(poline.getdLR_CODE());
 				part.setModifiedDate(new Date());
 				part.setHomePosition(poline.gethP());
 				part.setModifiedBy("TPNA");

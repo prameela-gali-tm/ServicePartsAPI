@@ -788,7 +788,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 							if(duplicateValidation.containsKey(model.getCaseNumber())) {
 								pushMessage(vendorCode, ServicePartConstant.DUPLICATE_UNITS, mesMap);
 							}else {
-								duplicateValidation.put(model.getCaseNumber(),obj.getPartNumber());
+								duplicateValidation.put(model.getCaseNumber()+obj.getPartNumber(),obj.getPartNumber());
 							}
 							pushMessage(vendorCode, partQuantityValidation(obj.getPartQuantity()), mesMap);
 							/// Validation on the serial number start here
@@ -1257,30 +1257,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 								// Ends here
 
 								/// Part details updating start here
-								PartEntity partEntity = new PartEntity();
-								partEntity.setId(partDetailsModel.getPartId());
-								/*
-								 * partEntity.setContainerID(partDetailsModel.getContainerID());
-								 * partEntity.setDealer(partDetailsModel.getDealer()); try {
-								 * partEntity.setDeliveryDueDate(
-								 * DATE_FORMAT.parse(partDetailsModel.getDeliveryDueDate())); } catch
-								 * (ParseException e) { // TODO Auto-generated catch block e.printStackTrace();
-								 * } partEntity.setDirectShip(partDetailsModel.getDirectShip());
-								 * partEntity.setHomePosition(partDetailsModel.getHomePosition());
-								 * partEntity.setLineItemNumber(partDetailsModel.getLineItemNumber());
-								 * partEntity.setModifiedBy("SYSTEM"); partEntity.setModifiedDate(new Date());
-								 * partEntity.setOrderId(partDetailsModel.getOrderId());
-								 * partEntity.setOrderQuantity(partDetailsModel.getOrderQuantity());
-								 * partEntity.setOrderRefNumber(partDetailsModel.getOrderRefNumber());
-								 * partEntity.setOutstandingQuantity(partDetailsModel.getOutstandingQuantity());
-								 * partEntity.setPartDesc(partDetailsModel.getPartDesc());
-								 * partEntity.setPartNumber(partDetailsModel.getPartNumber());
-								 * partEntity.setSerialNumber(partDetailsModel.getSerialNumber());
-								 * partEntity.setStatus(partDetailsModel.getPartialStatus());
-								 * partEntity.setSubPartNumber(partDetailsModel.getSubPartNumber());
-								 * partEntity.setTransmissionDate(new Date());
-								 * partEntity.setVendorPartNumber(partDetailsModel.getVendorPartNumber());
-								 */
+								PartEntity partEntity = partRepositroy.findById(partDetailsModel.getPartId()).get();
 								partEntity.setModifiedBy("SYSTEM"); 
 								partEntity.setModifiedDate(new Date());
 								partEntity.setOutstandingQuantity(partDetailsModel.getOutstandingQuantity());

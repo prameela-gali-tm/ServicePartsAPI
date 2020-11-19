@@ -52,9 +52,7 @@ public class PartController {
 					PartEntity partEntity1 = obj.get();
 					partEntity1.setId(partEntity.getId());
 					partEntity1.setContainerID(partEntity.getContainerID());
-					partEntity1.setDealer(partEntity.getDealer());
 					partEntity1.setDeliveryDueDate(partEntity.getDeliveryDueDate());
-					partEntity1.setDirectShip(partEntity.getDirectShip());
 					partEntity1.setHomePosition(partEntity.getHomePosition());
 					partEntity1.setLineItemNumber(partEntity.getLineItemNumber());
 					partEntity1.setModifiedBy("SYSTEM");
@@ -65,7 +63,6 @@ public class PartController {
 					partEntity1.setOutstandingQuantity(partEntity.getOutstandingQuantity());
 					partEntity1.setPartDesc(partEntity.getPartDesc());
 					partEntity1.setPartNumber(partEntity.getPartNumber());
-					partEntity1.setFinalDestination(partEntity.getFinalDestination());
 					partEntity1.setSerialNumber(partEntity.getSerialNumber());
 					partEntity1.setStatus("BATCH");
 					partEntity1.setSubPartNumber(partEntity.getSubPartNumber());
