@@ -1,12 +1,12 @@
 [
 	{
-		"vendorCode": "0MZDA",
+		"vendorCode": "0874H",
 		"cases": [
 			{
 				"caseNumber": "12343211",
 				"transportationCode": 3,
-				"directShipFlag": "Y",
-				"distFD": "",
+				"directShipFlag": "N",
+				"distFD": "9104095",
 				"dealerNumber": 53232,
 				"units": [
 					{

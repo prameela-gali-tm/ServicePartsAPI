@@ -11,11 +11,10 @@ import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.toyota.scs.serviceparts.entity.OrderEntity;
 import com.toyota.scs.serviceparts.entity.PartEntity;
 import com.toyota.scs.serviceparts.model.PartDetailsModel;
 import com.toyota.scs.serviceparts.model.PurchaseOrderDetailsModel;
-import com.toyota.scs.serviceparts.repository.PartRepository;
+import com.toyota.scs.serviceparts.model.ViewPartDetailsModel;
 import com.toyota.scs.serviceparts.service.PartDetailsService;
 @Service
 public class PartDetailsServiceImpl implements PartDetailsService {
@@ -143,5 +142,53 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 		Query query = em.createQuery(sqlQuery.toString());
 		List<PurchaseOrderDetailsModel> viewPurchaseOrderDetails = query.getResultList();
 		return viewPurchaseOrderDetails;
+	}
+	@Override
+	public List<ViewPartDetailsModel> getViewAllPartDetails(String vendorCode, String directFlag,int transportCode) {
+		EntityManager em = emf.createEntityManager();
+		StringBuilder sqlQuery = new StringBuilder();
+	//	sqlQuery.append(" select * from (");
+		sqlQuery.append(" select  ");
+		sqlQuery.append(" pt.part_number as partNumber,  ");
+		sqlQuery.append(" pt.home_position as homePosition, ");
+		if(directFlag!=null && directFlag.equalsIgnoreCase("Y")) {
+			sqlQuery.append(" ord.dealer_code as finalDesDealerCode ");
+		}else {
+			sqlQuery.append(" ord.final_destination as finalDesDealerCode ");
+		}
+		sqlQuery.append(" from spadm.sp_part pt ");
+		sqlQuery.append(" join spadm.sp_order ord  ");
+		sqlQuery.append(" on ord.order_id = pt.order_id ");
+		sqlQuery.append(" where 1=1 and pt.status<>'FULL FILLED'");
+		if(vendorCode!=null) {
+			sqlQuery.append(" and  ord.vendor_code='").append(vendorCode).append("'"); 
+			  }
+		if(directFlag!=null && directFlag.equalsIgnoreCase("Y")) { 
+			sqlQuery.append(" and  ord.direct_ship_flag =true "); 
+			}else {
+				sqlQuery.append(" and  ord.direct_ship_flag =false "); 
+			  }
+		if(transportCode!=0) {
+			sqlQuery.append(" and  ord.trans_code='").append(transportCode).append("'");
+		}
+		if(directFlag!=null && directFlag.equalsIgnoreCase("Y")) { 
+			sqlQuery.append(" GROUP BY pt.part_number,pt.home_position,ord.dealer_code");
+		}else
+		{
+			sqlQuery.append(" GROUP BY pt.part_number,pt.home_position,ord.final_destination");
+		}
+		sqlQuery.append(" order by pt.part_number asc");
+		  List<PartEntity> list  = new ArrayList<PartEntity>();
+		  list =  (List<PartEntity>)em.createNativeQuery(sqlQuery.toString(),"viewAllPartDetails").getResultList();
+		  List<ViewPartDetailsModel> partDetilsList = new ArrayList<ViewPartDetailsModel>();
+		  em.close();
+		  for(PartEntity partEntity : list) {
+			  ViewPartDetailsModel detailsModel = new ViewPartDetailsModel();
+			  detailsModel.setPartNumber(partEntity.getPartNumber());
+			   detailsModel.setHomePosition(partEntity.getHomePosition());
+			   detailsModel.setDealerOrDistinationFD(partEntity.getFinalDesDealerCode());
+			   partDetilsList.add(detailsModel);
+		  }
+	      return partDetilsList;   
 	}
 }
