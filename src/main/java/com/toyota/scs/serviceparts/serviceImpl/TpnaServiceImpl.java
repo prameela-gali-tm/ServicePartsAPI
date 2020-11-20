@@ -36,21 +36,19 @@ public class TpnaServiceImpl implements TpnaService{
 		//dLR_CODE dealer_code
 		Specification<OrderEntity> ordSpec =null;
 		boolean issuesExists=false,orderExists=false,partExists=false;
-		String poNumber, orderType,vendorCode,partNumber="",poLine="",ddd="",eda;
-		Date dddDate,edaDate;
+		String poNumber, orderType,vendorCode,partNumber="",poLine="",ddd="";
+		Date dddDate;
 		for(PolineModel poline :polineList) {
 			orderExists=false;
 			partExists=false;
-			poNumber="";orderType="";vendorCode="";partNumber="";poLine="";ddd="";eda="";
+			poNumber="";orderType="";vendorCode="";partNumber="";poLine="";ddd="";
 			poNumber=poline.getpO_NUM();
 			orderType=poline.getoRD_TYP();
 			vendorCode=poline.getvDR_CD();
 			partNumber=poline.getpART_NUM();
 			poLine=poline.getlINE_ITEM_NUM();
 			ddd=poline.getdDD();
-			eda=poline.geteDA();
 			dddDate= DateUtils.convertfromStringToDateFmt(ddd, "MM/dd/yyyy");
-			edaDate= DateUtils.convertfromStringToDateFmt(eda, "MM/dd/yyyy");
 			
 			//check for required fields
 			if(CommonValidation.isNullOrEmpty(poNumber)
@@ -76,10 +74,7 @@ public class TpnaServiceImpl implements TpnaService{
 				 }
 				 
 				 currentOrd.setFinalDestination(poline.getdISTFD());
-				 currentOrd.setFinalDestDesc(poline.getfINAL_DST());
 				 currentOrd.setTransCode(poline.gettRANSP_CD());
-				 currentOrd.setDealerCode(poline.getdLR_CODE());
-				 currentOrd.setDealerOrder(poline.getdLR_ORD_REF_NUM());
 				 currentOrd.setModifiedDate(new Date());
 				 currentOrd.setModifiedBy("TPNA");
 				 ordRepo.save(currentOrd);
@@ -117,14 +112,9 @@ public class TpnaServiceImpl implements TpnaService{
 				part.setPartNumber(partNumber);
 				part.setHomePosition(poline.gethP());
 				part.setOrderQuantity(Long.valueOf(poline.getoRD_QTY_PER_DDD()));
-				part.setOutstandingQuantity(Long.valueOf(poline.getoRD_QTY_PER_DDD()));
 				part.setVendorPartNumber(poline.gettOYOTA_PART_NUM());
-				part.setPartDesc(poline.getpART_DESC());
-				part.setEda(edaDate);
 				part.setModifiedDate(new Date());
-				part.setHomePosition(poline.gethP());
 				part.setModifiedBy("TPNA");
-				part.setStatus("INSERT");
 				partRepo.save(part);
 			}
 		}

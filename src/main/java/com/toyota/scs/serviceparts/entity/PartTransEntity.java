@@ -2,7 +2,6 @@ package com.toyota.scs.serviceparts.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -82,10 +81,6 @@ public class PartTransEntity implements Serializable {
 	
 	@Transient
 	private String deliveryDueDate;
-	
-	@Transient
-	private List<String> serialNumberList;
-	
 	
 	
 	public PartTransEntity() {
@@ -237,14 +232,6 @@ public class PartTransEntity implements Serializable {
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public List<String> getSerialNumberList() {
-		return serialNumberList;
-	}
-
-	public void setSerialNumberList(List<String> serialNumberList) {
-		this.serialNumberList = serialNumberList;
 	}
 	
 	

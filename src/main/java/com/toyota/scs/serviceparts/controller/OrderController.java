@@ -55,13 +55,7 @@ public class OrderController {
 				orderEntity1.setModifiedDate(new Date());
 				orderEntity1.setOrderType(orderEntity.getOrderType());
 				orderEntity1.setPoNumber(orderEntity.getPoNumber());
-				orderEntity1.setDealerOrder(orderEntity.getDealerOrder());
 				orderEntity1.setVendorCode(orderEntity.getVendorCode());
-				orderEntity1.setFinalDestination(orderEntity.getFinalDestination());
-				orderEntity1.setDealerCode(orderEntity.getDealerCode());
-				orderEntity1.setDirectShipFlag(orderEntity.getDirectShipFlag());
-				orderEntity1.setTransCode(orderEntity.getTransCode());
-				orderEntity1.setFinalDestDesc(orderEntity.getFinalDestDesc());
 				orderRepositroy.save(orderEntity1);
 				returnValue= "Record was updated successfully for the given id "+orderEntity.getId();
 			}

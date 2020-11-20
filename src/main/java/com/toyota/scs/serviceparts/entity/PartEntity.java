@@ -4,61 +4,19 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.ColumnResult;
-import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.SqlResultSetMapping;
-import javax.persistence.SqlResultSetMappings;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name="SP_PART")
-@SqlResultSetMappings({
-	@SqlResultSetMapping(
-        name = "viewPurchaseDetails",
-        classes = @ConstructorResult(
-                targetClass = PartEntity.class,
-                columns = {
-                    @ColumnResult(name = "partNumber", type=String.class),
-                    @ColumnResult(name = "deliveryDueDate", type = Date.class),
-                    @ColumnResult(name = "orderQuantity", type = long.class),
-                    @ColumnResult(name = "outstandingQuantity", type = long.class),
-                    @ColumnResult(name = "lineItemNumber", type = String.class),
-                    @ColumnResult(name = "poNumber", type = String.class),
-                    @ColumnResult(name = "orderType", type = String.class),
-                    @ColumnResult(name = "vendorCode", type = String.class),
-                    @ColumnResult(name = "homePosition", type = String.class),
-                    @ColumnResult(name = "id", type = long.class),
-                    @ColumnResult(name = "orderId", type = long.class),
-                    @ColumnResult(name = "containerID", type = String.class),
-                    @ColumnResult(name = "directShipFlag", type = boolean.class),
-                    @ColumnResult(name = "orderRefNumber", type = String.class),
-                    @ColumnResult(name = "partDesc", type = String.class),
-                    @ColumnResult(name = "serialNumber", type = String.class),
-                    @ColumnResult(name = "subPartNumber", type = long.class),
-                    @ColumnResult(name = "vendorPartNumber", type = String.class),
-                    @ColumnResult(name = "status", type = String.class),
-                    @ColumnResult(name = "dealerCode", type = String.class),
-                    @ColumnResult(name = "transportationCode", type = String.class),
-                    @ColumnResult(name = "finalDestination", type = String.class)
-                   })),
-	@SqlResultSetMapping(
-	        name = "viewAllPartDetails",
-	        classes = @ConstructorResult(
-	                targetClass = PartEntity.class,
-	                columns = {
-	                    @ColumnResult(name = "partNumber", type=String.class),
-	                    @ColumnResult(name = "homePosition", type = String.class),
-	                    @ColumnResult(name = "finalDesDealerCode", type = String.class)
-	                   }))
-})
 public class PartEntity implements Serializable {
 	
 	
@@ -90,6 +48,8 @@ public class PartEntity implements Serializable {
 	@Column(name="VENDOR_PART_NUMBER")
 	private String vendorPartNumber;
 	
+	@Column(name="DIRECT_SHIP")
+	private String directShip;
 	
 	@Column(name="HOME_POSITION")
 	private String homePosition;
@@ -101,6 +61,8 @@ public class PartEntity implements Serializable {
 	@Column(name="ORDER_REF_NUMBER")
 	private String orderRefNumber;
 	
+	@Column(name="DEALER")
+	private String dealer;
 	 
 	@Column(name="STATUS") 
 	private String status;
@@ -126,11 +88,8 @@ public class PartEntity implements Serializable {
 	@Column(name="SERIAL_NUMBER")
 	private String serialNumber;
 	
-	
 	@Column(name="SUB_PART_NUMBER")
 	private long subPartNumber;
-	@Column(name="EDA")
-	private Date eda;
 		  
 		  
 
@@ -142,24 +101,6 @@ public class PartEntity implements Serializable {
 	
 	@Transient
 	private String vendorCode;	
-	
-	@Transient
-	private String dealerCode;
-	
-	
-	
-	@Transient
-	private String transportationCode;
-	
-	@Transient
-	private boolean directShipFlag;
-	
-	@Transient
-	private String finalDesDealerCode;
-	
-	@Transient
-	private String finalDestination;
-	
 	
 	
 	public PartEntity() {
@@ -211,7 +152,14 @@ public class PartEntity implements Serializable {
 		this.vendorPartNumber = vendorPartNumber;
 	}
 
-	
+	public String getDirectShip() {
+		return directShip;
+	}
+
+	public void setDirectShip(String directShip) {
+		this.directShip = directShip;
+	}
+
 	public String getHomePosition() {
 		return homePosition;
 	}
@@ -236,7 +184,14 @@ public class PartEntity implements Serializable {
 		this.orderRefNumber = orderRefNumber;
 	}
 
-	
+	public String getDealer() {
+		return dealer;
+	}
+
+	public void setDealer(String dealer) {
+		this.dealer = dealer;
+	}
+
 	public String getStatus() {
 		return status;
 	}
@@ -341,16 +296,12 @@ public class PartEntity implements Serializable {
 		this.subPartNumber = subPartNumber;
 	}
 
-	
-
-
 
 	public PartEntity(long id, String partNumber, String lineItemNumber, Date deliveryDueDate, String partDesc,
 			long orderQuantity, long outstandingQuantity, String vendorPartNumber, String directShip,
-			String homePosition, Date transmissionDate, String orderRefNumber, String status,
+			String homePosition, Date transmissionDate, String orderRefNumber, String dealer, String status,
 			String modifiedBy, Date modifiedDate, long orderId, String containerID, String serialNumber,
-			String finalDestination, long subPartNumber, Date eda, String poNumber, String orderType,
-			String vendorCode) {
+			long subPartNumber) {
 		super();
 		this.id = id;
 		this.partNumber = partNumber;
@@ -360,9 +311,11 @@ public class PartEntity implements Serializable {
 		this.orderQuantity = orderQuantity;
 		this.outstandingQuantity = outstandingQuantity;
 		this.vendorPartNumber = vendorPartNumber;
+		this.directShip = directShip;
 		this.homePosition = homePosition;
 		this.transmissionDate = transmissionDate;
 		this.orderRefNumber = orderRefNumber;
+		this.dealer = dealer;
 		this.status = status;
 		this.modifiedBy = modifiedBy;
 		this.modifiedDate = modifiedDate;
@@ -370,10 +323,6 @@ public class PartEntity implements Serializable {
 		this.containerID = containerID;
 		this.serialNumber = serialNumber;
 		this.subPartNumber = subPartNumber;
-		this.eda = eda;
-		this.poNumber = poNumber;
-		this.orderType = orderType;
-		this.vendorCode = vendorCode;
 	}
 
 
@@ -387,121 +336,6 @@ public class PartEntity implements Serializable {
 	public void setId(long id) {
 		this.id = id;
 	}
-
-	public Date getEda() {
-		return eda;
-	}
-
-
-
-	public void setEda(Date eda) {
-		this.eda = eda;
-	}
-
-
-
-	public String getDealerCode() {
-		return dealerCode;
-	}
-
-
-
-	public void setDealerCode(String dealerCode) {
-		this.dealerCode = dealerCode;
-	}
-
-
-
-	
-
-
-	public String getTransportationCode() {
-		return transportationCode;
-	}
-
-
-
-	public void setTransportationCode(String transportationCode) {
-		this.transportationCode = transportationCode;
-	}
-
-
-
-	public boolean isDirectShipFlag() {
-		return directShipFlag;
-	}
-
-
-
-	public void setDirectShipFlag(boolean directShipFlag) {
-		this.directShipFlag = directShipFlag;
-	}
-
-
-
-	public PartEntity(String partNumber, Date deliveryDueDate, long orderQuantity, long outstandingQuantity,
-			String lineItemNumber, String poNumber, String orderType, String vendorCode, String homePosition, long id,
-			long orderId, String containerID, boolean directShipFlag, String orderRefNumber,
-			String partDesc, String serialNumber, long subPartNumber, String vendorPartNumber, String status,
-			String dealerCode, String transportationCode, String finalDestination) {
-		super();
-		this.partNumber = partNumber;
-		this.deliveryDueDate = deliveryDueDate;
-		this.orderQuantity = orderQuantity;
-		this.outstandingQuantity = outstandingQuantity;
-		this.lineItemNumber = lineItemNumber;
-		this.poNumber = poNumber;
-		this.orderType = orderType;
-		this.vendorCode = vendorCode;
-		this.homePosition = homePosition;
-		this.id = id;
-		this.orderId = orderId;
-		this.containerID = containerID;
-		this.directShipFlag = directShipFlag;
-		this.orderRefNumber = orderRefNumber;
-		this.partDesc = partDesc;
-		this.serialNumber = serialNumber;
-		this.subPartNumber = subPartNumber;
-		this.vendorPartNumber = vendorPartNumber;
-		this.status = status;
-		this.dealerCode = dealerCode;
-		this.transportationCode = transportationCode;
-		this.finalDestination = finalDestination;
-	}
-
-
-
-	public String getFinalDesDealerCode() {
-		return finalDesDealerCode;
-	}
-
-
-
-	public void setFinalDesDealerCode(String finalDesDealerCode) {
-		this.finalDesDealerCode = finalDesDealerCode;
-	}
-
-
-
-	public PartEntity(String partNumber, String homePosition, String finalDesDealerCode) {
-		super();
-		this.partNumber = partNumber;
-		this.homePosition = homePosition;
-		this.finalDesDealerCode = finalDesDealerCode;
-	}
-
-
-
-	public String getFinalDestination() {
-		return finalDestination;
-	}
-
-
-
-	public void setFinalDestination(String finalDestination) {
-		this.finalDestination = finalDestination;
-	}
 	
 	
 }
-

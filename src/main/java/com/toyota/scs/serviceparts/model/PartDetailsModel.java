@@ -36,12 +36,8 @@ public class PartDetailsModel {
 	@JsonProperty("homePosition")
 	private String homePosition;
 	
-	@JsonProperty("dealerOrDistinationFD")
-	private String dealerOrDistinationFD;
-	
-	@JsonProperty("transportationCode")
-	private int transportationCode;
-	
+	@JsonProperty("distinationFD")
+	private String distinationFD;
 	
 	@JsonIgnore
 	private long partId;
@@ -65,7 +61,7 @@ public class PartDetailsModel {
 	@JsonIgnore
 	private String serialNumber;
 	@JsonIgnore
-	private Long subPartNumber;
+	private long subPartNumber;
 	@JsonIgnore
 	private String partDesc;
 	
@@ -78,7 +74,7 @@ public class PartDetailsModel {
 	}
 
 	public PartDetailsModel(String partNumber, String deliveryDueDate, long orderQuantity, long outstandingQuantity,
-			String poNumber, String orderType, String vendorCode,String lineItemNumber,String homePosition,String dealerOrDistinationFD) {
+			String poNumber, String orderType, String vendorCode,String lineItemNumber,String homePosition,String distinationFD) {
 		super();
 		this.partNumber = partNumber;
 		this.deliveryDueDate = deliveryDueDate;
@@ -89,7 +85,7 @@ public class PartDetailsModel {
 		this.vendorCode = vendorCode;
 		this.lineItemNumber=lineItemNumber;
 		this.homePosition = homePosition;
-		this.dealerOrDistinationFD = dealerOrDistinationFD;
+		this.distinationFD = distinationFD;
 	}
 
 	public String getPartNumber() {
@@ -196,7 +192,13 @@ public class PartDetailsModel {
 		this.supplierFullFillQuantity = supplierFullFillQuantity;
 	}
 
-	
+	public String getDistinationFD() {
+		return distinationFD;
+	}
+
+	public void setDistinationFD(String distinationFD) {
+		this.distinationFD = distinationFD;
+	}
 
 	public String getContainerID() {
 		return containerID;
@@ -246,13 +248,11 @@ public class PartDetailsModel {
 		this.serialNumber = serialNumber;
 	}
 
-	
-
-	public Long getSubPartNumber() {
+	public long getSubPartNumber() {
 		return subPartNumber;
 	}
 
-	public void setSubPartNumber(Long subPartNumber) {
+	public void setSubPartNumber(long subPartNumber) {
 		this.subPartNumber = subPartNumber;
 	}
 
@@ -270,21 +270,5 @@ public class PartDetailsModel {
 
 	public void setSerialNumberDetailsModel(List<String> serialNumberDetailsModel) {
 		this.serialNumberDetailsModel = serialNumberDetailsModel;
-	}
-
-	public String getDealerOrDistinationFD() {
-		return dealerOrDistinationFD;
-	}
-
-	public void setDealerOrDistinationFD(String dealerOrDistinationFD) {
-		this.dealerOrDistinationFD = dealerOrDistinationFD;
-	}
-
-	public int getTransportationCode() {
-		return transportationCode;
-	}
-
-	public void setTransportationCode(int transportationCode) {
-		this.transportationCode = transportationCode;
 	}
 }

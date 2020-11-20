@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -17,34 +16,33 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name="SP_SHIPMENT")
+@Table(name = "SP_SHIPMENT")
 public class ShipmentEntity implements Serializable {
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="shipmentSeqGen")
-	@SequenceGenerator(name = "shipmentSeqGen", sequenceName = "SPADM.sp_shipment_seq", initialValue = 1, allocationSize = 10)
-	@Column(name="SHIPMENT_ID")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Column(name = "SHIPMENT_ID")
 	private long id;
-	
-	@Column(name="ROUTE")
+
+	@Column(name = "ROUTE")
 	private String route;
-	
-	@Column(name="RUN")
-    private long run;
-    
+
+	@Column(name = "RUN")
+	private long run;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "SHIP_DATE")
 	private Date shipDate;
-	
-	@Column(name="TRAILER")
+
+	@Column(name = "TRAILER")
 	private String trailer;
-	
-	@Column(name="DRIVER_FIRST_NAME") 
+
+	@Column(name = "DRIVER_FIRST_NAME")
 	private String driverFirstName;
-	
-	@Column(name="DRIVER_LAST_NAME")
+
+	@Column(name = "DRIVER_LAST_NAME")
 	private String driverLastName;
-	
-	@Column(name="SCAC_CODE")
+
+	@Column(name = "SCAC_CODE")
 	private String scacCode;
 	// added
 	@Column(name = "VENDOR_CODE")
@@ -52,30 +50,29 @@ public class ShipmentEntity implements Serializable {
 
 	@Column(name = "SUPPLIER_FIRST_NAME")
 	private String supplierFirstName;
-	
-	@Column(name="SUPPLIER_LAST_NAME")
+
+	@Column(name = "SUPPLIER_LAST_NAME")
 	private String supplierLastName;
-	
-	@Column(name="TRACKING_NUMBER")
+
+	@Column(name = "TRACKING_NUMBER")
 	private String trackingNumber;
-	
-	@Column(name="CONFIRMAATION_NUMBER")
+
+	@Column(name = "CONFIRMAATION_NUMBER")
 	private String confirmationNumber;
-	
-	@Column(name="STATUS")
+
+	@Column(name = "STATUS")
 	private String status;
-	
-	@Column(name="GEO_LONGITUDE")
+
+	@Column(name = "GEO_LONGITUDE")
 	private String geoLongitude;
-	
-	@Column(name="GEO_LATTITUDE")
-	 private String geoLattitude;
-	
-	
+
+	@Column(name = "GEO_LATTITUDE")
+	private String geoLattitude;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "MODIFIED_DATE")
 	private Date modifiedDate;
-	
+
 	@Column(name = "MODIFIED_BY")
 	private String modifiedBy;
 
@@ -109,7 +106,6 @@ public class ShipmentEntity implements Serializable {
 		this.modifiedBy = modifiedBy;
 	}
 
-	
 	public String getRoute() {
 		return route;
 	}

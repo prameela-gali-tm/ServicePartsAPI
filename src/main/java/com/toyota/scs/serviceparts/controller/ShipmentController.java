@@ -1,5 +1,6 @@
 package com.toyota.scs.serviceparts.controller;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.akiban.sql.parser.SetRoleNode;
 import com.toyota.scs.serviceparts.entity.ShipmentEntity;
 import com.toyota.scs.serviceparts.entity.VendorEntity;
+import com.toyota.scs.serviceparts.model.ShipmentModel;
 import com.toyota.scs.serviceparts.repository.ShipmentRepositroy;
 import com.toyota.scs.serviceparts.serviceImpl.ShipmentService;
 @RestController
@@ -47,6 +49,12 @@ public class ShipmentController {
         return  pageresult; 
 	}
 	
+	//added for persisting the shipment load data
+	@PostMapping("/saveshipmentloaddata")	// insert into vendor post
+	public ShipmentEntity saveShipmentLoadData(@RequestBody ShipmentModel shipmentModel) throws ParseException {	
+		return service.saveShipmentDetails(shipmentModel);	
+		
+	}
 	
 	@PostMapping("/fetchshipment")	// insert into vendor post
 	public ShipmentEntity saveVendorDetails(@RequestBody ShipmentEntity shipmentEntity) {
