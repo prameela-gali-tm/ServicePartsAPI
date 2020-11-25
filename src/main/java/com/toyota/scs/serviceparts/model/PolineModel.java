@@ -57,6 +57,12 @@ public class PolineModel {
 	    @JsonProperty("TIME_STAMP") 
 	    public String tIME_STAMP;
 	    
+	    @JsonProperty("EDI_PRTNR_ID")
+	    public String tradingPartnerId;
+	    
+	    @JsonProperty("SCS_IND")
+	    public String indicatorFlag;
+	    
 	    public PolineModel() {
 	    	super();
 	    }
@@ -65,7 +71,7 @@ public class PolineModel {
 				String oRD_TYP, String tRANSP_CD, String lINE_ITEM_NUM, String pART_NUM, String tOYOTA_PART_NUM,
 				String oRD_QTY_PER_DDD, String dDD, String hP, String bO_QTY, String pART_DESC, String aNALYST_NAME,
 				String dISTFD, String fINAL_DST, String dLR_ORD_REF_NUM, String dLR_CODE, String dIRECT_SHP_FLG,
-				String vDR_FILL_LT, String vDR_XSIT_LT, String eDA, String tRACKING_FLG, String tIME_STAMP) {
+				String vDR_FILL_LT, String vDR_XSIT_LT, String eDA, String tRACKING_FLG, String tIME_STAMP,String tradingPartnerId,String indicatorFlag) {
 			super();
 			this.eDI_PRTNR_ID = eDI_PRTNR_ID;
 			this.sCS_IND = sCS_IND;
@@ -93,6 +99,8 @@ public class PolineModel {
 			this.eDA = eDA;
 			this.tRACKING_FLG = tRACKING_FLG;
 			this.tIME_STAMP = tIME_STAMP;
+			this.tradingPartnerId=tradingPartnerId;
+			this.indicatorFlag = indicatorFlag;
 		}
 		public String geteDI_PRTNR_ID() {
 			return eDI_PRTNR_ID;
@@ -251,6 +259,22 @@ public class PolineModel {
 			this.tIME_STAMP = tIME_STAMP;
 		}
 
+		public String getTradingPartnerId() {
+			return tradingPartnerId;
+		}
+
+		public void setTradingPartnerId(String tradingPartnerId) {
+			this.tradingPartnerId = tradingPartnerId;
+		}
+
+		public String getIndicatorFlag() {
+			return indicatorFlag;
+		}
+
+		public void setIndicatorFlag(String indicatorFlag) {
+			this.indicatorFlag = indicatorFlag;
+		}
+
 		@Override
 		public int hashCode() {
 			final int prime = 31;
@@ -266,6 +290,7 @@ public class PolineModel {
 			result = prime * result + ((eDI_PRTNR_ID == null) ? 0 : eDI_PRTNR_ID.hashCode());
 			result = prime * result + ((fINAL_DST == null) ? 0 : fINAL_DST.hashCode());
 			result = prime * result + ((hP == null) ? 0 : hP.hashCode());
+			result = prime * result + ((indicatorFlag == null) ? 0 : indicatorFlag.hashCode());
 			result = prime * result + ((lINE_ITEM_NUM == null) ? 0 : lINE_ITEM_NUM.hashCode());
 			result = prime * result + ((oRD_QTY_PER_DDD == null) ? 0 : oRD_QTY_PER_DDD.hashCode());
 			result = prime * result + ((oRD_TYP == null) ? 0 : oRD_TYP.hashCode());
@@ -278,6 +303,7 @@ public class PolineModel {
 			result = prime * result + ((tOYOTA_PART_NUM == null) ? 0 : tOYOTA_PART_NUM.hashCode());
 			result = prime * result + ((tRACKING_FLG == null) ? 0 : tRACKING_FLG.hashCode());
 			result = prime * result + ((tRANSP_CD == null) ? 0 : tRANSP_CD.hashCode());
+			result = prime * result + ((tradingPartnerId == null) ? 0 : tradingPartnerId.hashCode());
 			result = prime * result + ((vDR_CD == null) ? 0 : vDR_CD.hashCode());
 			result = prime * result + ((vDR_FILL_LT == null) ? 0 : vDR_FILL_LT.hashCode());
 			result = prime * result + ((vDR_XSIT_LT == null) ? 0 : vDR_XSIT_LT.hashCode());
@@ -348,6 +374,11 @@ public class PolineModel {
 					return false;
 			} else if (!hP.equals(other.hP))
 				return false;
+			if (indicatorFlag == null) {
+				if (other.indicatorFlag != null)
+					return false;
+			} else if (!indicatorFlag.equals(other.indicatorFlag))
+				return false;
 			if (lINE_ITEM_NUM == null) {
 				if (other.lINE_ITEM_NUM != null)
 					return false;
@@ -407,6 +438,11 @@ public class PolineModel {
 				if (other.tRANSP_CD != null)
 					return false;
 			} else if (!tRANSP_CD.equals(other.tRANSP_CD))
+				return false;
+			if (tradingPartnerId == null) {
+				if (other.tradingPartnerId != null)
+					return false;
+			} else if (!tradingPartnerId.equals(other.tradingPartnerId))
 				return false;
 			if (vDR_CD == null) {
 				if (other.vDR_CD != null)

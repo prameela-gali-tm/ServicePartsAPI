@@ -2,16 +2,20 @@ package com.toyota.scs.serviceparts.serviceImpl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.collections4.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.toyota.scs.serviceparts.entity.OrderEntity;
 import com.toyota.scs.serviceparts.entity.PartEntity;
+import com.toyota.scs.serviceparts.entity.VendorEntity;
 import com.toyota.scs.serviceparts.model.PolineModel;
 import com.toyota.scs.serviceparts.repository.OrderRepository;
 import com.toyota.scs.serviceparts.repository.PartRepository;
+import com.toyota.scs.serviceparts.repository.VendorRepositroy;
 import com.toyota.scs.serviceparts.service.TpnaService;
 import com.toyota.scs.serviceparts.util.CommonValidation;
 import com.toyota.scs.serviceparts.util.DateUtils;
@@ -21,8 +25,9 @@ public class TpnaServiceImpl implements TpnaService{
 	@Autowired
 	OrderRepository ordRepo;
 	@Autowired
-	PartRepository partRepo;
-	
+	PartRepository partRepo;	
+	@Autowired
+	VendorRepositroy vendorRepo;
 	@Override
 	public boolean poDetails(List<PolineModel> polineList) {
 
@@ -38,6 +43,7 @@ public class TpnaServiceImpl implements TpnaService{
 		boolean issuesExists=false,orderExists=false,partExists=false;
 		String poNumber, orderType,vendorCode,partNumber="",poLine="",ddd="",eda;
 		Date dddDate,edaDate;
+		Map<String,String> vendorCodeMap = new HashedMap<String, String>();
 		for(PolineModel poline :polineList) {
 			orderExists=false;
 			partExists=false;
@@ -127,6 +133,22 @@ public class TpnaServiceImpl implements TpnaService{
 				part.setStatus("INSERT");
 				partRepo.save(part);
 			}
+			if(!vendorCodeMap.containsKey(poline.getvDR_CD())) {
+				VendorEntity vendorEntity;				
+				vendorEntity = vendorRepo.findByVendorCodeAndTradingPartnerId(poline.getvDR_CD(), poline.getTradingPartnerId());
+				if(vendorEntity==null || vendorEntity.getId()==0L ) {
+					vendorEntity = new VendorEntity();
+					vendorEntity.setVendorCode(poline.getvDR_CD());
+					vendorEntity.setTradingPartnerId(poline.getTradingPartnerId());
+					vendorEntity.setVendorDesc("TPNA");
+					vendorEntity.setModifiedDate(new Date());
+					vendorEntity.setModifiedBy("TPNA");
+					vendorRepo.save(vendorEntity);
+				}
+				vendorCodeMap.put(poline.getvDR_CD(), poline.getvDR_CD());
+			}
+				
+			
 		}
 		
 		return false;
