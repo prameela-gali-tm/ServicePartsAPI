@@ -11,4 +11,5 @@ public interface VendorRepositroy extends PagingAndSortingRepository<VendorEntit
 		public VendorEntity findByVendorCodeEquals(String vendoreCode);
 		//Iterable<VendorEntity> findAll(Sort sort);
 		//Page<VendorEntity> findAll(Pageable pageable);
+		public VendorEntity findByVendorCodeAndTradingPartnerId(String vendorCode,String tradingPartnerId);
 }

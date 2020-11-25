@@ -57,6 +57,9 @@ public class PolineModel {
 	    @JsonProperty("TIME_STAMP") 
 	    public String tIME_STAMP;
 	    
+	    @JsonProperty("Trading Partner ID")
+	    public String tradingPartnerId;
+	    
 	    public PolineModel() {
 	    	super();
 	    }
@@ -65,7 +68,7 @@ public class PolineModel {
 				String oRD_TYP, String tRANSP_CD, String lINE_ITEM_NUM, String pART_NUM, String tOYOTA_PART_NUM,
 				String oRD_QTY_PER_DDD, String dDD, String hP, String bO_QTY, String pART_DESC, String aNALYST_NAME,
 				String dISTFD, String fINAL_DST, String dLR_ORD_REF_NUM, String dLR_CODE, String dIRECT_SHP_FLG,
-				String vDR_FILL_LT, String vDR_XSIT_LT, String eDA, String tRACKING_FLG, String tIME_STAMP) {
+				String vDR_FILL_LT, String vDR_XSIT_LT, String eDA, String tRACKING_FLG, String tIME_STAMP,String tradingPartnerId) {
 			super();
 			this.eDI_PRTNR_ID = eDI_PRTNR_ID;
 			this.sCS_IND = sCS_IND;
@@ -93,6 +96,7 @@ public class PolineModel {
 			this.eDA = eDA;
 			this.tRACKING_FLG = tRACKING_FLG;
 			this.tIME_STAMP = tIME_STAMP;
+			this.tradingPartnerId=tradingPartnerId;
 		}
 		public String geteDI_PRTNR_ID() {
 			return eDI_PRTNR_ID;
@@ -251,6 +255,14 @@ public class PolineModel {
 			this.tIME_STAMP = tIME_STAMP;
 		}
 
+		public String getTradingPartnerId() {
+			return tradingPartnerId;
+		}
+
+		public void setTradingPartnerId(String tradingPartnerId) {
+			this.tradingPartnerId = tradingPartnerId;
+		}
+
 		@Override
 		public int hashCode() {
 			final int prime = 31;
@@ -278,6 +290,7 @@ public class PolineModel {
 			result = prime * result + ((tOYOTA_PART_NUM == null) ? 0 : tOYOTA_PART_NUM.hashCode());
 			result = prime * result + ((tRACKING_FLG == null) ? 0 : tRACKING_FLG.hashCode());
 			result = prime * result + ((tRANSP_CD == null) ? 0 : tRANSP_CD.hashCode());
+			result = prime * result + ((tradingPartnerId == null) ? 0 : tradingPartnerId.hashCode());
 			result = prime * result + ((vDR_CD == null) ? 0 : vDR_CD.hashCode());
 			result = prime * result + ((vDR_FILL_LT == null) ? 0 : vDR_FILL_LT.hashCode());
 			result = prime * result + ((vDR_XSIT_LT == null) ? 0 : vDR_XSIT_LT.hashCode());
@@ -407,6 +420,11 @@ public class PolineModel {
 				if (other.tRANSP_CD != null)
 					return false;
 			} else if (!tRANSP_CD.equals(other.tRANSP_CD))
+				return false;
+			if (tradingPartnerId == null) {
+				if (other.tradingPartnerId != null)
+					return false;
+			} else if (!tradingPartnerId.equals(other.tradingPartnerId))
 				return false;
 			if (vDR_CD == null) {
 				if (other.vDR_CD != null)
