@@ -67,27 +67,25 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 			  }
 		if(directFlag!=null && directFlag.equalsIgnoreCase("Y")) { 
 			sqlQuery.append(" and  ord.direct_ship_flag =true "); 
-			sqlQuery.append(" and  ord.dealer_code ='").append(dealerNumber).append("'");	
 			}else {
 				sqlQuery.append(" and  ord.direct_ship_flag =false "); 
-				sqlQuery.append(" and  ord.final_destination = '").append(distFD).append("'");
 			  }
 		if(transportCode!=0) {
 			sqlQuery.append(" and  ord.trans_code='").append(transportCode).append("'");
 		}
 		if(deliveruDueDate!=null) {
 			sqlQuery.append(" and  pt.ddd ='").append(deliveruDueDate).append("'");
+		}		
+		if(poLineNuber!=null) {
+			 sqlQuery.append(" and  pt.line_item_number='").append(poLineNuber).append("'");
+		 }
+		if(dealerNumber!=null) {
+			sqlQuery.append(" and  ord.dealer_code ='").append(dealerNumber).append("'");
 		}
-		/*
-		 * if(poLineNuber!=null) {
-		 * sqlQuery.append(" and  pt.line_item_number='").append(poLineNuber).append("'"
-		 * ); }
-		 */
-		
-		//sqlQuery.append(" and  pt.ddd <= (current_date+3)");
-		//sqlQuery.append(" order by pt.ddd asc , ord.order_type, pt.part_number asc");
-		//sqlQuery.append(" ) as subquery  order by orderType asc");
-		sqlQuery.append(" order by pt.ddd ,pt.part_number asc");
+		if(distFD!=null) {
+			sqlQuery.append(" and  ord.final_destination = '").append(distFD).append("'");
+		}
+		sqlQuery.append(" order by pt.ddd ,pt.part_number,ord.order_type asc");
 		  List<PartEntity> list  = new ArrayList<PartEntity>();
 		  list =  (List<PartEntity>)em.createNativeQuery(sqlQuery.toString(),"viewPurchaseDetails").getResultList();
 		  List<PartDetailsModel> partDetilsList = new ArrayList<PartDetailsModel>();
