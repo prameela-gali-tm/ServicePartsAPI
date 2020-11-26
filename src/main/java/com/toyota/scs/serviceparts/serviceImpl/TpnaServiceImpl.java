@@ -135,11 +135,11 @@ public class TpnaServiceImpl implements TpnaService{
 			}
 			if(!vendorCodeMap.containsKey(poline.getvDR_CD())) {
 				VendorEntity vendorEntity;				
-				vendorEntity = vendorRepo.findByVendorCodeAndTradingPartnerId(poline.getvDR_CD(), poline.getTradingPartnerId());
+				vendorEntity = vendorRepo.findByVendorCodeAndTradingPartnerId(poline.getvDR_CD(), poline.geteDI_PRTNR_ID());
 				if(vendorEntity==null || vendorEntity.getId()==0L ) {
 					vendorEntity = new VendorEntity();
 					vendorEntity.setVendorCode(poline.getvDR_CD());
-					vendorEntity.setTradingPartnerId(poline.getTradingPartnerId());
+					vendorEntity.setTradingPartnerId(poline.geteDI_PRTNR_ID());
 					vendorEntity.setVendorDesc("TPNA");
 					vendorEntity.setModifiedDate(new Date());
 					vendorEntity.setModifiedBy("TPNA");

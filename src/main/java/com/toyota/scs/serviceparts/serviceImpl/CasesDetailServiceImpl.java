@@ -825,8 +825,15 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 							if(obj.getDeliveryDueDate()!=null) {
 								pushMessage(vendorCode, deliverDueDateValidation(obj.getDeliveryDueDate()), mesMap);
 							}
+							String dealerCode=null;
+							String distinationFD=null;
+							if(model.getDirectShipFlag()!=null && model.getDirectShipFlag().equalsIgnoreCase("Y")) {
+								dealerCode=model.getDealerNumber();
+							}else {
+								distinationFD=model.getDistFD();
+							}
 							if (obj.getDeliveryDueDate() == null && valid) {
-								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode,model.getDirectShipFlag(),model.getTransportationCode(),model.getDealerNumber(),model.getDistFD(),null,null);
+								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode,model.getDirectShipFlag(),model.getTransportationCode(),dealerCode,distinationFD,null,null);
 								if (partDetailsMap.containsKey(keyValue)) {
 									outStandingQuantity = partDetailsMap.get(keyValue);
 								}
@@ -837,14 +844,16 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 										if (partWithCompleteDDD.containsKey(partDetailsModel.getPartNumber())) {
 											Map<String, PartDetailsModel> dddValues = partWithCompleteDDD
 													.get(partDetailsModel.getPartNumber());
-											if (dddValues.containsKey(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber())) {
+											if (dddValues.containsKey(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber()+partDetailsModel.getOrderType())) {
 												PartDetailsModel detailsModel1 = dddValues
-														.get(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber());
+														.get(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber()+partDetailsModel.getOrderType());
 												if (detailsModel1 != null && detailsModel1.getPartialStatus()
 														.equalsIgnoreCase("PARTIAL")) {
 													falgIteration = true;												
 												}
-												if(partDetailsModel.getPartNumber().equalsIgnoreCase(detailsModel1.getPartNumber()) && partDetailsModel.getPoNumber().equalsIgnoreCase(detailsModel1.getPoNumber())) {
+												if(partDetailsModel.getPartNumber().equalsIgnoreCase(detailsModel1.getPartNumber()) && 
+														partDetailsModel.getPoNumber().equalsIgnoreCase(detailsModel1.getPoNumber()) &&
+														partDetailsModel.getOrderType().equalsIgnoreCase(detailsModel1.getOrderType())) {
 													  partDetailsModel.setOrderQuantity(detailsModel1.getOrderQuantity());
 													  partDetailsModel
 													  .setOutstandingQuantity(detailsModel1.getOutstandingQuantity());
@@ -882,7 +891,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 													obj.getSerialNumberDetailsModel().removeAll(removeList);
 												}
 												balanceQuantity = actaulShippedQuantity - plannedQuantity;
-												dddCompleteRecords.put(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber(),
+												dddCompleteRecords.put(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber()+partDetailsModel.getOrderType(),
 														partDetailsModel);
 												unitDetails.add(partDetailsModel);
 												if (balanceQuantity <= 0) {
@@ -913,7 +922,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 												partDetailsModel.setOutstandingQuantity(
 														(plannedQuantity - actaulShippedQuantity));
 												partDetailsModel.setPartialStatus("PARTIAL");
-												dddCompleteRecords.put(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber(),
+												dddCompleteRecords.put(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber()+partDetailsModel.getOrderType(),
 														partDetailsModel);
 												unitDetails.add(partDetailsModel);
 												if (balanceQuantity <= 0) {
@@ -950,7 +959,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 														obj.getSerialNumberDetailsModel().removeAll(removeList);
 													}
 													balanceQuantity = actaulShippedQuantity - remainingQuantity;
-													dddCompleteRecords.put(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber(),
+													dddCompleteRecords.put(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber()+partDetailsModel.getOrderType(),
 															partDetailsModel);
 													if (falgIteration) {
 														partDetailsModel.setSupplierFullFillQuantity(remainingQuantity);
@@ -989,7 +998,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 													obj.getSerialNumberDetailsModel().removeAll(removeList);
 												}
 												balanceQuantity = actaulShippedQuantity - remainingQuantity;
-												dddCompleteRecords.put(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber(),
+												dddCompleteRecords.put(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber()+partDetailsModel.getOrderType(),
 														partDetailsModel);
 												unitDetails.add(partDetailsModel);
 												if (balanceQuantity <= 0) {
@@ -1020,7 +1029,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 												partDetailsModel.setOutstandingQuantity(
 														(remainingQuantity - actaulShippedQuantity));
 												partDetailsModel.setPartialStatus("PARTIAL");
-												dddCompleteRecords.put(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber(),
+												dddCompleteRecords.put(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber()+partDetailsModel.getOrderType(),
 														partDetailsModel);
 												unitDetails.add(partDetailsModel);
 												if (balanceQuantity <= 0) {
@@ -1053,7 +1062,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 									!obj.getPoNumber().equalsIgnoreCase("") && !obj.getPoLineNumber().equalsIgnoreCase("") && !obj.getDeliveryDueDate().equalsIgnoreCase("")) {
 								/// checking with vendor code, transportation code, direct flag, delaer or dist fd
 								String poLineItemNumber = convertPolineItemNumber(obj.getPoLineNumber());
-								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode,model.getDirectShipFlag(),model.getTransportationCode(),model.getDealerNumber(),model.getDistFD(),
+								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode,model.getDirectShipFlag(),model.getTransportationCode(),dealerCode,distinationFD,
 																				parseDateString(obj.getDeliveryDueDate()),poLineItemNumber);
 								if(detailsModel!=null && detailsModel.size()>0) {
 									for(PartDetailsModel partDetailsModel:detailsModel) {
@@ -1088,7 +1097,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 												}else {
 													partDetailsModel.setPartialStatus("PARTIAL");
 												}
-												dddCompleteRecords.put(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber(),
+												dddCompleteRecords.put(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber()+partDetailsModel.getOrderType(),
 														partDetailsModel);
 												unitDetails.add(partDetailsModel);
 												if (balanceQuantity <= 0) {
@@ -1130,7 +1139,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 														obj.getSerialNumberDetailsModel().removeAll(removeList);
 													}
 													balanceQuantity = actaulShippedQuantity - remainingQuantity;
-													dddCompleteRecords.put(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber(),
+													dddCompleteRecords.put(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber()+partDetailsModel.getOrderType(),
 															partDetailsModel);
 												   unitDetails.add(partDetailsModel);
 													if (balanceQuantity <= 0) {
