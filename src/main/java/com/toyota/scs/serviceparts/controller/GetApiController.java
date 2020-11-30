@@ -50,7 +50,7 @@ public class GetApiController {
 			@RequestParam(name = "distFD",required = false) String distFD){
 		
 		List<PartDetailsModel> partDetails = new ArrayList<PartDetailsModel>();	
-		partDetails = partdetailsService.findPartDetails(partNumber, vendorCode,directFlag,transportCode,dealerNumber,distFD,null,null);
+		partDetails = partdetailsService.findPartDetails(partNumber, vendorCode,directFlag,transportCode,dealerNumber,distFD,null,null,null);
 		return new ResponseEntity<>(partDetails,HttpStatus.OK);
 		
 	}
