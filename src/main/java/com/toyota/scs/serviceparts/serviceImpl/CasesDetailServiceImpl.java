@@ -793,9 +793,10 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 							String keyValue = obj.getPartNumber() + vendorCode;
 							long outStandingQuantity = 0;
 							if (duplicateValidation.containsKey(model.getCaseNumber())) {
-								pushMessage(vendorCode, ServicePartConstant.DUPLICATE_UNITS, mesMap);
-							} else {
-								duplicateValidation.put(model.getCaseNumber(), obj.getPartNumber());
+								pushMessage(vendorCode, ServicePartConstant.DUPLICATE_UNITS, mesMap);}
+							else {
+								duplicateValidation.put(model.getCaseNumber()+obj.getPartNumber(),obj.getPartNumber());
+
 							}
 							pushMessage(vendorCode, partQuantityValidation(obj.getPartQuantity()), mesMap);
 							/// Validation on the serial number start here
@@ -1315,10 +1316,10 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 								// Ends here
 
 								/// Part details updating start here
-								PartEntity partEntity = new PartEntity();
-								partEntity.setId(partDetailsModel.getPartId());
 
-								partEntity.setModifiedBy("SYSTEM");
+								PartEntity partEntity = partRepositroy.findById(partDetailsModel.getPartId()).get();
+								partEntity.setModifiedBy("SYSTEM"); 
+
 								partEntity.setModifiedDate(new Date());
 								partEntity.setOutstandingQuantity(partDetailsModel.getOutstandingQuantity());
 								partEntity.setStatus(partDetailsModel.getPartialStatus());

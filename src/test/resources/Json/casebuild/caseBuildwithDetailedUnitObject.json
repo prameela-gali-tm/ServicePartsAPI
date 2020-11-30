@@ -3,22 +3,50 @@
 		"vendorCode": "0874H",
 		"cases": [
 			{
-				"caseNumber": "12343211",
+				"caseNumber": "23241235",
 				"transportationCode": 3,
 				"directShipFlag": "N",
 				"distFD": "9104095",
 				"dealerNumber": 53232,
 				"units": [
 					{
-						"partNumber": "P54G10400A",
+						"partNumber": "0400176404",
 						"subPartNumber": "581650703100",
 						"poNumber": "TS020993",
 						"poLineNumber": "00001",
-						"poLineHomePosition": "F",
-						"partQuantity": 10,
-						"poLineDeliveryDueDate": "2020-11-01",
-						"serialNumber": null
+						"poLineHomePosition": "W",
+						"partQuantity": 31,
+						"poLineDeliveryDueDate": "2020-07-31"
+							}
+				],
+				"rfidDetails": [
+					{
+						"rfid": "T11234123456",
+						"type": ""
+					},
+					{
+						"rfid": "T11234123455",
+						"type": ""
 					}
+				]
+			},
+			
+			{
+				"caseNumber": "23241236",
+				"transportationCode": 3,
+				"directShipFlag": "N",
+				"distFD": "9104095",
+				"dealerNumber": 53232,
+				"units": [
+					{
+						"partNumber": "0400176404",
+						"subPartNumber": "581650703100",
+						"poNumber": "TS020993",
+						"poLineNumber": "00001",
+						"poLineHomePosition": "W",
+						"partQuantity": 30,
+						"poLineDeliveryDueDate": "2020-07-31"
+							}
 				],
 				"rfidDetails": [
 					{
@@ -31,6 +59,7 @@
 					}
 				]
 			}
+			
 		]
 	}
 ]

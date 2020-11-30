@@ -328,7 +328,7 @@ public class ServicePartsCaseBuild extends BaseTest {
 		}
 	}
 
-	// one case number, one unit and 2 part order payloads, makes greater quantity,
+	// one case number, unit one and 2 with part order same , makes greater quantity,
 	// inserting 5 but total is 15.
 	@Test(priority = 1, dataProvider = "CaseBuildDataProvider")
 	public void greaterpartQtyScenario2(Integer row) throws Exception {
@@ -385,6 +385,8 @@ public class ServicePartsCaseBuild extends BaseTest {
 		JSONObject JOPart = new JSONObject(respPart.toString());
 
 		String GetReq = FileLoader.readJsonFilefromProject("Casebuildwith2Units.json");
+		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].caseNumber",
+				Integer.toString(TestUtil.genrateRandomNumber(8)));
 		GetReq = TestUtil.setValueintojson(GetReq, "$.vendorCode", Vendor);
 		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partNumber", PartNumber);
 		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].partQuantity", "5");

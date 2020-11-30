@@ -45,7 +45,6 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 		sqlQuery.append(" pt.part_id as id, ");
 		sqlQuery.append(" pt.order_id as orderId, ");
 		sqlQuery.append(" pt.container_id as containerID, ");
-		sqlQuery.append(" pt.dealer as dealer, ");
 		sqlQuery.append(" ord.direct_ship_flag as directShipFlag, ");
 		sqlQuery.append(" pt.order_ref_number  as orderRefNumber, ");
 		sqlQuery.append(" pt.part_desc as partDesc, ");
@@ -107,7 +106,6 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 			   detailsModel.setPartId(partEntity.getId());
 			   detailsModel.setOrderId(partEntity.getOrderId());
 			   detailsModel.setContainerID(partEntity.getContainerID());
-			   detailsModel.setDealer(partEntity.getDealer());
 			   if(partEntity.isDirectShipFlag()) {
 				   detailsModel.setDirectShip("true");
 			   }else {

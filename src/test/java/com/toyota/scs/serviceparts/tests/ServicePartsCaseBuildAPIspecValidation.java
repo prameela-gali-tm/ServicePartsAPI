@@ -105,7 +105,7 @@ public class ServicePartsCaseBuildAPIspecValidation extends BaseTest {
 		GetDataWithRowNum(row);
 		// Case Build request
 		String GetReq = FileLoader.readJsonFilefromProject("casebuild/caseBuildwithDetailedUnitObject.json");
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].poLineHomePosition", "7887xn@,xn");
+		//GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].poLineHomePosition", "7887xn@,xn");
 		System.out.println(GetReq);
 		HttpPost HTTPPOstreqGet = tu.prepareHTTPPostwithJsonString("[" + GetReq + "]", "casebuildAPI?status=true");
 		System.out.println("Test uses file..." + GetReq);
@@ -147,7 +147,7 @@ public class ServicePartsCaseBuildAPIspecValidation extends BaseTest {
 		GetDataWithRowNum(row);
 		// Case Build request
 		String GetReq = FileLoader.readJsonFilefromProject("casebuild/caseBuildwithDetailedUnitObject.json");
-		GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].poNumber", "7887xn@,xn");
+		//GetReq = TestUtil.setValueintojson(GetReq, "$.cases[0].units[0].poNumber", "7887xn@,xn");
 		System.out.println(GetReq);
 		HttpPost HTTPPOstreqGet = tu.prepareHTTPPostwithJsonString("[" + GetReq + "]", "casebuildAPI?status=true");
 		System.out.println("Test uses file..." + GetReq);
