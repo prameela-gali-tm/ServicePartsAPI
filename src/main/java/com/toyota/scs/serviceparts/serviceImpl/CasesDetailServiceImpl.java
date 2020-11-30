@@ -121,7 +121,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 							OrderEntity entity = null;
 							List<PartDetailsModel> detailsModel = null;
 							if (obj.getDeliveryDueDate() == null) {
-								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode,"N",3,null,null,null,null);
+								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode,"N",3,null,null,null,null,null);
 								long outStandingQuantity = 0;
 								if (detailsModel != null && detailsModel.size() > 0) {
 									List<PartDetailsModel> models = new ArrayList<PartDetailsModel>();
@@ -833,7 +833,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 								distinationFD=model.getDistFD();
 							}
 							if (obj.getDeliveryDueDate() == null && valid) {
-								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode,model.getDirectShipFlag(),model.getTransportationCode(),dealerCode,distinationFD,null,null);
+								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode,model.getDirectShipFlag(),model.getTransportationCode(),dealerCode,distinationFD,null,null,null);
 								if (partDetailsMap.containsKey(keyValue)) {
 									outStandingQuantity = partDetailsMap.get(keyValue);
 								}
@@ -1063,7 +1063,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 								/// checking with vendor code, transportation code, direct flag, delaer or dist fd
 								String poLineItemNumber = convertPolineItemNumber(obj.getPoLineNumber());
 								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode,model.getDirectShipFlag(),model.getTransportationCode(),dealerCode,distinationFD,
-																				parseDateString(obj.getDeliveryDueDate()),poLineItemNumber);
+																				parseDateString(obj.getDeliveryDueDate()),poLineItemNumber,obj.getPoNumber());
 								if(detailsModel!=null && detailsModel.size()>0) {
 									for(PartDetailsModel partDetailsModel:detailsModel) {
 										long plannedQuantity = partDetailsModel.getOrderQuantity();

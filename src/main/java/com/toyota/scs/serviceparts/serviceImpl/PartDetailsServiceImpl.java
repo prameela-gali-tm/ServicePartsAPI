@@ -28,7 +28,7 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<PartDetailsModel> findPartDetails(String partNumber,String vendorCode,String directFlag,int transportCode,String dealerNumber,String distFD,String deliveruDueDate,String poLineNuber) {
+	public List<PartDetailsModel> findPartDetails(String partNumber,String vendorCode,String directFlag,int transportCode,String dealerNumber,String distFD,String deliveruDueDate,String poLineNuber,String poNumber) {
 		EntityManager em = emf.createEntityManager();
 		StringBuilder sqlQuery = new StringBuilder();
 	//	sqlQuery.append(" select * from (");
@@ -85,6 +85,11 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 		if(distFD!=null) {
 			sqlQuery.append(" and  ord.final_destination = '").append(distFD).append("'");
 		}
+		if(poNumber!=null && !poNumber.isEmpty()) {
+			
+			sqlQuery.append(" and  ord.po_number = '").append(poNumber).append("'");
+		}
+		
 		sqlQuery.append(" order by pt.ddd ,pt.part_number,ord.order_type asc");
 		  List<PartEntity> list  = new ArrayList<PartEntity>();
 		  list =  (List<PartEntity>)em.createNativeQuery(sqlQuery.toString(),"viewPurchaseDetails").getResultList();
