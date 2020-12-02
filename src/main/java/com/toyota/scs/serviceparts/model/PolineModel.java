@@ -26,8 +26,11 @@ public class PolineModel {
 	    public String tOYOTA_PART_NUM;
 	    @JsonProperty("ORD_QTY_PER_DDD") 
 	    public String oRD_QTY_PER_DDD;
-	    @JsonProperty("DDD") 
-	    public String dDD;
+	    @JsonProperty("ORIG_DDD") 
+	    public String oRIG_DDD ;	    
+	    @JsonProperty("REVISED_DDD") 
+	    public String rEVISED_DDD;
+	    
 	    @JsonProperty("HP") 
 	    public String hP;
 	    @JsonProperty("BO_QTY") 
@@ -61,39 +64,27 @@ public class PolineModel {
 	    	super();
 	    }
 	    
-		public PolineModel(String eDI_PRTNR_ID, String sCS_IND, String vDR_CD, String sUPPLR_CD, String pO_NUM,
-				String oRD_TYP, String tRANSP_CD, String lINE_ITEM_NUM, String pART_NUM, String tOYOTA_PART_NUM,
-				String oRD_QTY_PER_DDD, String dDD, String hP, String bO_QTY, String pART_DESC, String aNALYST_NAME,
-				String dISTFD, String fINAL_DST, String dLR_ORD_REF_NUM, String dLR_CODE, String dIRECT_SHP_FLG,
-				String vDR_FILL_LT, String vDR_XSIT_LT, String eDA, String tRACKING_FLG, String tIME_STAMP) {
-			super();
-			this.eDI_PRTNR_ID = eDI_PRTNR_ID;
-			this.sCS_IND = sCS_IND;
-			this.vDR_CD = vDR_CD;
-			this.sUPPLR_CD = sUPPLR_CD;
-			this.pO_NUM = pO_NUM;
-			this.oRD_TYP = oRD_TYP;
-			this.tRANSP_CD = tRANSP_CD;
-			this.lINE_ITEM_NUM = lINE_ITEM_NUM;
-			this.pART_NUM = pART_NUM;
-			this.tOYOTA_PART_NUM = tOYOTA_PART_NUM;
-			this.oRD_QTY_PER_DDD = oRD_QTY_PER_DDD;
-			this.dDD = dDD;
-			this.hP = hP;
-			this.bO_QTY = bO_QTY;
-			this.pART_DESC = pART_DESC;
-			this.aNALYST_NAME = aNALYST_NAME;
-			this.dISTFD = dISTFD;
-			this.fINAL_DST = fINAL_DST;
-			this.dLR_ORD_REF_NUM = dLR_ORD_REF_NUM;
-			this.dLR_CODE = dLR_CODE;
-			this.dIRECT_SHP_FLG = dIRECT_SHP_FLG;
-			this.vDR_FILL_LT = vDR_FILL_LT;
-			this.vDR_XSIT_LT = vDR_XSIT_LT;
-			this.eDA = eDA;
-			this.tRACKING_FLG = tRACKING_FLG;
-			this.tIME_STAMP = tIME_STAMP;
+		
+		public String getoRIG_DDD() {
+			return oRIG_DDD;
 		}
+
+
+		public void setoRIG_DDD(String oRIG_DDD) {
+			this.oRIG_DDD = oRIG_DDD;
+		}
+
+
+		public String getrEVISED_DDD() {
+			return rEVISED_DDD;
+		}
+
+
+		public void setrEVISED_DDD(String rEVISED_DDD) {
+			this.rEVISED_DDD = rEVISED_DDD;
+		}
+
+
 		public String geteDI_PRTNR_ID() {
 			return eDI_PRTNR_ID;
 		}
@@ -160,12 +151,7 @@ public class PolineModel {
 		public void setoRD_QTY_PER_DDD(String oRD_QTY_PER_DDD) {
 			this.oRD_QTY_PER_DDD = oRD_QTY_PER_DDD;
 		}
-		public String getdDD() {
-			return dDD;
-		}
-		public void setdDD(String dDD) {
-			this.dDD = dDD;
-		}
+		
 		public String gethP() {
 			return hP;
 		}
@@ -257,7 +243,6 @@ public class PolineModel {
 			int result = 1;
 			result = prime * result + ((aNALYST_NAME == null) ? 0 : aNALYST_NAME.hashCode());
 			result = prime * result + ((bO_QTY == null) ? 0 : bO_QTY.hashCode());
-			result = prime * result + ((dDD == null) ? 0 : dDD.hashCode());
 			result = prime * result + ((dIRECT_SHP_FLG == null) ? 0 : dIRECT_SHP_FLG.hashCode());
 			result = prime * result + ((dISTFD == null) ? 0 : dISTFD.hashCode());
 			result = prime * result + ((dLR_CODE == null) ? 0 : dLR_CODE.hashCode());
@@ -269,9 +254,11 @@ public class PolineModel {
 			result = prime * result + ((lINE_ITEM_NUM == null) ? 0 : lINE_ITEM_NUM.hashCode());
 			result = prime * result + ((oRD_QTY_PER_DDD == null) ? 0 : oRD_QTY_PER_DDD.hashCode());
 			result = prime * result + ((oRD_TYP == null) ? 0 : oRD_TYP.hashCode());
+			result = prime * result + ((oRIG_DDD == null) ? 0 : oRIG_DDD.hashCode());
 			result = prime * result + ((pART_DESC == null) ? 0 : pART_DESC.hashCode());
 			result = prime * result + ((pART_NUM == null) ? 0 : pART_NUM.hashCode());
 			result = prime * result + ((pO_NUM == null) ? 0 : pO_NUM.hashCode());
+			result = prime * result + ((rEVISED_DDD == null) ? 0 : rEVISED_DDD.hashCode());
 			result = prime * result + ((sCS_IND == null) ? 0 : sCS_IND.hashCode());
 			result = prime * result + ((sUPPLR_CD == null) ? 0 : sUPPLR_CD.hashCode());
 			result = prime * result + ((tIME_STAMP == null) ? 0 : tIME_STAMP.hashCode());
@@ -302,11 +289,6 @@ public class PolineModel {
 				if (other.bO_QTY != null)
 					return false;
 			} else if (!bO_QTY.equals(other.bO_QTY))
-				return false;
-			if (dDD == null) {
-				if (other.dDD != null)
-					return false;
-			} else if (!dDD.equals(other.dDD))
 				return false;
 			if (dIRECT_SHP_FLG == null) {
 				if (other.dIRECT_SHP_FLG != null)
@@ -348,7 +330,6 @@ public class PolineModel {
 					return false;
 			} else if (!hP.equals(other.hP))
 				return false;
-			
 			if (lINE_ITEM_NUM == null) {
 				if (other.lINE_ITEM_NUM != null)
 					return false;
@@ -364,6 +345,11 @@ public class PolineModel {
 					return false;
 			} else if (!oRD_TYP.equals(other.oRD_TYP))
 				return false;
+			if (oRIG_DDD == null) {
+				if (other.oRIG_DDD != null)
+					return false;
+			} else if (!oRIG_DDD.equals(other.oRIG_DDD))
+				return false;
 			if (pART_DESC == null) {
 				if (other.pART_DESC != null)
 					return false;
@@ -378,6 +364,11 @@ public class PolineModel {
 				if (other.pO_NUM != null)
 					return false;
 			} else if (!pO_NUM.equals(other.pO_NUM))
+				return false;
+			if (rEVISED_DDD == null) {
+				if (other.rEVISED_DDD != null)
+					return false;
+			} else if (!rEVISED_DDD.equals(other.rEVISED_DDD))
 				return false;
 			if (sCS_IND == null) {
 				if (other.sCS_IND != null)
@@ -409,7 +400,6 @@ public class PolineModel {
 					return false;
 			} else if (!tRANSP_CD.equals(other.tRANSP_CD))
 				return false;
-			
 			if (vDR_CD == null) {
 				if (other.vDR_CD != null)
 					return false;
