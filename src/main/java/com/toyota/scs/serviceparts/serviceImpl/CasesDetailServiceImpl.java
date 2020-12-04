@@ -426,12 +426,17 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 
 	public String subPartNumberValidation(String s) {
 		String mes = EMPTY;
+		
 		if (s != null && !s.equalsIgnoreCase("")) {
+			int strValue = Integer.parseInt(s); 
 			if (s.length() > 20) {
 				return ServicePartConstant.SUB_PARTNUMBER_INVALID;
 			}
 			if (!isAlphaNumeric(s)) {
 				return ServicePartConstant.SUB_PARTNUMBER_SPEC;
+			}
+			if(strValue==0) {
+				return ServicePartConstant.SUB_PARTNUMBER_INVALID;
 			}
 		}
 
@@ -744,8 +749,8 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 							{
 								Optional<PartEntity> pEntityopt= partRepositroy.findById(obj1.getPartId());
 								PartEntity pEntity = pEntityopt.get();
-								pEntity.setOutstandingQuantity(pEntity.getOutstandingQuantity()+obj1.getFullfilledQuantity());
-								pEntity.setStatus("INSERT");
+								pEntity.setOutstandingQuantity(pEntity.getOrderQuantity());
+								pEntity.setStatus(ServicePartConstant.INSERT_STATUS);
 								partEntityList.add(pEntity);
 							}
 							partRepositroy.saveAll(partEntityList);
@@ -851,7 +856,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 												PartDetailsModel detailsModel1 = dddValues
 														.get(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber()+partDetailsModel.getOrderType());
 												if (detailsModel1 != null && detailsModel1.getPartialStatus()
-														.equalsIgnoreCase("PARTIAL")) {
+														.equalsIgnoreCase(ServicePartConstant.PARTIAL_STATUS)) {
 													falgIteration = true;												
 												}
 												if(partDetailsModel.getPartNumber().equalsIgnoreCase(detailsModel1.getPartNumber()) && 
@@ -878,7 +883,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 											if (actaulShippedQuantity >= plannedQuantity) {
 												partDetailsModel.setSupplierFullFillQuantity(plannedQuantity);
 												partDetailsModel.setOutstandingQuantity(0);
-												partDetailsModel.setPartialStatus("FULL FILLED");
+												partDetailsModel.setPartialStatus(ServicePartConstant.FULL_FILLED_STATUS);
 												if(obj.getSerialNumberDetailsModel()!=null && obj.getSerialNumberDetailsModel().size()>0) {
 													List<String> exitingSerialNumber = partDetailsModel.getSerialNumberDetailsModel();
 													if(exitingSerialNumber==null) {
@@ -924,7 +929,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 												}
 												partDetailsModel.setOutstandingQuantity(
 														(plannedQuantity - actaulShippedQuantity));
-												partDetailsModel.setPartialStatus("PARTIAL");
+												partDetailsModel.setPartialStatus(ServicePartConstant.PARTIAL_STATUS);
 												dddCompleteRecords.put(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber()+partDetailsModel.getOrderType(),
 														partDetailsModel);
 												unitDetails.add(partDetailsModel);
@@ -938,14 +943,14 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 												}
 
 											}
-										} else if (partialStatus != null && partialStatus.equalsIgnoreCase("PARTIAL")) {
+										} else if (partialStatus != null && partialStatus.equalsIgnoreCase(ServicePartConstant.PARTIAL_STATUS)) {
 											if (remainingQuantity != 0) {
 												if (actaulShippedQuantity >= remainingQuantity) {
 
 													partDetailsModel.setSupplierFullFillQuantity(
 															fullfillQuantity + remainingQuantity);
 													partDetailsModel.setOutstandingQuantity(0);
-													partDetailsModel.setPartialStatus("FULL FILLED");
+													partDetailsModel.setPartialStatus(ServicePartConstant.FULL_FILLED_STATUS);
 													if(obj.getSerialNumberDetailsModel()!=null && obj.getSerialNumberDetailsModel().size()>0) {
 														//List<String> exitingSerialNumber = partDetailsModel.getSerialNumberDetailsModel();
 														List<String> exitingSerialNumber = null;
@@ -981,11 +986,11 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 													}
 												}
 											}
-										}else if(partialStatus != null && partialStatus.equalsIgnoreCase("INSERT") && fullfillQuantity!=0 && remainingQuantity<plannedQuantity) {
+										}else if(partialStatus != null && partialStatus.equalsIgnoreCase(ServicePartConstant.INSERT_STATUS) && fullfillQuantity!=0 && remainingQuantity<plannedQuantity) {
 											if(actaulShippedQuantity>=remainingQuantity) {
 												partDetailsModel.setSupplierFullFillQuantity(remainingQuantity);
 												partDetailsModel.setOutstandingQuantity(0);
-												partDetailsModel.setPartialStatus("FULL FILLED");
+												partDetailsModel.setPartialStatus(ServicePartConstant.FULL_FILLED_STATUS);
 												if(obj.getSerialNumberDetailsModel()!=null && obj.getSerialNumberDetailsModel().size()>0) {
 													List<String> exitingSerialNumber = partDetailsModel.getSerialNumberDetailsModel();
 													if(exitingSerialNumber==null) {
@@ -1031,7 +1036,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 												}
 												partDetailsModel.setOutstandingQuantity(
 														(remainingQuantity - actaulShippedQuantity));
-												partDetailsModel.setPartialStatus("PARTIAL");
+												partDetailsModel.setPartialStatus(ServicePartConstant.PARTIAL_STATUS);
 												dddCompleteRecords.put(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber()+partDetailsModel.getOrderType(),
 														partDetailsModel);
 												unitDetails.add(partDetailsModel);
@@ -1100,10 +1105,16 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 												}
 												partDetailsModel.setOutstandingQuantity(
 														(plannedQuantity - actaulShippedQuantity));
+												
 												if(actaulShippedQuantity==plannedQuantity) {
-													partDetailsModel.setPartialStatus("FULL FILLED");
+													if(status!=null && status.equalsIgnoreCase(ServicePartConstant.DRAFT_STATUS)) {
+														partDetailsModel.setPartialStatus(ServicePartConstant.DRAFT_STATUS);
+													}else {
+														partDetailsModel.setPartialStatus(ServicePartConstant.FULL_FILLED_STATUS);
+													}
+													
 												}else {
-													partDetailsModel.setPartialStatus("PARTIAL");
+													partDetailsModel.setPartialStatus(ServicePartConstant.PARTIAL_STATUS);
 												}
 												dddCompleteRecords.put(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber()+partDetailsModel.getOrderType(),
 														partDetailsModel);
@@ -1118,9 +1129,9 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 												}
 
 											}else {
-												pushMessage(vendorCode, ServicePartConstant.SERVICE_INVALID, mesMap);
+												pushMessage(vendorCode, ServicePartConstant.ORDER_QUANTITY, mesMap);
 											}
-										}else if (partialStatus != null && partialStatus.equalsIgnoreCase("PARTIAL")) {
+										}else if (partialStatus != null && partialStatus.equalsIgnoreCase(ServicePartConstant.PARTIAL_STATUS)) {
 											if (remainingQuantity != 0) {
 												if (actaulShippedQuantity <= remainingQuantity) {
 													
@@ -1128,12 +1139,21 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 														partDetailsModel.setSupplierFullFillQuantity(
 																 remainingQuantity);
 														partDetailsModel.setOutstandingQuantity(0);
-														partDetailsModel.setPartialStatus("FULL FILLED");
+														if(status!=null && status.equalsIgnoreCase(ServicePartConstant.DRAFT_STATUS)) {
+															partDetailsModel.setPartialStatus(ServicePartConstant.DRAFT_STATUS);
+														}else {
+															partDetailsModel.setPartialStatus(ServicePartConstant.FULL_FILLED_STATUS);
+														}
 													}else {
 														partDetailsModel.setSupplierFullFillQuantity(
 																fullfillQuantity + remainingQuantity);
 														partDetailsModel.setOutstandingQuantity(actaulShippedQuantity - remainingQuantity);
-														partDetailsModel.setPartialStatus("FULL FILLED");
+														if(status!=null && status.equalsIgnoreCase(ServicePartConstant.DRAFT_STATUS)) {
+															partDetailsModel.setPartialStatus(ServicePartConstant.DRAFT_STATUS);
+														}else
+														{
+															partDetailsModel.setPartialStatus(ServicePartConstant.FULL_FILLED_STATUS);
+														}														
 													}
 													if(obj.getSerialNumberDetailsModel()!=null && obj.getSerialNumberDetailsModel().size()>0) {
 														List<String> exitingSerialNumber = null;
@@ -1162,7 +1182,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 														outStandingQuantity = balanceQuantity;
 													}
 												}else {
-													pushMessage(vendorCode, ServicePartConstant.SERVICE_INVALID, mesMap);
+													pushMessage(vendorCode, ServicePartConstant.ORDER_QUANTITY, mesMap);
 												}
 											}
 										}
@@ -1188,46 +1208,11 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 					valid = false;
 				}
 			}
-			
-			
-			/*
-			 * if (caseWithUnitDetails != null && caseWithUnitDetails.size() > 0) {
-			 * TreeMap<String, List<PartDetailsModel>> sorting = new TreeMap<String,
-			 * List<PartDetailsModel>>(); sorting.putAll(caseWithUnitDetails); for
-			 * (Map.Entry<String, List<PartDetailsModel>> objects : sorting.entrySet()) {
-			 * System.out.println(
-			 * "--------------------------------------------------------------------------")
-			 * ; System.out.
-			 * println("-------------------------------case number------------------------------->"
-			 * ); System.out.println("Case Number---------------------------" +
-			 * objects.getKey()); System.out.
-			 * println("--------------------------------Units details-------------------------"
-			 * ); for (PartDetailsModel detailsModel : objects.getValue()) {
-			 * System.out.println("Part Number-----------------------" +
-			 * detailsModel.getPartNumber());
-			 * System.out.println("PO NUmber-------------------------" +
-			 * detailsModel.getPoNumber());
-			 * System.out.println("Delivery due date ----------------" +
-			 * detailsModel.getDeliveryDueDate());
-			 * System.out.println("Planned Quantity in DB------------" +
-			 * detailsModel.getOrderQuantity()); System.out
-			 * .println("Outstading quantity---------------" +
-			 * detailsModel.getOutstandingQuantity()); System.out.println(
-			 * "FullFillment quantity-------------" +
-			 * detailsModel.getSupplierFullFillQuantity());
-			 * System.out.println("Staus-----------------------------" +
-			 * detailsModel.getPartialStatus());
-			 * 
-			 * System.out.println("Seerial number-------------------->"+detailsModel.
-			 * getSerialNumberDetailsModel());} System.out.
-			 * println("----------------End of Case Number details --------------------------"
-			 * ); } }
-			 */ 
-			 
-			/// Saving the Records into Data base start here
-			// valid =false;/// need to remove after demo
 			if (valid) {
-				String confirmationNumber = confirmationNumber(vendorCode, "C");
+				String confirmationNumber = null;
+				if(status!=null && !status.equalsIgnoreCase(ServicePartConstant.DRAFT_STATUS)) {
+					confirmationNumber = confirmationNumber(vendorCode, "C");
+				}
 				message.setConfirmationNumber(confirmationNumber);
 				if (caseWithUnitDetails != null && caseWithUnitDetails.size() > 0) {
 					TreeMap<String, List<PartDetailsModel>> sorting = new TreeMap<String, List<PartDetailsModel>>();
@@ -1242,7 +1227,11 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 						}
 						caseEntity.setCaseNumber(objects.getKey());
 						caseEntity.setConfirmationNumber(confirmationNumber);
-						caseEntity.setStatus("CASE BUILD");
+						if(status!=null && status.equalsIgnoreCase(ServicePartConstant.DRAFT_STATUS)) {
+							caseEntity.setStatus(ServicePartConstant.DRAFT_STATUS);
+						}else {
+							caseEntity.setStatus(ServicePartConstant.CASE_BUILD_STATUS);
+						}
 						caseEntity.setModifiedBy("sreedhar");
 						caseEntity.setModifiedDate(new Date());
 						saveCaseList.add(caseEntity);
@@ -1358,4 +1347,5 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 		}
 		return returnValue;
 	}
+
 }

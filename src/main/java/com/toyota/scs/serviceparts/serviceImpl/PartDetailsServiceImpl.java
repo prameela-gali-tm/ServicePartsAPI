@@ -58,7 +58,7 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 		sqlQuery.append(" from spadm.sp_part pt ");
 		sqlQuery.append(" join spadm.sp_order ord  ");
 		sqlQuery.append(" on ord.order_id = pt.order_id ");
-		sqlQuery.append(" where 1=1 and pt.status<>'FULL FILLED'");
+		sqlQuery.append(" where 1=1 and pt.status not in ('FULL FILLED','DRAFT')");
 		if(partNumber!=null) {
 			sqlQuery.append(" and  pt.part_number='").append(partNumber).append("'"); 
 			 }
