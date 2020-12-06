@@ -46,7 +46,7 @@ public class PostApiController {
 	public ResponseEntity<ModelApiResponse> caseBuildVendorAndPartNumber(@RequestBody List<CaseBuildModel> caseModelObject,
 			@RequestParam(name="status", required = false,defaultValue = "case build") String status){
 		ModelApiResponse apiResponse = new ModelApiResponse();
-		apiResponse = caseDetailSer.casesBuildVendorAndPartNumber(caseModelObject, status);
+			apiResponse = caseDetailSer.casesBuildVendorAndPartNumber(caseModelObject, status);
 		return new ResponseEntity<>(apiResponse,HttpStatus.OK);
 	}
 	

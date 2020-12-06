@@ -80,10 +80,12 @@ public class GetApiController {
 	public ResponseEntity<List<ViewPartDetailsModel>> getAllPartDetails(
 			@RequestParam(name="vendorCode", required = true) String vendorCode,
 			@RequestParam(name="directFlag", required = true, defaultValue = "N") String directFlag,
-			@RequestParam(name="transportCode", required = true, defaultValue = "3") int transportCode){
+			@RequestParam(name="transportCode", required = true, defaultValue = "3") int transportCode,
+			@RequestParam(name = "dealerNumber",required = false) String dealerNumber,
+			@RequestParam(name = "distFD",required = false) String distFD){
 		
 		List<ViewPartDetailsModel> partDetails = new ArrayList<ViewPartDetailsModel>();	
-		partDetails = partdetailsService.getViewAllPartDetails(vendorCode,directFlag,transportCode);
+		partDetails = partdetailsService.getViewAllPartDetails(vendorCode,directFlag,transportCode,dealerNumber,distFD);
 		return new ResponseEntity<>(partDetails,HttpStatus.OK);
 		
 	}
