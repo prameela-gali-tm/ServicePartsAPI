@@ -77,4 +77,5 @@ public class ServicePartConstant {
 	public static String DRAFT_STATUS = "DRAFT";
 	public static String INSERT_STATUS ="INSERT";
 	public static String CASE_BUILD_STATUS="CASE BUILD";
+	public static String SUBMIT_STATUS="SUBMIT";
 }

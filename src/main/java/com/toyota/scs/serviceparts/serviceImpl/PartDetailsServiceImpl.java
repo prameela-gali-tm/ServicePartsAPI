@@ -145,7 +145,7 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 		return viewPurchaseOrderDetails;
 	}
 	@Override
-	public List<ViewPartDetailsModel> getViewAllPartDetails(String vendorCode, String directFlag,int transportCode) {
+	public List<ViewPartDetailsModel> getViewAllPartDetails(String vendorCode, String directFlag,int transportCode,String dealerNumber,String distFD) {
 		EntityManager em = emf.createEntityManager();
 		StringBuilder sqlQuery = new StringBuilder();
 	//	sqlQuery.append(" select * from (");
@@ -160,14 +160,20 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 		sqlQuery.append(" from spadm.sp_part pt ");
 		sqlQuery.append(" join spadm.sp_order ord  ");
 		sqlQuery.append(" on ord.order_id = pt.order_id ");
-		sqlQuery.append(" where 1=1 and pt.status<>'FULL FILLED'");
+		sqlQuery.append(" where 1=1 and pt.status not in ('FULL FILLED','DRAFT')");
 		if(vendorCode!=null) {
 			sqlQuery.append(" and  ord.vendor_code='").append(vendorCode).append("'"); 
 			  }
 		if(directFlag!=null && directFlag.equalsIgnoreCase("Y")) { 
 			sqlQuery.append(" and  ord.direct_ship_flag =true "); 
+			if(dealerNumber!=null) {
+				sqlQuery.append(" and  ord.dealer_code ='").append(dealerNumber).append("'");
+			}
 			}else {
 				sqlQuery.append(" and  ord.direct_ship_flag =false "); 
+				if(distFD!=null) {
+					sqlQuery.append(" and  ord.final_destination = '").append(distFD).append("'");
+				}
 			  }
 		if(transportCode!=0) {
 			sqlQuery.append(" and  ord.trans_code='").append(transportCode).append("'");

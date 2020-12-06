@@ -1107,12 +1107,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 														(plannedQuantity - actaulShippedQuantity));
 												
 												if(actaulShippedQuantity==plannedQuantity) {
-													if(status!=null && status.equalsIgnoreCase(ServicePartConstant.DRAFT_STATUS)) {
-														partDetailsModel.setPartialStatus(ServicePartConstant.DRAFT_STATUS);
-													}else {
 														partDetailsModel.setPartialStatus(ServicePartConstant.FULL_FILLED_STATUS);
-													}
-													
 												}else {
 													partDetailsModel.setPartialStatus(ServicePartConstant.PARTIAL_STATUS);
 												}
@@ -1139,21 +1134,13 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 														partDetailsModel.setSupplierFullFillQuantity(
 																 remainingQuantity);
 														partDetailsModel.setOutstandingQuantity(0);
-														if(status!=null && status.equalsIgnoreCase(ServicePartConstant.DRAFT_STATUS)) {
-															partDetailsModel.setPartialStatus(ServicePartConstant.DRAFT_STATUS);
-														}else {
-															partDetailsModel.setPartialStatus(ServicePartConstant.FULL_FILLED_STATUS);
-														}
+														partDetailsModel.setPartialStatus(ServicePartConstant.FULL_FILLED_STATUS);
 													}else {
 														partDetailsModel.setSupplierFullFillQuantity(
 																fullfillQuantity + remainingQuantity);
 														partDetailsModel.setOutstandingQuantity(actaulShippedQuantity - remainingQuantity);
-														if(status!=null && status.equalsIgnoreCase(ServicePartConstant.DRAFT_STATUS)) {
-															partDetailsModel.setPartialStatus(ServicePartConstant.DRAFT_STATUS);
-														}else
-														{
-															partDetailsModel.setPartialStatus(ServicePartConstant.FULL_FILLED_STATUS);
-														}														
+														partDetailsModel.setPartialStatus(ServicePartConstant.FULL_FILLED_STATUS);
+																												
 													}
 													if(obj.getSerialNumberDetailsModel()!=null && obj.getSerialNumberDetailsModel().size()>0) {
 														List<String> exitingSerialNumber = null;
@@ -1246,6 +1233,11 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 						for (CaseEntity obj : saveCaseList) {
 							ResponseCaseModel responseCaseModel = new ResponseCaseModel();
 							responseCaseModel.setCaseNumber(obj.getCaseNumber());
+							if(status!=null && status.equalsIgnoreCase(ServicePartConstant.DRAFT_STATUS)) {
+								responseCaseModel.setStatus(ServicePartConstant.DRAFT_STATUS);
+							}else {
+								responseCaseModel.setStatus(ServicePartConstant.SUBMIT_STATUS);
+							}
 							List<ResponseUnitsModel> responseUnitsModelsList = new ArrayList<ResponseUnitsModel>();
 							List<PartDetailsModel> savePartDetails = caseWithUnitDetails.get(obj.getCaseNumber());
 							for (PartDetailsModel partDetailsModel : savePartDetails) {
