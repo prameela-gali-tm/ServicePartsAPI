@@ -91,7 +91,7 @@ public class PartDetailsModel {
 		this.homePosition = homePosition;
 		this.dealerOrDistinationFD = dealerOrDistinationFD;
 	}
-
+	
 	public String getPartNumber() {
 		return partNumber;
 	}
@@ -287,4 +287,34 @@ public class PartDetailsModel {
 	public void setTransportationCode(int transportationCode) {
 		this.transportationCode = transportationCode;
 	}
+
+	public PartDetailsModel(PartDetailsModel detailsModel) {
+		super();
+		this.partNumber = detailsModel.getPartNumber();
+		this.deliveryDueDate = detailsModel.getDeliveryDueDate();
+		this.orderQuantity = detailsModel.getOrderQuantity();
+		this.outstandingQuantity = detailsModel.getOutstandingQuantity();
+		this.poNumber = detailsModel.getPoNumber();
+		this.orderType = detailsModel.getOrderType();
+		this.vendorCode = detailsModel.getVendorCode();
+		this.lineItemNumber = detailsModel.getLineItemNumber();
+		this.homePosition = detailsModel.getHomePosition();
+		this.dealerOrDistinationFD = detailsModel.getDealerOrDistinationFD();
+		this.transportationCode = detailsModel.getTransportationCode();
+		this.partId = detailsModel.getPartId();
+		this.orderId =detailsModel.getOrderId();
+		this.partialStatus = detailsModel.getPartialStatus();
+		this.supplierFullFillQuantity = detailsModel.getSupplierFullFillQuantity();
+		this.containerID = detailsModel.getContainerID();
+		this.dealer = detailsModel.getDealer();
+		this.directShip = detailsModel.getDirectShip();
+		this.vendorPartNumber = detailsModel.getVendorPartNumber();
+		this.orderRefNumber =detailsModel.getOrderRefNumber();
+		this.serialNumber = detailsModel.getSerialNumber();
+		this.subPartNumber =detailsModel.getSubPartNumber();
+		this.partDesc = detailsModel.getPartDesc();
+		this.serialNumberDetailsModel = detailsModel.getSerialNumberDetailsModel();
+	}
+	
+	
 }

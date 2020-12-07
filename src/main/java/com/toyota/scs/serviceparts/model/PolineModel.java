@@ -56,7 +56,7 @@ public class PolineModel {
 	    public String tRACKING_FLG;
 	    @JsonProperty("TIME_STAMP") 
 	    public String tIME_STAMP;
-	    
+	  
 	    public PolineModel() {
 	    	super();
 	    }
@@ -250,7 +250,7 @@ public class PolineModel {
 		public void settIME_STAMP(String tIME_STAMP) {
 			this.tIME_STAMP = tIME_STAMP;
 		}
-
+		
 		@Override
 		public int hashCode() {
 			final int prime = 31;
@@ -348,6 +348,7 @@ public class PolineModel {
 					return false;
 			} else if (!hP.equals(other.hP))
 				return false;
+			
 			if (lINE_ITEM_NUM == null) {
 				if (other.lINE_ITEM_NUM != null)
 					return false;
@@ -408,6 +409,7 @@ public class PolineModel {
 					return false;
 			} else if (!tRANSP_CD.equals(other.tRANSP_CD))
 				return false;
+			
 			if (vDR_CD == null) {
 				if (other.vDR_CD != null)
 					return false;
