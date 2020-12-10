@@ -5,36 +5,62 @@ public class ServicePartConstant {
 	//Case Build Vendor Level
 
 	public static String VENDOR_CODE_INVALID = "Vendor Code must be 5 digits.";
-	public static String VENDOR_CODE_EMPTY= "Vendor Code is required field.";
+	public static String SHIPMENT_ID_INVALID = "Shipment Id must be less than 15 digit";
+	public static String TRAILER_NUM_INVALID = "Trailer Number must be less than 30 digit";
+	public static String SEAL_NUMBER_INVALID = "Seal Number must be less than 20 digit";
+	public static String SUPPLIER_LAST_NAME_INVALID = "Supplier Last Name must be less than 50 digit";
+	public static String SUPPLIER_FIRST_NAME_INVALID = "Supplier First Name must be less than 50 digit";
+	public static String DRIVER_FIRST_NAME_INVALID = "Driver First Name must be less than 50 digit";
+	public static String DRIVER_LAST_NAME_INVALID = "Driver Last Name must be less than 50 digit";
+	public static String LPCODE_INVALID = "LP Code must be less than 6 digit";
+
+	public static String VENDOR_CODE_EMPTY = "Vendor Code is required field.";
+	public static String SHIPMENT_ID_EMPTY = "Shipment ID is required field.";
+	public static String TRAILER_NUM_EMPTY = "Trailer Number is required field.";
+	public static String LPCODE_EMPTY = "LP Code is required field.";
 	public static String VENDOR_CODE_SPECIAL_CHAR = "Vendor Code should not contains any special characters, it will allows only Alpha Numneric values.";
 	public static String VENDOR_CODE_DOES_NOT_EXIST= "Vendor Code does not exist in DataBase.";
 	public static  String RFID_INVALID = "RFID number must be 12 digits.";
 	public static String RFID_SPC = "No special character are allowed in RFID.";
 
-	public static  String CASE_NUMBER_INVALID = "Case Number must be 8 digits.Also, it must not be used in last 60 days. ";
-	public static  String CASE_NUMBER_EMPTY = "Case Number is required field.";
-	public static String CASE_NUMBER_NUMBERIC="Case Number allows only Numeric values";
-	//Case Build Unit Level
+	public static String CASE_NUMBER_INVALID = "Case Number must be 8 digits.Also, it must not be used in last 60 days. ";
+	public static String CASE_NUMBER_EMPTY = "Case Number is required field.";
+	public static String CASE_NUMBER_NOT_EXISTS = "Case Number doesnot exist";
+	public static String CASE_NUMBER_NUMBERIC = "Case Number allows only Numeric values";
+	public static String SHIPMENT_ID_NUMERIC = "Shipment Id allows only Numeric values";
+	public static String TRAILER_NUM_SPEC = "No special character are allowed in Trailer Number";
+	public static String SEAL_NUMBER_SPEC = "No special character are allowed in Seal Number";
+	public static String LPCODE_SPEC = "No special character are allowed in LP Code";
+	public static String ROUTE_SPEC = "No special character are allowed in Route";
+	public static String RUN_SPEC = "No special character are allowed in Run";
+	public static String SUPPLIER_LAST_NAME_SPEC = "No special character are allowed in Supplier Last Name";
+	public static String SUPPLIER_FIRST_NAME_SPEC = "No special character are allowed in Supplier First Name";
+	public static String DRIVER_FIRST_NAME_SPEC = "No special character are allowed in Driver First Name";
+	public static String DRIVER_LAST_NAME_SPEC = "No special character are allowed in Driver Last Name";
+	public static String CASE_NUMBER_SPEC="No special character are allowed in Case Number";
 
-	public static  String PART_NUMBER_INVALID = "Part Number must be 20 digits or less. ";
-	public static  String PART_NUMBER_EMPTY = "Part Number is required field.";
-	public static String PART_NUMBER_SPEC ="No special character are allowed in Part Number";
-	public static  String PO_NUMBER_INVALID = "PO Number must be 8 digits.";
-	public static String PO_NUMBER_SPEC ="No special character are allowed in PO Number";
-	public static  String PO_NUMBER_EMPTY = "PO Number is required field.";
-	public static  String PO_LINE_NUMBER_INVALID = "PO Line Number must be 5 digits or less.";
-	public static String PO_LINE_NUMBER_SPEC ="No special character are allowed in PO Line Item Number";
-	public static  String PO_LINE_NUMBER_EMPTY = "PO Line Number is required field.";
-	public static  String PART_QUANTITY_INVALID = "Part Quantity must be numeric and 5 digits or less. ";
-	public static  String PART_QUANTITY_EMPTY = "Part Quantity is required field.";
-	public static  String HOMEPOSITION_INVALID = "Home Position must be 1 digit.";
-	public static String HOMEPOSTION_SPEC="No special character are allowed in Home Position";
-	public static  String DELIVERY_DUEDATE_INVALID = "Delivery Due Date Time field not in required date time format yyyy-MM-dd.";
-	public static  String CONTAINER_ID_INVALID = "Container ID must be 12 digits or less. ";
-	public static  String SERIAL_NUMBER_INVALID = "Serial Number must be 20 digits or less. ";
-	public static String SERIAL_NUMBWE_SPEC ="No special character are allowed in Serail Number";
-	public static  String SUB_PARTNUMBER_INVALID = "Substitution Part Number must be 12 digits or less. ";
-	public static  String SUB_PARTNUMBER_SPEC = "Substitution Part Number does not allow special characters";
+	// Case Build Unit Level
+
+	public static String PART_NUMBER_INVALID = "Part Number must be 20 digits or less. ";
+	public static String PART_NUMBER_EMPTY = "Part Number is required field.";
+	public static String PART_NUMBER_SPEC = "No special character are allowed in Part Number";
+	public static String PO_NUMBER_INVALID = "PO Number must be 8 digits.";
+	public static String PO_NUMBER_SPEC = "No special character are allowed in PO Number";
+	public static String PO_NUMBER_EMPTY = "PO Number is required field.";
+	public static String PO_LINE_NUMBER_INVALID = "PO Line Number must be 5 digits or less.";
+	public static String PO_LINE_NUMBER_SPEC = "No special character are allowed in PO Line Item Number";
+	public static String PO_LINE_NUMBER_EMPTY = "PO Line Number is required field.";
+	public static String PART_QUANTITY_INVALID = "Part Quantity must be numeric and 5 digits or less. ";
+	public static String PART_QUANTITY_EMPTY = "Part Quantity is required field.";
+	public static String HOMEPOSITION_INVALID = "Home Position must be 1 digit.";
+	public static String HOMEPOSTION_SPEC = "No special character are allowed in Home Position";
+	public static String DELIVERY_DUEDATE_INVALID = "Delivery Due Date Time field not in required date time format yyyy-MM-dd.";
+	public static String PLAN_PICKUP_DATE_INVALID = "Plan Pickup date time field not in required date time format yyyy-MM-dd.";
+	public static String CONTAINER_ID_INVALID = "Container ID must be 12 digits or less. ";
+	public static String SERIAL_NUMBER_INVALID = "Serial Number must be 20 digits or less. ";
+	public static String SERIAL_NUMBWE_SPEC = "No special character are allowed in Serail Number";
+	public static String SUB_PARTNUMBER_INVALID = "Substitution Part Number must be 12 digits or less. ";
+	public static String SUB_PARTNUMBER_SPEC = "Substitution Part Number does not allow special characters";
 
 	//Shipment Load Trailer Level
 

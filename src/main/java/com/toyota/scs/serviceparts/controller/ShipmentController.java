@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.akiban.sql.parser.SetRoleNode;
 import com.toyota.scs.serviceparts.entity.ShipmentEntity;
 import com.toyota.scs.serviceparts.entity.VendorEntity;
+import com.toyota.scs.serviceparts.model.ModelApiResponse;
 import com.toyota.scs.serviceparts.model.ShipmentModel;
 import com.toyota.scs.serviceparts.repository.ShipmentRepositroy;
 import com.toyota.scs.serviceparts.serviceImpl.ShipmentService;
@@ -51,7 +52,7 @@ public class ShipmentController {
 	
 	//added for persisting the shipment load data
 	@PostMapping("/saveshipmentloaddata")	// insert into vendor post
-	public ShipmentEntity saveShipmentLoadData(@RequestBody ShipmentModel shipmentModel) throws ParseException {	
+	public ModelApiResponse saveShipmentLoadData(@RequestBody ShipmentModel shipmentModel) throws ParseException {	
 		return service.saveShipmentDetails(shipmentModel);	
 		
 	}
