@@ -25,8 +25,8 @@ import com.toyota.scs.serviceparts.model.PolineModel;
 
 @EnableKafka
 @Configuration
-public class KafkaConfig {
-	final String BOOTSTRAP_SERVERS = "broker01-int.prodawskafka.toyota.com:9094,"
+public class KafkaConfig { 
+	final String BOOTSTRAP_SERVERS = "broker01-int.prod.awskafka.toyota.com:9094,"
 			+ "broker02-int.prod.awskafka.toyota.com:9094," + "broker03-int.prod.awskafka.toyota.com:9094,"
 			+ "broker04-int.prod.awskafka.toyota.com:9094," + "broker05-int.prod.awskafka.toyota.com:9094";
 	/*
