@@ -1,5 +1,7 @@
 package com.toyota.scs.serviceparts.model;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -33,6 +35,9 @@ public class ResponseUnitsModel {
 	@JsonProperty("partPOLineStatus")
 	private String partPOLineStatus;
 
+	@JsonProperty("serialNumberDetails")
+	private List<String> serialNumberDetailsModel;
+	
 	public String getPartNumber() {
 		return partNumber;
 	}
@@ -104,6 +109,14 @@ public class ResponseUnitsModel {
 	public void setPartPOLineStatus(String partPOLineStatus) {
 		this.partPOLineStatus = partPOLineStatus;
 	}
+	
+	public List<String> getSerialNumberDetailsModel() {
+		return serialNumberDetailsModel;
+	}
+
+	public void setSerialNumberDetailsModel(List<String> serialNumberDetailsModel) {
+		this.serialNumberDetailsModel = serialNumberDetailsModel;
+	}
 
 	public ResponseUnitsModel() {
 		super();
@@ -112,7 +125,7 @@ public class ResponseUnitsModel {
 
 	public ResponseUnitsModel(String partNumber, String poNumber, String poLineNumber, String poLineHomePosition,
 			String poLineDeliveryDueDate, Integer partPOLineQuantityOrdered, long partPOLineQuantityRemaining,
-			long partPOLineQuantityAllocated, String partPOLineStatus) {
+			long partPOLineQuantityAllocated, String partPOLineStatus, List<String> serialNumberDetailsModel) {
 		super();
 		this.partNumber = partNumber;
 		this.poNumber = poNumber;
@@ -123,6 +136,7 @@ public class ResponseUnitsModel {
 		this.partPOLineQuantityRemaining = partPOLineQuantityRemaining;
 		this.partPOLineQuantityAllocated = partPOLineQuantityAllocated;
 		this.partPOLineStatus = partPOLineStatus;
+		this.serialNumberDetailsModel = serialNumberDetailsModel;
 	}
 
 	@Override
@@ -138,6 +152,7 @@ public class ResponseUnitsModel {
 		result = prime * result + ((poLineHomePosition == null) ? 0 : poLineHomePosition.hashCode());
 		result = prime * result + ((poLineNumber == null) ? 0 : poLineNumber.hashCode());
 		result = prime * result + ((poNumber == null) ? 0 : poNumber.hashCode());
+		result = prime * result + ((serialNumberDetailsModel == null) ? 0 : serialNumberDetailsModel.hashCode());
 		return result;
 	}
 
@@ -189,8 +204,15 @@ public class ResponseUnitsModel {
 				return false;
 		} else if (!poNumber.equals(other.poNumber))
 			return false;
+		if (serialNumberDetailsModel == null) {
+			if (other.serialNumberDetailsModel != null)
+				return false;
+		} else if (!serialNumberDetailsModel.equals(other.serialNumberDetailsModel))
+			return false;
 		return true;
 	}
+
+	
 	
 	
 }

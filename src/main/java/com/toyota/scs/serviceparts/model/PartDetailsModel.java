@@ -36,8 +36,12 @@ public class PartDetailsModel {
 	@JsonProperty("homePosition")
 	private String homePosition;
 	
-	@JsonProperty("distinationFD")
-	private String distinationFD;
+	@JsonProperty("dealerOrDistinationFD")
+	private String dealerOrDistinationFD;
+	
+	@JsonProperty("transportationCode")
+	private int transportationCode;
+	
 	
 	@JsonIgnore
 	private long partId;
@@ -61,7 +65,7 @@ public class PartDetailsModel {
 	@JsonIgnore
 	private String serialNumber;
 	@JsonIgnore
-	private long subPartNumber;
+	private Long subPartNumber;
 	@JsonIgnore
 	private String partDesc;
 	
@@ -74,7 +78,7 @@ public class PartDetailsModel {
 	}
 
 	public PartDetailsModel(String partNumber, String deliveryDueDate, long orderQuantity, long outstandingQuantity,
-			String poNumber, String orderType, String vendorCode,String lineItemNumber,String homePosition,String distinationFD) {
+			String poNumber, String orderType, String vendorCode,String lineItemNumber,String homePosition,String dealerOrDistinationFD) {
 		super();
 		this.partNumber = partNumber;
 		this.deliveryDueDate = deliveryDueDate;
@@ -85,9 +89,9 @@ public class PartDetailsModel {
 		this.vendorCode = vendorCode;
 		this.lineItemNumber=lineItemNumber;
 		this.homePosition = homePosition;
-		this.distinationFD = distinationFD;
+		this.dealerOrDistinationFD = dealerOrDistinationFD;
 	}
-
+	
 	public String getPartNumber() {
 		return partNumber;
 	}
@@ -192,13 +196,7 @@ public class PartDetailsModel {
 		this.supplierFullFillQuantity = supplierFullFillQuantity;
 	}
 
-	public String getDistinationFD() {
-		return distinationFD;
-	}
-
-	public void setDistinationFD(String distinationFD) {
-		this.distinationFD = distinationFD;
-	}
+	
 
 	public String getContainerID() {
 		return containerID;
@@ -248,11 +246,13 @@ public class PartDetailsModel {
 		this.serialNumber = serialNumber;
 	}
 
-	public long getSubPartNumber() {
+	
+
+	public Long getSubPartNumber() {
 		return subPartNumber;
 	}
 
-	public void setSubPartNumber(long subPartNumber) {
+	public void setSubPartNumber(Long subPartNumber) {
 		this.subPartNumber = subPartNumber;
 	}
 
@@ -271,4 +271,50 @@ public class PartDetailsModel {
 	public void setSerialNumberDetailsModel(List<String> serialNumberDetailsModel) {
 		this.serialNumberDetailsModel = serialNumberDetailsModel;
 	}
+
+	public String getDealerOrDistinationFD() {
+		return dealerOrDistinationFD;
+	}
+
+	public void setDealerOrDistinationFD(String dealerOrDistinationFD) {
+		this.dealerOrDistinationFD = dealerOrDistinationFD;
+	}
+
+	public int getTransportationCode() {
+		return transportationCode;
+	}
+
+	public void setTransportationCode(int transportationCode) {
+		this.transportationCode = transportationCode;
+	}
+
+	public PartDetailsModel(PartDetailsModel detailsModel) {
+		super();
+		this.partNumber = detailsModel.getPartNumber();
+		this.deliveryDueDate = detailsModel.getDeliveryDueDate();
+		this.orderQuantity = detailsModel.getOrderQuantity();
+		this.outstandingQuantity = detailsModel.getOutstandingQuantity();
+		this.poNumber = detailsModel.getPoNumber();
+		this.orderType = detailsModel.getOrderType();
+		this.vendorCode = detailsModel.getVendorCode();
+		this.lineItemNumber = detailsModel.getLineItemNumber();
+		this.homePosition = detailsModel.getHomePosition();
+		this.dealerOrDistinationFD = detailsModel.getDealerOrDistinationFD();
+		this.transportationCode = detailsModel.getTransportationCode();
+		this.partId = detailsModel.getPartId();
+		this.orderId =detailsModel.getOrderId();
+		this.partialStatus = detailsModel.getPartialStatus();
+		this.supplierFullFillQuantity = detailsModel.getSupplierFullFillQuantity();
+		this.containerID = detailsModel.getContainerID();
+		this.dealer = detailsModel.getDealer();
+		this.directShip = detailsModel.getDirectShip();
+		this.vendorPartNumber = detailsModel.getVendorPartNumber();
+		this.orderRefNumber =detailsModel.getOrderRefNumber();
+		this.serialNumber = detailsModel.getSerialNumber();
+		this.subPartNumber =detailsModel.getSubPartNumber();
+		this.partDesc = detailsModel.getPartDesc();
+		this.serialNumberDetailsModel = detailsModel.getSerialNumberDetailsModel();
+	}
+	
+	
 }

@@ -17,4 +17,5 @@ public interface CasesDetailService {
 	public List<PartEntity> findPoNumberListItemDDD(String poNumber,String lineItem,Date deliverDuoDate,long orderid);
 	public int caseNumberDaysValidation(String caseNumber);
 	public ModelApiResponse casesBuildVendorAndPartNumber(List<CaseBuildModel> caseModel,String status);
+	
 }

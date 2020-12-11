@@ -13,8 +13,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.toyota.scs.serviceparts.model.CaseModel;
-
 @Entity
 @Table(name="SP_CASE")
 public class CaseEntity implements Serializable {
@@ -135,7 +133,6 @@ public class CaseEntity implements Serializable {
 		this.shipment = shipment;
 	}
 
-	
 	
 	
 }

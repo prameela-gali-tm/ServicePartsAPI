@@ -11,11 +11,10 @@ import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.toyota.scs.serviceparts.entity.OrderEntity;
 import com.toyota.scs.serviceparts.entity.PartEntity;
 import com.toyota.scs.serviceparts.model.PartDetailsModel;
 import com.toyota.scs.serviceparts.model.PurchaseOrderDetailsModel;
-import com.toyota.scs.serviceparts.repository.PartRepository;
+import com.toyota.scs.serviceparts.model.ViewPartDetailsModel;
 import com.toyota.scs.serviceparts.service.PartDetailsService;
 @Service
 public class PartDetailsServiceImpl implements PartDetailsService {
@@ -27,55 +26,108 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 
 	private final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<PartDetailsModel> findPartDetails(String partNumber,String vendorCode) {
+	public List<PartDetailsModel> findPartDetails(String partNumber,String vendorCode,String directFlag,int transportCode,String dealerNumber,String distFD,String deliveruDueDate,String poLineNuber,String poNumber) {
 		EntityManager em = emf.createEntityManager();
-		
 		StringBuilder sqlQuery = new StringBuilder();
-		Query query =null;
+	//	sqlQuery.append(" select * from (");
+		sqlQuery.append(" select  ");
+		sqlQuery.append(" pt.part_number as partNumber,  ");
+		sqlQuery.append(" pt.ddd as deliveryDueDate, ");
+		sqlQuery.append(" pt.order_quantity as orderQuantity, ");
+		sqlQuery.append(" pt.outstanding_quantity as outstandingQuantity, ");
+		sqlQuery.append(" pt.line_item_number as 	lineItemNumber, ");
+		sqlQuery.append(" ord.po_number as poNumber, ");
+		sqlQuery.append(" ord.order_type as orderType, ");
+		sqlQuery.append(" ord.vendor_code as vendorCode, ");
+		sqlQuery.append(" pt.home_position as homePosition, ");
+		sqlQuery.append(" pt.part_id as id, ");
+		sqlQuery.append(" pt.order_id as orderId, ");
+		sqlQuery.append(" pt.container_id as containerID, ");
+		sqlQuery.append(" ord.direct_ship_flag as directShipFlag, ");
+		sqlQuery.append(" pt.order_ref_number  as orderRefNumber, ");
+		sqlQuery.append(" pt.part_desc as partDesc, ");
+		sqlQuery.append(" pt.serial_number as serialNumber, ");
+		sqlQuery.append(" pt.sub_part_number as subPartNumber, ");
+		sqlQuery.append(" pt.vendor_part_number as vendorPartNumber, ");
+		sqlQuery.append(" pt.status as status, ");
+		sqlQuery.append(" ord.dealer_code as dealerCode, ");
+		sqlQuery.append(" ord.trans_code as transportationCode, ");
+		sqlQuery.append(" ord.final_destination as finalDestination ");
+		sqlQuery.append(" from spadm.sp_part pt ");
+		sqlQuery.append(" join spadm.sp_order ord  ");
+		sqlQuery.append(" on ord.order_id = pt.order_id ");
+		sqlQuery.append(" where 1=1 and pt.status not in ('FULL FILLED','DRAFT')");
 		if(partNumber!=null) {
-			sqlQuery.append("Select p,ord from PartEntity p inner join OrderEntity ord on ord.id=p.orderId where p.partNumber=?1 and ord.vendorCode=?2 and p.status<>'FULL FILLED' order by p.deliveryDueDate asc,p.orderId asc");
-			 query = em.createQuery(sqlQuery.toString())
-					   .setParameter(1, partNumber)
-					   .setParameter(2, vendorCode);	
-		}else {
-			sqlQuery.append("Select p,ord from PartEntity p inner join OrderEntity ord on ord.id=p.orderId where ord.vendorCode=?1 and p.status<>'FULL FILLED' order by p.deliveryDueDate asc,p.orderId asc");
-			 query = em.createQuery(sqlQuery.toString())
-					   .setParameter(1, vendorCode);
+			sqlQuery.append(" and  pt.part_number='").append(partNumber).append("'"); 
+			 }
+		if(vendorCode!=null) {
+			sqlQuery.append(" and  ord.vendor_code='").append(vendorCode).append("'"); 
+			  }
+		if(directFlag!=null && directFlag.equalsIgnoreCase("Y")) { 
+			sqlQuery.append(" and  ord.direct_ship_flag =true "); 
+			}else {
+				sqlQuery.append(" and  ord.direct_ship_flag =false "); 
+			  }
+		if(transportCode!=0) {
+			sqlQuery.append(" and  ord.trans_code='").append(transportCode).append("'");
 		}
-		  @SuppressWarnings("unchecked") 
-		  List list  = query.getResultList();
+		if(deliveruDueDate!=null) {
+			sqlQuery.append(" and  pt.ddd ='").append(deliveruDueDate).append("'");
+		}		
+		if(poLineNuber!=null) {
+			 sqlQuery.append(" and  pt.line_item_number='").append(poLineNuber).append("'");
+		 }
+		if(dealerNumber!=null) {
+			sqlQuery.append(" and  ord.dealer_code ='").append(dealerNumber).append("'");
+		}
+		if(distFD!=null) {
+			sqlQuery.append(" and  ord.final_destination = '").append(distFD).append("'");
+		}
+		if(poNumber!=null && !poNumber.isEmpty()) {
+			
+			sqlQuery.append(" and  ord.po_number = '").append(poNumber).append("'");
+		}
+		
+		sqlQuery.append(" order by pt.ddd ,pt.part_number,ord.order_type asc");
+		  List<PartEntity> list  = new ArrayList<PartEntity>();
+		  list =  (List<PartEntity>)em.createNativeQuery(sqlQuery.toString(),"viewPurchaseDetails").getResultList();
 		  List<PartDetailsModel> partDetilsList = new ArrayList<PartDetailsModel>();
 		  em.close();
-		  for(int i=0;i<list.size();i++) {
-			  Object[] list2 = (Object[]) ((Object)list.get(i));
-			  if(list2!=null && list2.length>0) {
-				  PartDetailsModel detailsModel = new PartDetailsModel();
-				   PartEntity  partEntity = (PartEntity)list2[0];
-				   OrderEntity orderEntity = (OrderEntity)list2[1];
-					   detailsModel.setPartNumber(partEntity.getPartNumber());
-					   detailsModel.setDeliveryDueDate(DATE_FORMAT.format(partEntity.getDeliveryDueDate()));
-					   detailsModel.setOrderQuantity(partEntity.getOrderQuantity());
-					   detailsModel.setOutstandingQuantity(partEntity.getOutstandingQuantity());
-					   detailsModel.setLineItemNumber(partEntity.getLineItemNumber());
-					   detailsModel.setPoNumber(orderEntity.getPoNumber());
-					   detailsModel.setOrderType(orderEntity.getOrderType());
-					   detailsModel.setVendorCode(orderEntity.getVendorCode());
-					   detailsModel.setHomePosition(partEntity.getHomePosition());
-					   detailsModel.setPartId(partEntity.getId());
-					   detailsModel.setOrderId(orderEntity.getId());
-					   detailsModel.setContainerID(partEntity.getContainerID());
-					   detailsModel.setDealer(partEntity.getDealer());
-					   detailsModel.setDirectShip(partEntity.getDirectShip());
-					   detailsModel.setOrderRefNumber(partEntity.getOrderRefNumber());
-					   detailsModel.setPartDesc(partEntity.getPartDesc());
-					   detailsModel.setSerialNumber(partEntity.getSerialNumber());
-					   detailsModel.setSubPartNumber(partEntity.getSubPartNumber());
-					   detailsModel.setVendorPartNumber(partEntity.getVendorPartNumber());
-					   detailsModel.setSupplierFullFillQuantity(partEntity.getOrderQuantity()-partEntity.getOutstandingQuantity());
-					   detailsModel.setPartialStatus(partEntity.getStatus());
-				   partDetilsList.add(detailsModel);
-			  }
+		  for(PartEntity partEntity : list) {
+			  PartDetailsModel detailsModel = new PartDetailsModel();
+			  detailsModel.setPartNumber(partEntity.getPartNumber());
+			   detailsModel.setDeliveryDueDate(DATE_FORMAT.format(partEntity.getDeliveryDueDate()));
+			   detailsModel.setOrderQuantity(partEntity.getOrderQuantity());
+			   detailsModel.setOutstandingQuantity(partEntity.getOutstandingQuantity());
+			   detailsModel.setLineItemNumber(partEntity.getLineItemNumber());
+			   detailsModel.setPoNumber(partEntity.getPoNumber());
+			   detailsModel.setOrderType(partEntity.getOrderType());
+			   detailsModel.setVendorCode(partEntity.getVendorCode());
+			   detailsModel.setHomePosition(partEntity.getHomePosition());
+			   detailsModel.setPartId(partEntity.getId());
+			   detailsModel.setOrderId(partEntity.getOrderId());
+			   detailsModel.setContainerID(partEntity.getContainerID());
+			   if(partEntity.isDirectShipFlag()) {
+				   detailsModel.setDirectShip("true");
+			   }else {
+				   detailsModel.setDirectShip("false");
+			   }			  
+			   detailsModel.setOrderRefNumber(partEntity.getOrderRefNumber());
+			   detailsModel.setPartDesc(partEntity.getPartDesc());
+			   detailsModel.setSerialNumber(partEntity.getSerialNumber());
+			   detailsModel.setSubPartNumber(partEntity.getSubPartNumber());
+			   detailsModel.setVendorPartNumber(partEntity.getVendorPartNumber());
+			   detailsModel.setSupplierFullFillQuantity(partEntity.getOrderQuantity()-partEntity.getOutstandingQuantity());
+			   detailsModel.setPartialStatus(partEntity.getStatus());
+			   if(directFlag!=null && directFlag.equalsIgnoreCase("Y")) {
+				   detailsModel.setDealerOrDistinationFD(partEntity.getDealerCode());
+			   }else {
+				   detailsModel.setDealerOrDistinationFD(partEntity.getFinalDestination()); 
+			   }
+			   detailsModel.setTransportationCode(Integer.valueOf(partEntity.getTransportationCode()));
+		   partDetilsList.add(detailsModel);
 		  }
 	      return partDetilsList;    		     
 		     
@@ -86,10 +138,64 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 		StringBuilder sqlQuery = new StringBuilder();
 		sqlQuery.append("select new com.toyota.scs.serviceparts.model.PurchaseOrderDetailsModel(ord.poNumber as poNumber,"
 				+ "ord.orderType as orderType,pa.deliveryDueDate as deliveryDueDate,'' as finalDestinationName,pa.directShip as directDhipFlag,"
-				+ "count(pa.lineItemNumber)) from PartEntity pa ,OrderEntity ord where pa.orderId = ord.orderId"
+				+ "count(pa.lineItemNumber)) from PartEntity pa ,OrderEntity ord where pa.orderId = ord.id"
 				+" group by ord.poNumber,ord.orderType,pa.deliveryDueDate,pa.directShip");
 		Query query = em.createQuery(sqlQuery.toString());
 		List<PurchaseOrderDetailsModel> viewPurchaseOrderDetails = query.getResultList();
 		return viewPurchaseOrderDetails;
+	}
+	@Override
+	public List<ViewPartDetailsModel> getViewAllPartDetails(String vendorCode, String directFlag,int transportCode,String dealerNumber,String distFD) {
+		EntityManager em = emf.createEntityManager();
+		StringBuilder sqlQuery = new StringBuilder();
+	//	sqlQuery.append(" select * from (");
+		sqlQuery.append(" select  ");
+		sqlQuery.append(" pt.part_number as partNumber,  ");
+		sqlQuery.append(" pt.home_position as homePosition, ");
+		if(directFlag!=null && directFlag.equalsIgnoreCase("Y")) {
+			sqlQuery.append(" ord.dealer_code as finalDesDealerCode ");
+		}else {
+			sqlQuery.append(" ord.final_destination as finalDesDealerCode ");
+		}
+		sqlQuery.append(" from spadm.sp_part pt ");
+		sqlQuery.append(" join spadm.sp_order ord  ");
+		sqlQuery.append(" on ord.order_id = pt.order_id ");
+		sqlQuery.append(" where 1=1 and pt.status not in ('FULL FILLED','DRAFT')");
+		if(vendorCode!=null) {
+			sqlQuery.append(" and  ord.vendor_code='").append(vendorCode).append("'"); 
+			  }
+		if(directFlag!=null && directFlag.equalsIgnoreCase("Y")) { 
+			sqlQuery.append(" and  ord.direct_ship_flag =true "); 
+			if(dealerNumber!=null) {
+				sqlQuery.append(" and  ord.dealer_code ='").append(dealerNumber).append("'");
+			}
+			}else {
+				sqlQuery.append(" and  ord.direct_ship_flag =false "); 
+				if(distFD!=null) {
+					sqlQuery.append(" and  ord.final_destination = '").append(distFD).append("'");
+				}
+			  }
+		if(transportCode!=0) {
+			sqlQuery.append(" and  ord.trans_code='").append(transportCode).append("'");
+		}
+		if(directFlag!=null && directFlag.equalsIgnoreCase("Y")) { 
+			sqlQuery.append(" GROUP BY pt.part_number,pt.home_position,ord.dealer_code");
+		}else
+		{
+			sqlQuery.append(" GROUP BY pt.part_number,pt.home_position,ord.final_destination");
+		}
+		sqlQuery.append(" order by pt.part_number asc");
+		  List<PartEntity> list  = new ArrayList<PartEntity>();
+		  list =  (List<PartEntity>)em.createNativeQuery(sqlQuery.toString(),"viewAllPartDetails").getResultList();
+		  List<ViewPartDetailsModel> partDetilsList = new ArrayList<ViewPartDetailsModel>();
+		  em.close();
+		  for(PartEntity partEntity : list) {
+			  ViewPartDetailsModel detailsModel = new ViewPartDetailsModel();
+			  detailsModel.setPartNumber(partEntity.getPartNumber());
+			   detailsModel.setHomePosition(partEntity.getHomePosition());
+			   detailsModel.setDealerOrDistinationFD(partEntity.getFinalDesDealerCode());
+			   partDetilsList.add(detailsModel);
+		  }
+	      return partDetilsList;   
 	}
 }

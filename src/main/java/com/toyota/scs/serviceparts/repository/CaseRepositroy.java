@@ -9,6 +9,4 @@ import com.toyota.scs.serviceparts.entity.CaseEntity;
 public interface CaseRepositroy extends CrudRepository<CaseEntity, Long>,PagingAndSortingRepository<CaseEntity, Long>,JpaSpecificationExecutor<CaseEntity> {
 
 	public CaseEntity findByCaseNumber(String caseNumber);
-	
-	
 }
