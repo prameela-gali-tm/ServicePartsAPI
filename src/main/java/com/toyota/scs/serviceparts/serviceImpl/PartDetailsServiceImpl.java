@@ -2,7 +2,9 @@ package com.toyota.scs.serviceparts.serviceImpl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -11,21 +13,41 @@ import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.toyota.scs.serviceparts.entity.CaseEntity;
 import com.toyota.scs.serviceparts.entity.PartEntity;
+import com.toyota.scs.serviceparts.entity.SerialNumberEntity;
+import com.toyota.scs.serviceparts.model.Message;
+import com.toyota.scs.serviceparts.model.ModelApiResponse;
 import com.toyota.scs.serviceparts.model.PartDetailsModel;
 import com.toyota.scs.serviceparts.model.PurchaseOrderDetailsModel;
+import com.toyota.scs.serviceparts.model.ResponseCaseBuildModel;
+import com.toyota.scs.serviceparts.model.ResponseCaseModel;
+import com.toyota.scs.serviceparts.model.ResponseUnitsModel;
 import com.toyota.scs.serviceparts.model.ViewPartDetailsModel;
+import com.toyota.scs.serviceparts.repository.CaseRepositroy;
+import com.toyota.scs.serviceparts.repository.SerialNumberRepository;
 import com.toyota.scs.serviceparts.service.PartDetailsService;
+import com.toyota.scs.serviceparts.util.ServicePartConstant;
 @Service
 public class PartDetailsServiceImpl implements PartDetailsService {
 
 	@Autowired
     EntityManagerFactory emf;
 	
+	@Autowired
+	private CaseRepositroy caseRepositroy;
+	
+	@Autowired
+	private SerialNumberRepository serialNumberRepository;
+	
 	private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
 	private final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
+	
+	static String EMPTY = "";
+	boolean valid;
+	
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<PartDetailsModel> findPartDetails(String partNumber,String vendorCode,String directFlag,int transportCode,String dealerNumber,String distFD,String deliveruDueDate,String poLineNuber,String poNumber) {
@@ -198,4 +220,128 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 		  }
 	      return partDetilsList;   
 	}
+	@SuppressWarnings("unchecked")
+	@Override
+	public ModelApiResponse getCaseDetails(String caseNumber, String vendorCode, String directFlag,
+			int transportCode) {
+		EntityManager em = emf.createEntityManager();
+		StringBuilder sqlQuery = new StringBuilder();
+		
+		
+		sqlQuery.append(" select   ");
+		sqlQuery.append(" ord.vendor_code as vendorCode, ");
+		sqlQuery.append(" pt.PART_NUMBER as partNumber, ");
+		sqlQuery.append(" ord.PO_NUMBER as poNumber, ");
+		sqlQuery.append(" pt.LINE_ITEM_NUMBER as lineItemNumber, ");
+		sqlQuery.append(" pt.HOME_POSITION as homePosition, ");
+		sqlQuery.append(" pt.DDD as deliveryDueDate, ");
+		sqlQuery.append(" pt.ORDER_QUANTITY as orderQuantity, ");
+		sqlQuery.append(" pt.OUTSTANDING_QUANTITY as outstandingQuantity, ");
+		sqlQuery.append(" ptrans.FULLFILLED_QUANTITY as fullfilledQuantity, ");
+		sqlQuery.append(" pt.status as status, ");
+		sqlQuery.append(" ptrans.SERIAL_NUMBER as serialNumber, ");
+		sqlQuery.append(" ptrans.part_trans_id as id ");
+		sqlQuery.append(" from spadm.sp_case ca ");
+		sqlQuery.append(" join spadm.sp_part_trans ptrans on ptrans.case_id=ca.case_id ");
+		sqlQuery.append(" join spadm.sp_part pt on pt.part_id=ptrans.part_id and pt.order_id = ptrans.order_id ");
+		sqlQuery.append(" join spadm.sp_order ord on ord.order_id=pt.order_id ");
+		sqlQuery.append(" where 1=1  ");
+		if(caseNumber!=null) {
+			sqlQuery.append(" and  ca.case_number='").append(caseNumber).append("'"); 
+			 }
+		if(vendorCode!=null) {
+			sqlQuery.append(" and  ord.vendor_code='").append(vendorCode).append("'"); 
+			  }
+		if(directFlag!=null && directFlag.equalsIgnoreCase("Y")) { 
+			sqlQuery.append(" and  ord.direct_ship_flag =true "); 
+			}
+		if(directFlag!=null && directFlag.equalsIgnoreCase("N")) {  
+				sqlQuery.append(" and  ord.direct_ship_flag =false "); 
+			  }
+		if(transportCode!=0) {
+			sqlQuery.append(" and  ord.trans_code='").append(transportCode).append("'");
+		}
+		sqlQuery.append(" order by pt.ddd ,pt.part_number,ord.order_type asc");
+		
+		valid=true;
+		CaseEntity caseEntityDB = caseRepositroy.findByCaseNumber(caseNumber);
+		ModelApiResponse message = new ModelApiResponse();
+		Map<String, Message> mesMap = new HashMap<String, Message>();
+		List<PartEntity> list  = new ArrayList<PartEntity>();
+		list =  (List<PartEntity>)em.createNativeQuery(sqlQuery.toString(),"viewCaseDetails").getResultList();
+		  em.close();
+		if(caseEntityDB!=null) {
+			ResponseCaseBuildModel responseCaseBuildModel = new ResponseCaseBuildModel();
+			responseCaseBuildModel.setVendorCode(vendorCode);
+			List<ResponseCaseModel> responseCaseModelsList = new ArrayList<ResponseCaseModel>();
+			ResponseCaseModel responseCaseModel = new ResponseCaseModel();
+			responseCaseModel.setCaseNumber(caseEntityDB.getCaseNumber());
+			responseCaseModel.setStatus(caseEntityDB.getStatus());
+			List<ResponseUnitsModel> responseUnitsModelsList = new ArrayList<ResponseUnitsModel>();
+			  for(PartEntity partDetailsModel : list) {
+				  ResponseUnitsModel responseUnitsModel = new ResponseUnitsModel();
+				  	responseCaseBuildModel.setVendorCode(partDetailsModel.getVendorCode());
+					responseUnitsModel.setPartNumber(partDetailsModel.getPartNumber());
+					responseUnitsModel.setPoNumber(partDetailsModel.getPoNumber());
+					responseUnitsModel.setPoLineNumber(partDetailsModel.getLineItemNumber());
+					responseUnitsModel.setPoLineHomePosition(partDetailsModel.getHomePosition());
+					responseUnitsModel.setPoLineDeliveryDueDate(DATE_FORMAT.format(partDetailsModel.getDeliveryDueDate()));
+					responseUnitsModel.setPartPOLineQuantityOrdered((int) partDetailsModel.getOrderQuantity());
+					responseUnitsModel.setPartPOLineQuantityRemaining(partDetailsModel.getOutstandingQuantity());
+					responseUnitsModel.setPartPOLineQuantityAllocated(partDetailsModel.getFullfilledQuantity());
+					responseUnitsModel.setPartPOLineStatus(partDetailsModel.getStatus());
+					/// need to fetch the serial number
+					List<SerialNumberEntity> serialNumberList  = new ArrayList<SerialNumberEntity>();
+					serialNumberList = serialNumberRepository.findByPartTransId(partDetailsModel.getId());					
+					if(serialNumberList!=null && serialNumberList.size()>0) {
+						List<String> serialNumber = new ArrayList<String>();
+						for(SerialNumberEntity entity:serialNumberList) {
+							serialNumber.add(entity.getSerialNumber());
+						}
+						responseUnitsModel.setSerialNumberDetailsModel(serialNumber);
+					}					
+					responseUnitsModelsList.add(responseUnitsModel);
+			  }
+			  responseCaseModel.setUnits(responseUnitsModelsList);
+			  responseCaseModelsList.add(responseCaseModel);
+			  responseCaseBuildModel.setCases(responseCaseModelsList);
+			  message.setResponseCaseBuildDetails(responseCaseBuildModel);
+		}else {
+			pushMessage(caseNumber, ServicePartConstant.CASE_NUMBER_DOES_NOT_EXIST+caseNumber, mesMap);
+		}
+		
+		if (valid) {
+			message.setMessages(null);
+		} else {
+			message.setMessages(new ArrayList<Message>(mesMap.values()));
+		}
+		return message;
+	}
+	
+	public void pushMessage(String key, String message, Map<String, Message> mesMap) {
+		if (message.equals(EMPTY)) {
+			return;
+		}
+		Message mes;
+		if (!mesMap.containsKey(key)) {
+			mes = new Message();
+			mes.setKeyObject(key);
+		} else {
+			mes = mesMap.get(key);
+		}
+		pushMessage(mes, message);
+		mesMap.put(key, mes);
+	}
+
+	public void pushMessage(Message mes, String message) {
+		if (message.equals(EMPTY)) {
+			return;
+		}
+		valid = false;
+		if (mes.getErrorMessages().contains(message)) {
+			return;
+		}
+		mes.getErrorMessages().add(message);
+	}
+
 }

@@ -104,4 +104,5 @@ public class ServicePartConstant {
 	public static String INSERT_STATUS ="INSERT";
 	public static String CASE_BUILD_STATUS="CASE BUILD";
 	public static String SUBMIT_STATUS="SUBMIT";
+	public static String CASE_NUMBER_DOES_NOT_EXIST="No Record found for given case number ";
 }

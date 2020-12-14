@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.toyota.scs.serviceparts.entity.OrderEntity;
 import com.toyota.scs.serviceparts.entity.PalletSizeLimitEntity;
+import com.toyota.scs.serviceparts.model.ModelApiResponse;
 import com.toyota.scs.serviceparts.model.PartDetailsModel;
 import com.toyota.scs.serviceparts.model.PurchaseOrderDetailsModel;
 import com.toyota.scs.serviceparts.model.ViewPartDetailsModel;
@@ -89,5 +90,18 @@ public class GetApiController {
 		return new ResponseEntity<>(partDetails,HttpStatus.OK);
 		
 	}
+	
+	@GetMapping("/casedetails")
+	public ResponseEntity<ModelApiResponse> getCaseDetails(
+			@RequestParam(name="caseNumber", required = true) String caseNumber,
+			@RequestParam(name="vendorCode", required = false) String vendorCode,
+			@RequestParam(name="directFlag", required = false) String directFlag,
+			@RequestParam(name="transportCode", required = false, defaultValue = "0") int transportCode){		
 		
+		ModelApiResponse apiResponse = new ModelApiResponse();
+		apiResponse = partdetailsService.getCaseDetails(caseNumber, vendorCode,directFlag,transportCode);
+		return new ResponseEntity<>(apiResponse,HttpStatus.OK);
+		
+	}
+	
 } 

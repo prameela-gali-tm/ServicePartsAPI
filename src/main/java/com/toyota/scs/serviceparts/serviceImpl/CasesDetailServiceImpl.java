@@ -1236,7 +1236,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 							if(status!=null && status.equalsIgnoreCase(ServicePartConstant.DRAFT_STATUS)) {
 								responseCaseModel.setStatus(ServicePartConstant.DRAFT_STATUS);
 							}else {
-								responseCaseModel.setStatus(ServicePartConstant.SUBMIT_STATUS);
+								responseCaseModel.setStatus(ServicePartConstant.CASE_BUILD_STATUS);
 							}
 							List<ResponseUnitsModel> responseUnitsModelsList = new ArrayList<ResponseUnitsModel>();
 							List<PartDetailsModel> savePartDetails = caseWithUnitDetails.get(obj.getCaseNumber());
