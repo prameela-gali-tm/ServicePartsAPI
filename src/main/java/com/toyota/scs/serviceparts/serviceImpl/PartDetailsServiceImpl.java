@@ -23,6 +23,7 @@ import com.toyota.scs.serviceparts.model.PurchaseOrderDetailsModel;
 import com.toyota.scs.serviceparts.model.ResponseCaseBuildModel;
 import com.toyota.scs.serviceparts.model.ResponseCaseModel;
 import com.toyota.scs.serviceparts.model.ResponseUnitsModel;
+import com.toyota.scs.serviceparts.model.ViewPONumberDetailModel;
 import com.toyota.scs.serviceparts.model.ViewPartDetailsModel;
 import com.toyota.scs.serviceparts.repository.CaseRepositroy;
 import com.toyota.scs.serviceparts.repository.SerialNumberRepository;
@@ -225,9 +226,7 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 	public ModelApiResponse getCaseDetails(String caseNumber, String vendorCode, String directFlag,
 			int transportCode) {
 		EntityManager em = emf.createEntityManager();
-		StringBuilder sqlQuery = new StringBuilder();
-		
-		
+		StringBuilder sqlQuery = new StringBuilder();			
 		sqlQuery.append(" select   ");
 		sqlQuery.append(" ord.vendor_code as vendorCode, ");
 		sqlQuery.append(" pt.PART_NUMBER as partNumber, ");
@@ -240,7 +239,10 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 		sqlQuery.append(" ptrans.FULLFILLED_QUANTITY as fullfilledQuantity, ");
 		sqlQuery.append(" pt.status as status, ");
 		sqlQuery.append(" ptrans.SERIAL_NUMBER as serialNumber, ");
-		sqlQuery.append(" ptrans.part_trans_id as id ");
+		sqlQuery.append(" ptrans.part_trans_id as id, ");
+		sqlQuery.append(" ord.dealer_code as dealerCode, ");
+		sqlQuery.append(" ord.final_destination as finalDestination, ");
+		sqlQuery.append(" ord.direct_ship_flag as directShipFlag ");
 		sqlQuery.append(" from spadm.sp_case ca ");
 		sqlQuery.append(" join spadm.sp_part_trans ptrans on ptrans.case_id=ca.case_id ");
 		sqlQuery.append(" join spadm.sp_part pt on pt.part_id=ptrans.part_id and pt.order_id = ptrans.order_id ");
@@ -290,6 +292,11 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 					responseUnitsModel.setPartPOLineQuantityRemaining(partDetailsModel.getOutstandingQuantity());
 					responseUnitsModel.setPartPOLineQuantityAllocated(partDetailsModel.getFullfilledQuantity());
 					responseUnitsModel.setPartPOLineStatus(partDetailsModel.getStatus());
+					if(partDetailsModel.isDirectShipFlag()) {
+						responseUnitsModel.setDealerOrFinalDist(partDetailsModel.getDealerCode());
+					}else {
+						responseUnitsModel.setDealerOrFinalDist(partDetailsModel.getFinalDestination());
+					}
 					/// need to fetch the serial number
 					List<SerialNumberEntity> serialNumberList  = new ArrayList<SerialNumberEntity>();
 					serialNumberList = serialNumberRepository.findByPartTransId(partDetailsModel.getId());					
@@ -342,6 +349,48 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 			return;
 		}
 		mes.getErrorMessages().add(message);
+	}
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ViewPONumberDetailModel> getViewAllPONumberDetail(String startDate, String endDate, String vendorCode,
+			String status) {
+		EntityManager em = emf.createEntityManager();
+		StringBuilder sqlQuery = new StringBuilder();
+		sqlQuery.append(" select   ");
+		sqlQuery.append(" pt.PART_NUMBER as partNumber, ");
+		sqlQuery.append(" ord.PO_NUMBER as poNumber, ");
+		sqlQuery.append(" pt.DDD as deliveryDueDate, ");
+		sqlQuery.append(" pt.OUTSTANDING_QUANTITY as outstandingQuantity, ");
+		sqlQuery.append(" pt.status as status ");
+		sqlQuery.append(" from spadm.sp_part pt ");
+		sqlQuery.append(" join spadm.sp_order ord on ord.order_id=pt.order_id ");
+		sqlQuery.append(" where 1=1  ");
+		if(startDate!=null && endDate!=null) {
+			sqlQuery.append(" and ( pt.DDD between ").append("'").append(startDate).append("'").append(" and ").append("'").append(endDate).append("')"); 
+			 }
+		if(vendorCode!=null) {
+			sqlQuery.append(" and  ord.vendor_code='").append(vendorCode).append("'"); 
+		 }
+		if(status!=null) {
+			sqlQuery.append(" and pt.status ='").append(status.toUpperCase()).append("'");
+		}else {
+			sqlQuery.append(" and pt.status not in ('FULL FILLED','DRAFT')");
+		}		
+		sqlQuery.append(" order by pt.ddd ,pt.part_number,ord.order_type asc");
+		List<PartEntity> list  = new ArrayList<PartEntity>();
+		list =  (List<PartEntity>)em.createNativeQuery(sqlQuery.toString(),"viewPONumberDetails").getResultList();
+		em.close();
+		List<ViewPONumberDetailModel> poNumberDetailModels = new ArrayList<ViewPONumberDetailModel>();
+		for(PartEntity partDetailsModel : list) {
+			ViewPONumberDetailModel detailModel = new ViewPONumberDetailModel();
+			detailModel.setPoNumber(partDetailsModel.getPoNumber());
+			detailModel.setPartNumber(partDetailsModel.getPartNumber());
+			detailModel.setDeliveryDueDate(DATE_FORMAT.format(partDetailsModel.getDeliveryDueDate()));
+			detailModel.setUnFulFilledQuantity(partDetailsModel.getOutstandingQuantity());
+			detailModel.setStatus(partDetailsModel.getStatus());
+			poNumberDetailModels.add(detailModel);
+		 }
+		return poNumberDetailModels;
 	}
 
 }

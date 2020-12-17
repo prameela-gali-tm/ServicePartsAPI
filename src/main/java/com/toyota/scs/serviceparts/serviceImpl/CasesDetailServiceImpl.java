@@ -719,6 +719,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 		if (caseModel != null && caseModel.size() > 0) {
 			Map<String, Long> partDetailsMap = new HashMap<String, Long>();//// part number with reaming quantity
 			Map<String, List<PartDetailsModel>> caseWithUnitDetails = new HashMap<String, List<PartDetailsModel>>();
+			Map<String,String> duplicateCaseNumber = new HashMap<String, String>();
 			for (int i = 0; i < caseModel.size(); i++) {
 				valid = true;
 				CaseBuildModel caseBuildModel = caseModel.get(i);
@@ -735,6 +736,11 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 					for (int j = 0; j < cases.size(); j++) {
 						List<PartDetailsModel> unitDetails = new ArrayList<PartDetailsModel>();
 						CaseModel model = cases.get(j);
+						if(duplicateCaseNumber.containsKey(model.getCaseNumber())) {
+							pushMessage(vendorCode, ServicePartConstant.DUPLICATE_CASENUMBER, mesMap);
+						}else {
+							duplicateCaseNumber.put(model.getCaseNumber(), model.getCaseNumber());
+						}
 						pushMessage(vendorCode, caseNumberValid(model.getCaseNumber(), -2), mesMap);
 						
 						int days = caseNumberDaysValidation(model.getCaseNumber());
@@ -791,7 +797,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 							serialNumberDetailsModels = obj.getSerialNumberDetailsModel();
 							String keyValue = obj.getPartNumber() + vendorCode;
 							long outStandingQuantity = 0;
-							if(duplicateValidation.containsKey(model.getCaseNumber())) {
+							if(duplicateValidation.containsKey(model.getCaseNumber()+obj.getPartNumber())) {
 								pushMessage(vendorCode, ServicePartConstant.DUPLICATE_UNITS, mesMap);
 							}else {
 								duplicateValidation.put(model.getCaseNumber()+obj.getPartNumber(),obj.getPartNumber());
@@ -837,6 +843,13 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 								dealerCode=model.getDealerNumber();
 							}else {
 								distinationFD=model.getDistFD();
+							}
+							String noRecordFoundKey= vendorCode+" | "+model.getCaseNumber() +" | " +model.getDirectShipFlag() +" | " +model.getTransportationCode() +" | ";
+							if(dealerCode!=null) {
+								noRecordFoundKey = noRecordFoundKey + dealerCode;
+							}
+							if(distinationFD!=null) {
+								noRecordFoundKey = noRecordFoundKey + distinationFD;
 							}
 							String keyValue1= null;
 							if (obj.getDeliveryDueDate() == null && valid) {
@@ -1062,7 +1075,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 
 								} // end of the if condition for the details fetching from the data base
 								else {
-									pushMessage(vendorCode, ServicePartConstant.NO_RECORDS, mesMap);
+									pushMessage(vendorCode, noRecordFoundKey + ServicePartConstant.NO_RECORDS, mesMap);
 								}
 								partWithCompleteDDD.put(obj.getPartNumber(), dddCompleteRecords);
 							}// end of the if condition for the delivery due date end
@@ -1076,9 +1089,14 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 								}else {
 								detailsModel = partdetailsService.findPartDetails(obj.getPartNumber(), vendorCode,model.getDirectShipFlag(),model.getTransportationCode(),dealerCode,distinationFD,
 																				parseDateString(obj.getDeliveryDueDate()),poLineItemNumber,obj.getPoNumber());
-								}
+								}								
 								if(detailsModel!=null && detailsModel.size()>0) {
 									for(PartDetailsModel partDetailsModel:detailsModel) {
+										if(obj.getPartQuantity()>partDetailsModel.getOrderQuantity()) {
+											String qtyKey=model.getCaseNumber() +" | "+obj.getPoNumber() + " | "+obj.getPoLineNumber() +" | "+obj.getPartNumber()+" | ";
+											pushMessage(vendorCode, qtyKey + ServicePartConstant.QTY1 + partDetailsModel.getOrderQuantity() + ServicePartConstant.QTY2, mesMap);
+										}
+										if(valid) {
 										long plannedQuantity = partDetailsModel.getOrderQuantity();
 										long actaulShippedQuantity = obj.getPartQuantity();
 										long fullfillQuantity = partDetailsModel.getSupplierFullFillQuantity();
@@ -1174,9 +1192,10 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 											}
 										}
 									}
+									}
 									partMap.put(keyValue1, detailsModel);
 								}else {
-									pushMessage(vendorCode, ServicePartConstant.NO_RECORDS, mesMap);
+									pushMessage(vendorCode, noRecordFoundKey + ServicePartConstant.NO_RECORDS, mesMap);
 								}
 							}
 							partDetailsMap.put(keyValue, outStandingQuantity);

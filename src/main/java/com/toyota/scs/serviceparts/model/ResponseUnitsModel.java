@@ -34,7 +34,10 @@ public class ResponseUnitsModel {
 	
 	@JsonProperty("partPOLineStatus")
 	private String partPOLineStatus;
-
+	
+	@JsonProperty("dealerOrFinalDist")
+	private String dealerOrFinalDist;
+	
 	@JsonProperty("serialNumberDetails")
 	private List<String> serialNumberDetailsModel;
 	
@@ -118,6 +121,16 @@ public class ResponseUnitsModel {
 		this.serialNumberDetailsModel = serialNumberDetailsModel;
 	}
 
+	
+	public String getDealerOrFinalDist() {
+		return dealerOrFinalDist;
+	}
+
+	public void setDealerOrFinalDist(String dealerOrFinalDist) {
+		this.dealerOrFinalDist = dealerOrFinalDist;
+	}
+
+	
 	public ResponseUnitsModel() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -125,7 +138,8 @@ public class ResponseUnitsModel {
 
 	public ResponseUnitsModel(String partNumber, String poNumber, String poLineNumber, String poLineHomePosition,
 			String poLineDeliveryDueDate, Integer partPOLineQuantityOrdered, long partPOLineQuantityRemaining,
-			long partPOLineQuantityAllocated, String partPOLineStatus, List<String> serialNumberDetailsModel) {
+			long partPOLineQuantityAllocated, String partPOLineStatus, String dealerOrFinalDist,
+			List<String> serialNumberDetailsModel) {
 		super();
 		this.partNumber = partNumber;
 		this.poNumber = poNumber;
@@ -136,6 +150,7 @@ public class ResponseUnitsModel {
 		this.partPOLineQuantityRemaining = partPOLineQuantityRemaining;
 		this.partPOLineQuantityAllocated = partPOLineQuantityAllocated;
 		this.partPOLineStatus = partPOLineStatus;
+		this.dealerOrFinalDist = dealerOrFinalDist;
 		this.serialNumberDetailsModel = serialNumberDetailsModel;
 	}
 
@@ -143,6 +158,7 @@ public class ResponseUnitsModel {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((dealerOrFinalDist == null) ? 0 : dealerOrFinalDist.hashCode());
 		result = prime * result + ((partNumber == null) ? 0 : partNumber.hashCode());
 		result = prime * result + (int) (partPOLineQuantityAllocated ^ (partPOLineQuantityAllocated >>> 32));
 		result = prime * result + ((partPOLineQuantityOrdered == null) ? 0 : partPOLineQuantityOrdered.hashCode());
@@ -165,6 +181,11 @@ public class ResponseUnitsModel {
 		if (getClass() != obj.getClass())
 			return false;
 		ResponseUnitsModel other = (ResponseUnitsModel) obj;
+		if (dealerOrFinalDist == null) {
+			if (other.dealerOrFinalDist != null)
+				return false;
+		} else if (!dealerOrFinalDist.equals(other.dealerOrFinalDist))
+			return false;
 		if (partNumber == null) {
 			if (other.partNumber != null)
 				return false;
@@ -211,7 +232,7 @@ public class ResponseUnitsModel {
 			return false;
 		return true;
 	}
-
+	
 	
 	
 	

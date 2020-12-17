@@ -74,7 +74,22 @@ import javax.persistence.Transient;
 	                		  @ColumnResult(name = "fullfilledQuantity", type = long.class),
 	                	      @ColumnResult(name = "status", type = String.class),
 	                	      @ColumnResult(name = "serialNumber", type = String.class),
-	                	      @ColumnResult(name = "id", type = long.class)
+	                	      @ColumnResult(name = "id", type = long.class),
+	                	      @ColumnResult(name = "dealerCode", type = String.class),
+	                	      @ColumnResult(name = "finalDestination", type = String.class),
+	                	      @ColumnResult(name = "directShipFlag", type = boolean.class)
+	                   })),
+	@SqlResultSetMapping(
+	        name = "viewPONumberDetails",
+	        classes = @ConstructorResult(
+	                targetClass = PartEntity.class,
+	                columns = {
+	                		  @ColumnResult(name = "partNumber", type=String.class),
+	                		  @ColumnResult(name = "poNumber", type = String.class),
+	                		  @ColumnResult(name = "deliveryDueDate", type = Date.class),	                		
+	                		  @ColumnResult(name = "outstandingQuantity", type = long.class),	                		 
+	                	      @ColumnResult(name = "status", type = String.class)               	    
+	                	     
 	                   }))
 })
 public class PartEntity implements Serializable {
@@ -537,7 +552,7 @@ public class PartEntity implements Serializable {
 
 	public PartEntity(String vendorCode, String partNumber, String poNumber, String lineItemNumber, String homePosition,
 			Date deliveryDueDate, long orderQuantity, long outstandingQuantity, long fullfilledQuantity, String status,
-			String serialNumber,long id) {
+			String serialNumber,long id,String dealerCode,String finalDestination,boolean directShipFlag) {
 		super();
 		this.vendorCode = vendorCode;
 		this.partNumber = partNumber;
@@ -551,8 +566,18 @@ public class PartEntity implements Serializable {
 		this.status = status;
 		this.serialNumber = serialNumber;
 		this.id=id;
+		this.dealerCode = dealerCode;
+		this.finalDestination = finalDestination;
+		this.directShipFlag = directShipFlag;
 	}
 	
-	
+	public PartEntity(String partNumber, String poNumber, Date deliveryDueDate, long outstandingQuantity, String status) {
+		super();
+		this.partNumber = partNumber;
+		this.poNumber = poNumber;
+		this.deliveryDueDate = deliveryDueDate;
+		this.outstandingQuantity = outstandingQuantity;
+		this.status = status;
+	}
 }
 
