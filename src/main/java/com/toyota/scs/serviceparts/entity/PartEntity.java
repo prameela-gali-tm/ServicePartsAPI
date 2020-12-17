@@ -57,6 +57,24 @@ import javax.persistence.Transient;
 	                    @ColumnResult(name = "partNumber", type=String.class),
 	                    @ColumnResult(name = "homePosition", type = String.class),
 	                    @ColumnResult(name = "finalDesDealerCode", type = String.class)
+	                   })),
+	@SqlResultSetMapping(
+	        name = "viewCaseDetails",
+	        classes = @ConstructorResult(
+	                targetClass = PartEntity.class,
+	                columns = {
+	                		  @ColumnResult(name = "vendorCode", type = String.class),
+	                		  @ColumnResult(name = "partNumber", type=String.class),
+	                		  @ColumnResult(name = "poNumber", type = String.class),
+	                		  @ColumnResult(name = "lineItemNumber", type = String.class),
+	                		  @ColumnResult(name = "homePosition", type = String.class),
+	                		  @ColumnResult(name = "deliveryDueDate", type = Date.class),
+	                		  @ColumnResult(name = "orderQuantity", type = long.class),
+	                		  @ColumnResult(name = "outstandingQuantity", type = long.class),
+	                		  @ColumnResult(name = "fullfilledQuantity", type = long.class),
+	                	      @ColumnResult(name = "status", type = String.class),
+	                	      @ColumnResult(name = "serialNumber", type = String.class),
+	                	      @ColumnResult(name = "id", type = long.class)
 	                   }))
 })
 public class PartEntity implements Serializable {
@@ -160,7 +178,8 @@ public class PartEntity implements Serializable {
 	@Transient
 	private String finalDestination;
 	
-	
+	@Transient
+	private long fullfilledQuantity;
 	
 	public PartEntity() {
 		super();
@@ -500,6 +519,38 @@ public class PartEntity implements Serializable {
 
 	public void setFinalDestination(String finalDestination) {
 		this.finalDestination = finalDestination;
+	}
+
+
+
+	public long getFullfilledQuantity() {
+		return fullfilledQuantity;
+	}
+
+
+
+	public void setFullfilledQuantity(long fullfilledQuantity) {
+		this.fullfilledQuantity = fullfilledQuantity;
+	}
+
+
+
+	public PartEntity(String vendorCode, String partNumber, String poNumber, String lineItemNumber, String homePosition,
+			Date deliveryDueDate, long orderQuantity, long outstandingQuantity, long fullfilledQuantity, String status,
+			String serialNumber,long id) {
+		super();
+		this.vendorCode = vendorCode;
+		this.partNumber = partNumber;
+		this.poNumber = poNumber;
+		this.lineItemNumber = lineItemNumber;
+		this.homePosition = homePosition;
+		this.deliveryDueDate = deliveryDueDate;
+		this.orderQuantity = orderQuantity;
+		this.outstandingQuantity = outstandingQuantity;
+		this.fullfilledQuantity = fullfilledQuantity;
+		this.status = status;
+		this.serialNumber = serialNumber;
+		this.id=id;
 	}
 	
 	
