@@ -5,6 +5,7 @@ import java.util.List;
 import com.toyota.scs.serviceparts.model.ModelApiResponse;
 import com.toyota.scs.serviceparts.model.PartDetailsModel;
 import com.toyota.scs.serviceparts.model.PurchaseOrderDetailsModel;
+import com.toyota.scs.serviceparts.model.ViewPONumberDetailModel;
 import com.toyota.scs.serviceparts.model.ViewPartDetailsModel;
 
 public interface PartDetailsService {
@@ -13,5 +14,6 @@ public interface PartDetailsService {
 	public List<PurchaseOrderDetailsModel> getViewAllPurchaseDetails();
 	public List<ViewPartDetailsModel> getViewAllPartDetails(String vendorCode,String directFlag, int transportCode,String dealerNumber,String distFD);
 	public ModelApiResponse getCaseDetails(String caseNumber,String vendorCode,String directFlag, int transportCode);
+	public List<ViewPONumberDetailModel> getViewAllPONumberDetail(String startDate,String endDate,String vendorCode,String status);
 	
 }

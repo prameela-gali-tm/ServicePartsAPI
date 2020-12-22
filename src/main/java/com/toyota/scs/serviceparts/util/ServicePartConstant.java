@@ -97,7 +97,7 @@ public class ServicePartConstant {
 	public static String DIRECT_FD="Distination FD is required when the direct shioment flag is N";
 	public static String DEALER_CODE_LEN = "Dealer code must be 10 digits or less";
 	public static String DIRECT_FD_LEN = "Dist FD code must be 30 digits or less";
-	public static String NO_RECORDS="No Record found for given vendor code, direct shipment falg and transportation code";
+	public static String NO_RECORDS=" | combination, no record found for given vendor code, case number, direct shipment flag, transportation code, dealer number and distFD combination ";
 	public static String FULL_FILLED_STATUS="FULL FILLED";
 	public static String PARTIAL_STATUS="PARTIAL";
 	public static String DRAFT_STATUS = "DRAFT";
@@ -105,4 +105,8 @@ public class ServicePartConstant {
 	public static String CASE_BUILD_STATUS="CASE BUILD";
 	public static String SUBMIT_STATUS="SUBMIT";
 	public static String CASE_NUMBER_DOES_NOT_EXIST="No Record found for given case number ";
+	public static String DUPLICATE_CASENUMBER = "Duplicate instance of Case Found in payload";
+	public static String QTY1= "combination submitted qty greater than available qty ";
+	public static String QTY2= " for PO Number, PO Line, Part Number combination ";
+	
 }

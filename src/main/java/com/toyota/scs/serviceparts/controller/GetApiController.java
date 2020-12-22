@@ -15,6 +15,7 @@ import com.toyota.scs.serviceparts.entity.PalletSizeLimitEntity;
 import com.toyota.scs.serviceparts.model.ModelApiResponse;
 import com.toyota.scs.serviceparts.model.PartDetailsModel;
 import com.toyota.scs.serviceparts.model.PurchaseOrderDetailsModel;
+import com.toyota.scs.serviceparts.model.ViewPONumberDetailModel;
 import com.toyota.scs.serviceparts.model.ViewPartDetailsModel;
 import com.toyota.scs.serviceparts.repository.OrderRepository;
 import com.toyota.scs.serviceparts.repository.PalletSizeLimitRepositroy;
@@ -104,4 +105,15 @@ public class GetApiController {
 		
 	}
 	
+	@GetMapping("/viewAllPONumbers")
+	public ResponseEntity<List<ViewPONumberDetailModel>> getViewAllPONumbers(
+			@RequestParam(name="startDate", required = true) String startDate,
+			@RequestParam(name="endDate", required = true) String endDate,
+			@RequestParam(name="vendorCode", required = true) String vendorCode,
+			@RequestParam(name="status", required = false) String status
+			){
+		List<ViewPONumberDetailModel> viewPoNumberDetail = new ArrayList<ViewPONumberDetailModel>();	
+		viewPoNumberDetail = partdetailsService.getViewAllPONumberDetail(startDate, endDate, vendorCode, status);
+		return new ResponseEntity<>(viewPoNumberDetail,HttpStatus.OK);
+	}
 } 
