@@ -77,7 +77,8 @@ import javax.persistence.Transient;
 	                	      @ColumnResult(name = "id", type = long.class),
 	                	      @ColumnResult(name = "dealerCode", type = String.class),
 	                	      @ColumnResult(name = "finalDestination", type = String.class),
-	                	      @ColumnResult(name = "directShipFlag", type = boolean.class)
+	                	      @ColumnResult(name = "directShipFlag", type = boolean.class),
+	                	      @ColumnResult(name = "orderType", type = String.class)
 	                   })),
 	@SqlResultSetMapping(
 	        name = "viewPONumberDetails",
@@ -552,7 +553,7 @@ public class PartEntity implements Serializable {
 
 	public PartEntity(String vendorCode, String partNumber, String poNumber, String lineItemNumber, String homePosition,
 			Date deliveryDueDate, long orderQuantity, long outstandingQuantity, long fullfilledQuantity, String status,
-			String serialNumber,long id,String dealerCode,String finalDestination,boolean directShipFlag) {
+			String serialNumber,long id,String dealerCode,String finalDestination,boolean directShipFlag,String orderType) {
 		super();
 		this.vendorCode = vendorCode;
 		this.partNumber = partNumber;
@@ -569,6 +570,7 @@ public class PartEntity implements Serializable {
 		this.dealerCode = dealerCode;
 		this.finalDestination = finalDestination;
 		this.directShipFlag = directShipFlag;
+		this.orderType = orderType;
 	}
 	
 	public PartEntity(String partNumber, String poNumber, Date deliveryDueDate, long outstandingQuantity, String status) {

@@ -226,7 +226,27 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 	public ModelApiResponse getCaseDetails(String caseNumber, String vendorCode, String directFlag,
 			int transportCode) {
 		EntityManager em = emf.createEntityManager();
-		StringBuilder sqlQuery = new StringBuilder();			
+		StringBuilder sqlQuery = new StringBuilder();	
+		StringBuilder sql = new StringBuilder();
+		sql.append(" select ");
+		sql.append(" ord.vendor_code as vendorCode,");
+		sql.append(" ptr.PART_NUMBER as partNumber,");
+		sql.append("  ord.PO_NUMBER as poNumber,");
+		sql.append(" ptr.LINE_ITEM_NUMBER as lineItemNumber,");
+		sql.append(" ptr.HOME_POSITION as homePosition,");
+		sql.append(" ptr.DDD as deliveryDueDate,");
+		sql.append("  ptr.ORDER_QUANTITY as orderQuantity,");
+		sql.append("  ptr.OUTSTANDING_QUANTITY as outstandingQuantity,");
+		sql.append("  rt.fullfilledQuantity as fullfilledQuantity,");
+		sql.append("  ptr.status as status, ");
+		sql.append("  rt.serialNumber as serialNumber, ");
+		sql.append("  rt.id as id, ");
+		sql.append(" ord.dealer_code as dealerCode, ");
+		sql.append("  ord.final_destination as finalDestination, "); 
+		sql.append(" ord.direct_ship_flag as directShipFlag,");
+		sql.append("  ord.trans_code AS transCode,");
+		sql.append(" ord.order_type AS orderType ");
+		sql.append( " FROM ( ");
 		sqlQuery.append(" select   ");
 		sqlQuery.append(" ord.vendor_code as vendorCode, ");
 		sqlQuery.append(" pt.PART_NUMBER as partNumber, ");
@@ -242,7 +262,8 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 		sqlQuery.append(" ptrans.part_trans_id as id, ");
 		sqlQuery.append(" ord.dealer_code as dealerCode, ");
 		sqlQuery.append(" ord.final_destination as finalDestination, ");
-		sqlQuery.append(" ord.direct_ship_flag as directShipFlag ");
+		sqlQuery.append(" ord.direct_ship_flag as directShipFlag, ");
+		sqlQuery.append(" ord.trans_code AS transCode" );
 		sqlQuery.append(" from spadm.sp_case ca ");
 		sqlQuery.append(" join spadm.sp_part_trans ptrans on ptrans.case_id=ca.case_id ");
 		sqlQuery.append(" join spadm.sp_part pt on pt.part_id=ptrans.part_id and pt.order_id = ptrans.order_id ");
@@ -265,12 +286,18 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 		}
 		sqlQuery.append(" order by pt.ddd ,pt.part_number,ord.order_type asc");
 		
+		sql.append(sqlQuery);
+		sql.append(" ) rt ");
+		sql.append(" JOIN spadm.sp_order ord ON ord.vendor_code=rt.vendorCode and ord.direct_ship_flag = rt.directShipFlag  ");
+		sql.append(" and ord.trans_code = rt.transCode and ord.final_destination = rt.finalDestination ");
+		sql.append(" JOIN spadm.sp_part ptr ON  rt.partnumber=ptr.PART_NUMBER  and ptr.order_id=ord.order_id ");
+		sql.append(" order by ptr.ddd ,ptr.part_number,ord.order_type asc" );
 		valid=true;
 		CaseEntity caseEntityDB = caseRepositroy.findByCaseNumber(caseNumber);
 		ModelApiResponse message = new ModelApiResponse();
 		Map<String, Message> mesMap = new HashMap<String, Message>();
 		List<PartEntity> list  = new ArrayList<PartEntity>();
-		list =  (List<PartEntity>)em.createNativeQuery(sqlQuery.toString(),"viewCaseDetails").getResultList();
+		list =  (List<PartEntity>)em.createNativeQuery(sql.toString(),"viewCaseDetails").getResultList();
 		  em.close();
 		if(caseEntityDB!=null) {
 			ResponseCaseBuildModel responseCaseBuildModel = new ResponseCaseBuildModel();
@@ -280,6 +307,7 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 			responseCaseModel.setCaseNumber(caseEntityDB.getCaseNumber());
 			responseCaseModel.setStatus(caseEntityDB.getStatus());
 			List<ResponseUnitsModel> responseUnitsModelsList = new ArrayList<ResponseUnitsModel>();
+			Map<Long,Long> partTransId = new HashMap<Long, Long>();
 			  for(PartEntity partDetailsModel : list) {
 				  ResponseUnitsModel responseUnitsModel = new ResponseUnitsModel();
 				  	responseCaseBuildModel.setVendorCode(partDetailsModel.getVendorCode());
@@ -298,15 +326,19 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 						responseUnitsModel.setDealerOrFinalDist(partDetailsModel.getFinalDestination());
 					}
 					/// need to fetch the serial number
-					List<SerialNumberEntity> serialNumberList  = new ArrayList<SerialNumberEntity>();
-					serialNumberList = serialNumberRepository.findByPartTransId(partDetailsModel.getId());					
-					if(serialNumberList!=null && serialNumberList.size()>0) {
-						List<String> serialNumber = new ArrayList<String>();
-						for(SerialNumberEntity entity:serialNumberList) {
-							serialNumber.add(entity.getSerialNumber());
-						}
-						responseUnitsModel.setSerialNumberDetailsModel(serialNumber);
-					}					
+					if(!partTransId.containsKey(partDetailsModel.getId())){
+						List<SerialNumberEntity> serialNumberList  = new ArrayList<SerialNumberEntity>();
+						serialNumberList = serialNumberRepository.findByPartTransId(partDetailsModel.getId());					
+						if(serialNumberList!=null && serialNumberList.size()>0) {
+							List<String> serialNumber = new ArrayList<String>();
+							for(SerialNumberEntity entity:serialNumberList) {
+								serialNumber.add(entity.getSerialNumber());
+							}
+							responseUnitsModel.setSerialNumberDetailsModel(serialNumber);
+							
+						}	
+						partTransId.put(partDetailsModel.getId(), partDetailsModel.getId());
+					}
 					responseUnitsModelsList.add(responseUnitsModel);
 			  }
 			  responseCaseModel.setUnits(responseUnitsModelsList);
