@@ -269,6 +269,32 @@ public class TestUtil extends BaseTest {
 		return respjsonObj;
 	}
 
+	public static String sendgetwithPathParams(String url,HashMap<String, String> prams ) throws URISyntaxException, ParseException, IOException, JSONException {
+		URIBuilder uriBuilder = new URIBuilder(url);
+		for (Map.Entry<String, String> entry : prams.entrySet()) {
+			uriBuilder.setParameter(entry.getKey(), entry.getValue());
+		}
+		
+		java.net.URI uri = uriBuilder.build();
+		HttpGet httpget = new HttpGet(uri);
+		System.out.println(httpget.getURI());
+		System.out.println("GET URL---------------------" + uri);
+		CloseableHttpClient HttpClient = HttpClients.createDefault();
+
+		CloseableHttpResponse httpResponse = HttpClient.execute(httpget);
+
+		String responseString = EntityUtils.toString(httpResponse.getEntity(), "UTF-8");
+	//	JSONObject respjsonObj = new JSONObject(responseString);
+		// JSONObject respjsonObj = new JSONObject(responseString.substring(1,
+		// (responseString.length() - 1)));
+
+		System.out.println("Status for get request code is------------" + httpResponse.getStatusLine().getStatusCode());
+
+		return responseString;
+
+	}
+	
+	
 	// set up HTTPGet with Parameters
 	public JSONObject sendGetwithPathParams(HashMap<String, String> header) throws ParseException, IOException,
 			URISyntaxException, FilloException, InterruptedException, JSONException {
@@ -286,8 +312,7 @@ public class TestUtil extends BaseTest {
 		URI uri = uriBuilder.build();
 		// String uri = uriBuilder.build().toString();
 		HttpGet getrequest = new HttpGet(uri);
-		getrequest.addHeader("appID", "vnandiko");
-
+		
 		System.out.println("GET URL---------------------" + uri);
 		CloseableHttpClient HttpClient = HttpClients.createDefault();
 

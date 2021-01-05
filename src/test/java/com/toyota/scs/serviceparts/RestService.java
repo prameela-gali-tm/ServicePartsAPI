@@ -6,6 +6,7 @@ import java.io.StringBufferInputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -32,6 +33,7 @@ import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.InputStreamEntity;
@@ -51,6 +53,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
+import com.relevantcodes.extentreports.LogStatus;
 import com.sun.net.httpserver.Headers;
 
 import com.toyota.scs.serviceparts.ResponseCodes;
@@ -74,6 +77,7 @@ public class RestService {
 			throws ParseException, IOException, JSONException {
 
 		HttpGet getrequest = new HttpGet(url);
+		
 		for (Map.Entry<String, String> entry : header.entrySet()) {
 			getrequest.addHeader(entry.getKey(), entry.getValue());
 		}
@@ -359,6 +363,31 @@ public class RestService {
 		}
 
 		return entity;
+	}
+	
+	public JSONObject sendgetwithParams(String url,HashMap<String, String> prams ) throws URISyntaxException, ParseException, IOException, JSONException {
+		URIBuilder uriBuilder = new URIBuilder(url);
+		for (Map.Entry<String, String> entry : prams.entrySet()) {
+			uriBuilder.setParameter(entry.getKey(), entry.getValue());
+		}
+		
+		java.net.URI uri = uriBuilder.build();
+		HttpGet httpget = new HttpGet(uri);
+		System.out.println(httpget.getURI());
+		System.out.println("GET URL---------------------" + uri);
+		CloseableHttpClient HttpClient = HttpClients.createDefault();
+
+		CloseableHttpResponse httpResponse = HttpClient.execute(httpget);
+
+		String responseString = EntityUtils.toString(httpResponse.getEntity(), "UTF-8");
+		JSONObject respjsonObj = new JSONObject(responseString);
+		// JSONObject respjsonObj = new JSONObject(responseString.substring(1,
+		// (responseString.length() - 1)));
+
+		System.out.println("Status for get request code is------------" + httpResponse.getStatusLine().getStatusCode());
+
+		return respjsonObj;
+
 	}
 
 }

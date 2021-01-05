@@ -12,6 +12,9 @@ public class ResponseCaseModel {
 	@JsonProperty("caseNumber")
 	private String caseNumber;
 	
+	@JsonProperty("status")
+	private String status;
+	
 	@JsonProperty("units")
 	private List<ResponseUnitsModel> units = new ArrayList<ResponseUnitsModel>();
 
@@ -29,14 +32,15 @@ public class ResponseCaseModel {
 
 	public void setUnits(List<ResponseUnitsModel> units) {
 		this.units = units;
-	}
+	}	
 
+	
 	public ResponseCaseModel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public ResponseCaseModel(String caseNumber, List<ResponseUnitsModel> units) {
+	public ResponseCaseModel(String caseNumber,List<ResponseUnitsModel> units) {
 		super();
 		this.caseNumber = caseNumber;
 		this.units = units;
@@ -72,6 +76,16 @@ public class ResponseCaseModel {
 			return false;
 		return true;
 	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+	
 	
 	
 }

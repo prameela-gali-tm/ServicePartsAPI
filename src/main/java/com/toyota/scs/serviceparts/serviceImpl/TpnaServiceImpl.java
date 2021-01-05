@@ -41,21 +41,21 @@ public class TpnaServiceImpl implements TpnaService{
 		//dLR_CODE dealer_code
 		Specification<OrderEntity> ordSpec =null;
 		boolean issuesExists=false,orderExists=false,partExists=false;
-		String poNumber, orderType,vendorCode,partNumber="",poLine="",ddd="",eda;
-		Date dddDate,edaDate;
+		String poNumber, orderType,vendorCode,partNumber="",poLine="",org_ddd="",eda;
+		Date dddOrgDate,edaDate;
 		Map<String,String> vendorCodeMap = new HashedMap<String, String>();
 		for(PolineModel poline :polineList) {
 			orderExists=false;
 			partExists=false;
-			poNumber="";orderType="";vendorCode="";partNumber="";poLine="";ddd="";eda="";
+			poNumber="";orderType="";vendorCode="";partNumber="";poLine="";org_ddd="";eda="";
 			poNumber=poline.getpO_NUM();
 			orderType=poline.getoRD_TYP();
 			vendorCode=poline.getvDR_CD();
 			partNumber=poline.getpART_NUM();
 			poLine=poline.getlINE_ITEM_NUM();
-			ddd=poline.getdDD();
+			org_ddd=poline.getoRIG_DDD();
 			eda=poline.geteDA();
-			dddDate= DateUtils.convertfromStringToDateFmt(ddd, "MM/dd/yyyy");
+			dddOrgDate= DateUtils.convertfromStringToDateFmt(org_ddd, "MM/dd/yyyy");
 			edaDate= DateUtils.convertfromStringToDateFmt(eda, "MM/dd/yyyy");
 			
 			//check for required fields
@@ -96,7 +96,7 @@ public class TpnaServiceImpl implements TpnaService{
 			PartEntity part;
 			if(orderExists) {
 				 part=	partRepo.findByOrderIdAndPartNumberAndLineItemNumberAndDeliveryDueDate
-							(currentOrd.getId(), partNumber,poLine, dddDate);
+							(currentOrd.getId(), partNumber,poLine, dddOrgDate);
 				 if(part==null||part.getId()==0L) {
 					 partExists=false;
 				 }else {
@@ -119,7 +119,7 @@ public class TpnaServiceImpl implements TpnaService{
 				part=new PartEntity();
 				part.setOrderId(currentOrd.getId());
 				part.setLineItemNumber(poLine);
-				part.setDeliveryDueDate(dddDate);
+				part.setDeliveryDueDate(dddOrgDate);
 				part.setPartNumber(partNumber);
 				part.setHomePosition(poline.gethP());
 				part.setOrderQuantity(Long.valueOf(poline.getoRD_QTY_PER_DDD()));

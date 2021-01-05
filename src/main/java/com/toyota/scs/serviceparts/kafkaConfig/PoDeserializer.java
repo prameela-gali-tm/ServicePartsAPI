@@ -1,10 +1,10 @@
 package com.toyota.scs.serviceparts.kafkaConfig;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.header.Headers;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
@@ -21,18 +21,18 @@ public class PoDeserializer  extends JsonDeserializer<List<PolineModel>> {
      @Override
      public List<PolineModel> deserialize(String topic, byte[] data) {
          if (data == null) {
-             return null;
+             return new ArrayList<PolineModel>();
          }
          try {
              return objectMapper.readValue(data, new TypeReference<List<PolineModel>>() {
              });
          } catch (IOException e) {
-        		/*
-				 * throw new SerializationException("Can't deserialize data [" +
-				 * Arrays.toString(data) + "] from topic [" + topic + "]", e);
-				 */
+        	 String s = new String(data, StandardCharsets.UTF_8);
+				  System.out.println("Can't deserialize data [" +
+				  s + "] from topic [" + topic + "]");
+				 
          }
-		return null;
+		return new ArrayList<PolineModel>();
      }
 	
 	}

@@ -43,6 +43,7 @@ public class KafkaConfig {
 		 */
 		// put the group ID in the map
 		map.put(ConsumerConfig.GROUP_ID_CONFIG, "SCS_Group_id_DEV");
+		map.put(ConsumerConfig.GROUP_ID_CONFIG, "SCS_Group_id_DEV_LOC");
 		
 	//	map.put(ConsumerConfig.GROUP_ID_CONFIG, UUID.randomUUID().toString());
 		map.put(ConsumerConfig.CLIENT_ID_CONFIG, "your_client_id");
@@ -96,27 +97,7 @@ public class KafkaConfig {
 		return obj;
 	}
 	
-	static class CustomDeserializer extends JsonDeserializer<List<PolineModel>> {
 
-        @Override
-        public List<PolineModel> deserialize(String topic, Headers headers, byte[] data) {
-            return deserialize(topic, data);
-        }
-
-        @Override
-        public List<PolineModel> deserialize(String topic, byte[] data) {
-            if (data == null) {
-                return null;
-            }
-            try {
-                return objectMapper.readValue(data, new TypeReference<List<PolineModel>>() {
-                });
-            } catch (IOException e) {
-                throw new SerializationException("Can't deserialize data [" + Arrays.toString(data) +
-                        "] from topic [" + topic + "]", e);
-            }
-        }
-    }
 	
 	
 }

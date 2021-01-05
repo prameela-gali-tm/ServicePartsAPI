@@ -116,6 +116,11 @@ public class ServicePartsCaseBuildAPIspecValidation extends BaseTest {
 		JSONObject JOGet = new JSONObject(respGet.toString());
 		System.out.println(JOGet.getString("confirmationNumber"));
 		System.out.println();
+		Assert.assertEquals( respGet.toString(), "");
+		if( !respGet.toString().contains("Home Position must be 1 digit.")) {
+			Assert.fail("Home Position must be 1 digit. Messeage not visible.");
+		}
+		
 		Assert.assertEquals(JOGet.getString("confirmationNumber"), "null");
 	}
 
