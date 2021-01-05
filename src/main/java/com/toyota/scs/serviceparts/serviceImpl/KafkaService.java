@@ -21,7 +21,8 @@ import com.toyota.scs.serviceparts.service.TpnaService;
   @KafkaListener(topics =
 // "TEST.SCS.ASN.NAPO.TOPIC",containerFactory="kafkaListner") 
  // "TEST.NAPO.PURCHASEORDER.SCS.TOPIC",containerFactory="kafkaListner") 
-  "QA.NAPO.PURCHASEORDER.SCS.TOPIC",containerFactory="kafkaListner") 
+//  "QA.NAPO.PURCHASEORDER.SCS.TOPIC",containerFactory="kafkaListner") 
+  "PROD.NAPO.PURCHASEORDER.SCS.TOPIC",containerFactory="kafkaListner") 
   public void publish(List<PolineModel> message) {
 	  if(message!=null&&!message.isEmpty()) {
 		  serv.poDetails(message);

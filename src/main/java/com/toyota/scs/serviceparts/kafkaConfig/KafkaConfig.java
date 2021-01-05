@@ -25,13 +25,21 @@ import com.toyota.scs.serviceparts.model.PolineModel;
 
 @EnableKafka
 @Configuration
-public class KafkaConfig {
-	final String BOOTSTRAP_SERVERS = "broker01-int.qa.awskafka.toyota.com:9094,"
-			+ "broker02-int.qa.awskafka.toyota.com:9094," + "broker03-int.qa.awskafka.toyota.com:9094,"
-			+ "broker04-int.qa.awskafka.toyota.com:9094," + "broker05-int.qa.awskafka.toyota.com:9094";
+public class KafkaConfig { 
+	final String BOOTSTRAP_SERVERS = "broker01-int.prod.awskafka.toyota.com:9094,"
+			+ "broker02-int.prod.awskafka.toyota.com:9094," + "broker03-int.prod.awskafka.toyota.com:9094,"
+			+ "broker04-int.prod.awskafka.toyota.com:9094," + "broker05-int.prod.awskafka.toyota.com:9094";
+	/*
+	 * final String BOOTSTRAP_SERVERS = "broker01-int.qa.awskafka.toyota.com:9094,"
+	 * + "broker02-int.qa.awskafka.toyota.com:9094," +
+	 * "broker03-int.qa.awskafka.toyota.com:9094," +
+	 * "broker04-int.qa.awskafka.toyota.com:9094," +
+	 * "broker05-int.qa.awskafka.toyota.com:9094";
+	 */
+	
 	@Bean
 	public ConsumerFactory<String, Object> consumerFactory() {
-		
+		boolean local=System.getProperty("os.name").toLowerCase().indexOf("win") >= 0 ;
 		// HashMap to store the configurations
 		Map<String, Object> map = new HashMap<>();
 
@@ -42,9 +50,13 @@ public class KafkaConfig {
 		 * map.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 		 */
 		// put the group ID in the map
-		map.put(ConsumerConfig.GROUP_ID_CONFIG, "SCS_Group_id_DEV");
-		map.put(ConsumerConfig.GROUP_ID_CONFIG, "SCS_Group_id_DEV_LOC");
 		
+		
+		if(local) {
+			map.put(ConsumerConfig.GROUP_ID_CONFIG, "SCS_Group_id_DEV");
+		}else {
+			map.put(ConsumerConfig.GROUP_ID_CONFIG, "SCS_Group_id_DEV_LOC");
+		}
 	//	map.put(ConsumerConfig.GROUP_ID_CONFIG, UUID.randomUUID().toString());
 		map.put(ConsumerConfig.CLIENT_ID_CONFIG, "your_client_id");
 		map.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
@@ -59,7 +71,7 @@ public class KafkaConfig {
 		
 		//  map.put("ssl.enabled.protocols", "TLSv1.3,SSLv3");
 		//  map.put("ssl.enabled.protocol", "TLSv1.2");
-		  if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
+		  if (local) {
 			  map.put("ssl.truststore.location","src/main/resources/certs/kafkaTruststore.jks");
 			  map.put("ssl.keystore.location", "src/main/resources/certs/mykeystore.jks" );
 			
