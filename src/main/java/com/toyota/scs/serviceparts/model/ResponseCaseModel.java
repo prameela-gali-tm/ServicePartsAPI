@@ -15,6 +15,12 @@ public class ResponseCaseModel {
 	@JsonProperty("status")
 	private String status;
 	
+	@JsonProperty("transportationCode")
+	private int transportationCode;
+	
+	@JsonProperty("directShipFlag")
+	private String directShipFlag;
+	
 	@JsonProperty("units")
 	private List<ResponseUnitsModel> units = new ArrayList<ResponseUnitsModel>();
 
@@ -83,6 +89,22 @@ public class ResponseCaseModel {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public int getTransportationCode() {
+		return transportationCode;
+	}
+
+	public void setTransportationCode(int transportationCode) {
+		this.transportationCode = transportationCode;
+	}
+
+	public String getDirectShipFlag() {
+		return directShipFlag;
+	}
+
+	public void setDirectShipFlag(String directShipFlag) {
+		this.directShipFlag = directShipFlag;
 	}
 	
 	

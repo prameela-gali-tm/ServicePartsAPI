@@ -102,11 +102,12 @@ public class ServicePartConstant {
 	public static String PARTIAL_STATUS="PARTIAL";
 	public static String DRAFT_STATUS = "DRAFT";
 	public static String INSERT_STATUS ="INSERT";
-	public static String CASE_BUILD_STATUS="CASE BUILD";
+	public static String CASE_BUILD_STATUS="CASE_BUILD";
 	public static String SUBMIT_STATUS="SUBMIT";
 	public static String CASE_NUMBER_DOES_NOT_EXIST="No Record found for given case number ";
 	public static String DUPLICATE_CASENUMBER = "Duplicate instance of Case Found in payload";
 	public static String QTY1= "combination submitted qty greater than available qty ";
 	public static String QTY2= " for PO Number, PO Line, Part Number combination ";
+	public static String SYSTEM="SYSTEM";
 	
 }

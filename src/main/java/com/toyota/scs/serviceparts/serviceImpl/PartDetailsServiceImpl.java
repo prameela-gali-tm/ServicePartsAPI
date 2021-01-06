@@ -244,8 +244,9 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 		sql.append(" ord.dealer_code as dealerCode, ");
 		sql.append("  ord.final_destination as finalDestination, "); 
 		sql.append(" ord.direct_ship_flag as directShipFlag,");
-		sql.append("  ord.trans_code AS transCode,");
-		sql.append(" ord.order_type AS orderType ");
+		sql.append("  ord.trans_code AS transportationCode,");
+		sql.append(" ord.order_type AS orderType, ");
+		sql.append(" rt.confirmationNumber as confirmationNumber");
 		sql.append( " FROM ( ");
 		sqlQuery.append(" select   ");
 		sqlQuery.append(" ord.vendor_code as vendorCode, ");
@@ -263,7 +264,8 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 		sqlQuery.append(" ord.dealer_code as dealerCode, ");
 		sqlQuery.append(" ord.final_destination as finalDestination, ");
 		sqlQuery.append(" ord.direct_ship_flag as directShipFlag, ");
-		sqlQuery.append(" ord.trans_code AS transCode" );
+		sqlQuery.append(" ord.trans_code AS transportationCode," );
+		sqlQuery.append(" ca.confirmation_number as confirmationNumber");
 		sqlQuery.append(" from spadm.sp_case ca ");
 		sqlQuery.append(" join spadm.sp_part_trans ptrans on ptrans.case_id=ca.case_id ");
 		sqlQuery.append(" join spadm.sp_part pt on pt.part_id=ptrans.part_id and pt.order_id = ptrans.order_id ");
@@ -289,7 +291,7 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 		sql.append(sqlQuery);
 		sql.append(" ) rt ");
 		sql.append(" JOIN spadm.sp_order ord ON ord.vendor_code=rt.vendorCode and ord.direct_ship_flag = rt.directShipFlag  ");
-		sql.append(" and ord.trans_code = rt.transCode and ord.final_destination = rt.finalDestination ");
+		sql.append(" and ord.trans_code = rt.transportationCode and ord.final_destination = rt.finalDestination ");
 		sql.append(" JOIN spadm.sp_part ptr ON  rt.partnumber=ptr.PART_NUMBER  and ptr.order_id=ord.order_id ");
 		sql.append(" order by ptr.ddd ,ptr.part_number,ord.order_type asc" );
 		valid=true;
@@ -322,9 +324,12 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 					responseUnitsModel.setPartPOLineStatus(partDetailsModel.getStatus());
 					if(partDetailsModel.isDirectShipFlag()) {
 						responseUnitsModel.setDealerOrFinalDist(partDetailsModel.getDealerCode());
+						responseCaseModel.setDirectShipFlag("Y");
 					}else {
 						responseUnitsModel.setDealerOrFinalDist(partDetailsModel.getFinalDestination());
-					}
+						responseCaseModel.setDirectShipFlag("N");
+					}	
+					responseCaseModel.setTransportationCode(Integer.parseInt(partDetailsModel.getTransportationCode()));
 					/// need to fetch the serial number
 					if(!partTransId.containsKey(partDetailsModel.getId())){
 						List<SerialNumberEntity> serialNumberList  = new ArrayList<SerialNumberEntity>();
@@ -345,6 +350,7 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 			  responseCaseModelsList.add(responseCaseModel);
 			  responseCaseBuildModel.setCases(responseCaseModelsList);
 			  message.setResponseCaseBuildDetails(responseCaseBuildModel);
+			  message.setConfirmationNumber(caseEntityDB.getConfirmationNumber());
 		}else {
 			pushMessage(caseNumber, ServicePartConstant.CASE_NUMBER_DOES_NOT_EXIST+caseNumber, mesMap);
 		}

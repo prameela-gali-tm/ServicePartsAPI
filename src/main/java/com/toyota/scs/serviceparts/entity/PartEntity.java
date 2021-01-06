@@ -78,7 +78,9 @@ import javax.persistence.Transient;
 	                	      @ColumnResult(name = "dealerCode", type = String.class),
 	                	      @ColumnResult(name = "finalDestination", type = String.class),
 	                	      @ColumnResult(name = "directShipFlag", type = boolean.class),
-	                	      @ColumnResult(name = "orderType", type = String.class)
+	                	      @ColumnResult(name = "transportationCode", type = String.class),
+	                	      @ColumnResult(name = "orderType", type = String.class),
+	                	      @ColumnResult(name = "confirmationNumber", type = String.class)
 	                   })),
 	@SqlResultSetMapping(
 	        name = "viewPONumberDetails",
@@ -196,6 +198,10 @@ public class PartEntity implements Serializable {
 	
 	@Transient
 	private long fullfilledQuantity;
+	
+	@Transient
+	private String confirmationNumber;
+	
 	
 	public PartEntity() {
 		super();
@@ -553,7 +559,7 @@ public class PartEntity implements Serializable {
 
 	public PartEntity(String vendorCode, String partNumber, String poNumber, String lineItemNumber, String homePosition,
 			Date deliveryDueDate, long orderQuantity, long outstandingQuantity, long fullfilledQuantity, String status,
-			String serialNumber,long id,String dealerCode,String finalDestination,boolean directShipFlag,String orderType) {
+			String serialNumber,long id,String dealerCode,String finalDestination,boolean directShipFlag,String transportationCode,String orderType,String confirmationNumber) {
 		super();
 		this.vendorCode = vendorCode;
 		this.partNumber = partNumber;
@@ -570,7 +576,9 @@ public class PartEntity implements Serializable {
 		this.dealerCode = dealerCode;
 		this.finalDestination = finalDestination;
 		this.directShipFlag = directShipFlag;
+		this.transportationCode = transportationCode;
 		this.orderType = orderType;
+		this.confirmationNumber= confirmationNumber;
 	}
 	
 	public PartEntity(String partNumber, String poNumber, Date deliveryDueDate, long outstandingQuantity, String status) {
@@ -580,6 +588,18 @@ public class PartEntity implements Serializable {
 		this.deliveryDueDate = deliveryDueDate;
 		this.outstandingQuantity = outstandingQuantity;
 		this.status = status;
+	}
+
+
+
+	public String getConfirmationNumber() {
+		return confirmationNumber;
+	}
+
+
+
+	public void setConfirmationNumber(String confirmationNumber) {
+		this.confirmationNumber = confirmationNumber;
 	}
 }
 
