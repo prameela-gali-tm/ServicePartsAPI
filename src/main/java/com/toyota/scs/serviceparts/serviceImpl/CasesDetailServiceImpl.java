@@ -155,8 +155,8 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 											partTransEntity.setSupplierTotal(partDetailsModel.getOrderQuantity());
 											partTransEntity.setTransmussionDate(new Date());
 											partTransEntity.setOrderId(partDetailsModel.getOrderId());
-											partTransEntity.setStatus("CASE BUILD");
-											partTransEntity.setModifiedBy("sreedhar");
+											partTransEntity.setStatus(ServicePartConstant.CASE_BUILD_STATUS);
+											partTransEntity.setModifiedBy(ServicePartConstant.SYSTEM);
 											partTransEntity.setModifiedDate(new Date());
 											partTransEntity.setCaseNumber(model.getCaseNumber());
 											partTransEntity.setPartNumber(partDetailsModel.getPartNumber());
@@ -198,8 +198,8 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 									partTransEntity.setSupplierTotal(obj.getPartQuantity());
 									partTransEntity.setTransmussionDate(new Date());
 									partTransEntity.setOrderId(entity.getId());
-									partTransEntity.setStatus("CASE BUILD");
-									partTransEntity.setModifiedBy("sreedhar");
+									partTransEntity.setStatus(ServicePartConstant.CASE_BUILD_STATUS);
+									partTransEntity.setModifiedBy(ServicePartConstant.SYSTEM);
 									partTransEntity.setModifiedDate(new Date());
 									partTransEntity.setCaseNumber(model.getCaseNumber());
 									partTransEntity.setPartNumber(obj.getPartNumber());
@@ -231,8 +231,8 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 				}
 				caseEntity.setCaseNumber(caseNumbervalue);
 				caseEntity.setConfirmationNumber(confirmationNumber);
-				caseEntity.setStatus("CASE BUILD");
-				caseEntity.setModifiedBy("sreedhar");
+				caseEntity.setStatus(ServicePartConstant.CASE_BUILD_STATUS);
+				caseEntity.setModifiedBy(ServicePartConstant.SYSTEM);
 				caseEntity.setModifiedDate(new Date());
 				saveCaseList.add(caseEntity);
 			}
@@ -273,7 +273,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 					}
 					partEntity.setOutstandingQuantity(blanceQuantity);
 					partEntity.setTransmissionDate(new Date());
-					partEntity.setModifiedBy("sreedhar");
+					partEntity.setModifiedBy(ServicePartConstant.SYSTEM);
 					partEntity.setModifiedDate(new Date());
 					obj.setCaseId(caseEntity.getId());
 				}
@@ -716,6 +716,10 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 		Message mes = new Message();
 		Map<String, Message> mesMap = new HashMap<String, Message>();
 		String vendorCode = null;
+		int transCode=0;
+		String directShipFlag=null;
+		String rdealerCode=null;
+		String rdistinationFD=null;
 		if (caseModel != null && caseModel.size() > 0) {
 			Map<String, Long> partDetailsMap = new HashMap<String, Long>();//// part number with reaming quantity
 			Map<String, List<PartDetailsModel>> caseWithUnitDetails = new HashMap<String, List<PartDetailsModel>>();
@@ -736,6 +740,8 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 					for (int j = 0; j < cases.size(); j++) {
 						List<PartDetailsModel> unitDetails = new ArrayList<PartDetailsModel>();
 						CaseModel model = cases.get(j);
+						transCode = model.getTransportationCode();
+						directShipFlag = model.getDirectShipFlag();
 						if(duplicateCaseNumber.containsKey(model.getCaseNumber())) {
 							pushMessage(vendorCode, ServicePartConstant.DUPLICATE_CASENUMBER, mesMap);
 						}else {
@@ -755,7 +761,14 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 							{
 								Optional<PartEntity> pEntityopt= partRepositroy.findById(obj1.getPartId());
 								PartEntity pEntity = pEntityopt.get();
-								pEntity.setOutstandingQuantity(pEntity.getOrderQuantity());
+								long fullFillAmount = obj1.getFullfilledQuantity();
+								long outStandingAmount = pEntity.getOutstandingQuantity();
+								long totalAmount = fullFillAmount+outStandingAmount;
+								if(totalAmount>=pEntity.getOrderQuantity()) {
+									pEntity.setOutstandingQuantity(pEntity.getOrderQuantity());
+								}else {
+									pEntity.setOutstandingQuantity(totalAmount);
+								}								
 								pEntity.setStatus(ServicePartConstant.INSERT_STATUS);
 								partEntityList.add(pEntity);
 							}
@@ -797,10 +810,10 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 							serialNumberDetailsModels = obj.getSerialNumberDetailsModel();
 							String keyValue = obj.getPartNumber() + vendorCode;
 							long outStandingQuantity = 0;
-							if(duplicateValidation.containsKey(model.getCaseNumber()+obj.getPartNumber())) {
+							if(duplicateValidation.containsKey(model.getCaseNumber()+obj.getPartNumber()+obj.getPoNumber())) {
 								pushMessage(vendorCode, ServicePartConstant.DUPLICATE_UNITS, mesMap);
 							}else {
-								duplicateValidation.put(model.getCaseNumber()+obj.getPartNumber(),obj.getPartNumber());
+								duplicateValidation.put(model.getCaseNumber()+obj.getPartNumber()+obj.getPoNumber(),obj.getPartNumber());
 							}
 							pushMessage(vendorCode, partQuantityValidation(obj.getPartQuantity()), mesMap);
 							/// Validation on the serial number start here
@@ -841,8 +854,10 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 							String distinationFD=null;
 							if(model.getDirectShipFlag()!=null && model.getDirectShipFlag().equalsIgnoreCase("Y")) {
 								dealerCode=model.getDealerNumber();
+								rdealerCode=model.getDealerNumber();
 							}else {
 								distinationFD=model.getDistFD();
+								rdistinationFD=model.getDistFD();
 							}
 							String noRecordFoundKey= vendorCode+" | "+model.getCaseNumber() +" | " +model.getDirectShipFlag() +" | " +model.getTransportationCode() +" | ";
 							if(dealerCode!=null) {
@@ -997,6 +1012,54 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 														obj.setPartQuantity((int) balanceQuantity);
 														outStandingQuantity = balanceQuantity;
 													}
+												}else {													
+													if(actaulShippedQuantity==remainingQuantity) {
+														partDetailsModel.setSupplierFullFillQuantity(
+																 remainingQuantity);
+														partDetailsModel.setOutstandingQuantity(0);
+														partDetailsModel.setPartialStatus(ServicePartConstant.FULL_FILLED_STATUS);
+													}
+													else {
+														partDetailsModel.setSupplierFullFillQuantity(actaulShippedQuantity);
+														partDetailsModel.setOutstandingQuantity(remainingQuantity-actaulShippedQuantity);
+														partDetailsModel.setPartialStatus(ServicePartConstant.PARTIAL_STATUS);
+														/*
+														 * partDetailsModel.setSupplierFullFillQuantity(
+														 * fullfillQuantity + remainingQuantity);
+														 * partDetailsModel.setOutstandingQuantity(actaulShippedQuantity
+														 * - remainingQuantity);
+														 * partDetailsModel.setPartialStatus(ServicePartConstant.
+														 * FULL_FILLED_STATUS);
+														 */
+																												
+													}
+													if(obj.getSerialNumberDetailsModel()!=null && obj.getSerialNumberDetailsModel().size()>0) {
+														List<String> exitingSerialNumber = null;
+														if(exitingSerialNumber==null) {
+															exitingSerialNumber = new ArrayList<String>();
+														}
+														List<SerialNumberDetailsModel> removeList = new ArrayList<SerialNumberDetailsModel>();
+														for(int s=0;s<remainingQuantity;s++) {
+															SerialNumberDetailsModel smodel = obj.getSerialNumberDetailsModel().get(s);
+															exitingSerialNumber.add(smodel.getSerialNumber());
+															removeList.add(smodel);
+														}
+														partDetailsModel.setSerialNumberDetailsModel(exitingSerialNumber);
+														obj.getSerialNumberDetailsModel().removeAll(removeList);
+													}
+													balanceQuantity = actaulShippedQuantity - remainingQuantity;
+													dddCompleteRecords.put(partDetailsModel.getDeliveryDueDate()+partDetailsModel.getPoNumber()+partDetailsModel.getOrderType(),
+															partDetailsModel);
+													unitDetails.add(new PartDetailsModel(partDetailsModel));
+													if (balanceQuantity <= 0) {
+														obj.setPartQuantity(0);
+														outStandingQuantity = 0;
+														break;
+													} else {
+														obj.setPartQuantity((int) balanceQuantity);
+														outStandingQuantity = balanceQuantity;
+													}
+												
 												}
 											}
 										}else if(partialStatus != null && partialStatus.equalsIgnoreCase(ServicePartConstant.INSERT_STATUS) && fullfillQuantity!=0 && remainingQuantity<plannedQuantity) {
@@ -1153,11 +1216,19 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 																 remainingQuantity);
 														partDetailsModel.setOutstandingQuantity(0);
 														partDetailsModel.setPartialStatus(ServicePartConstant.FULL_FILLED_STATUS);
-													}else {
-														partDetailsModel.setSupplierFullFillQuantity(
-																fullfillQuantity + remainingQuantity);
-														partDetailsModel.setOutstandingQuantity(actaulShippedQuantity - remainingQuantity);
-														partDetailsModel.setPartialStatus(ServicePartConstant.FULL_FILLED_STATUS);
+													}
+													else {
+														partDetailsModel.setSupplierFullFillQuantity(actaulShippedQuantity);
+														partDetailsModel.setOutstandingQuantity(remainingQuantity-actaulShippedQuantity);
+														partDetailsModel.setPartialStatus(ServicePartConstant.PARTIAL_STATUS);
+														/*
+														 * partDetailsModel.setSupplierFullFillQuantity(
+														 * fullfillQuantity + remainingQuantity);
+														 * partDetailsModel.setOutstandingQuantity(actaulShippedQuantity
+														 * - remainingQuantity);
+														 * partDetailsModel.setPartialStatus(ServicePartConstant.
+														 * FULL_FILLED_STATUS);
+														 */
 																												
 													}
 													if(obj.getSerialNumberDetailsModel()!=null && obj.getSerialNumberDetailsModel().size()>0) {
@@ -1238,7 +1309,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 						}else {
 							caseEntity.setStatus(ServicePartConstant.CASE_BUILD_STATUS);
 						}
-						caseEntity.setModifiedBy("sreedhar");
+						caseEntity.setModifiedBy(ServicePartConstant.SYSTEM);
 						caseEntity.setModifiedDate(new Date());
 						saveCaseList.add(caseEntity);
 					}
@@ -1257,6 +1328,8 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 							}else {
 								responseCaseModel.setStatus(ServicePartConstant.CASE_BUILD_STATUS);
 							}
+							responseCaseModel.setDirectShipFlag(directShipFlag);
+							responseCaseModel.setTransportationCode(transCode);
 							List<ResponseUnitsModel> responseUnitsModelsList = new ArrayList<ResponseUnitsModel>();
 							List<PartDetailsModel> savePartDetails = caseWithUnitDetails.get(obj.getCaseNumber());
 							for (PartDetailsModel partDetailsModel : savePartDetails) {
@@ -1264,7 +1337,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 								PartTransEntity partTransEntity = new PartTransEntity();
 								partTransEntity.setCaseId(obj.getId());
 								partTransEntity.setFullfilledQuantity(partDetailsModel.getSupplierFullFillQuantity());
-								partTransEntity.setModifiedBy("SYSTEM");
+								partTransEntity.setModifiedBy(ServicePartConstant.SYSTEM);
 								partTransEntity.setModifiedDate(new Date());
 								partTransEntity.setOrderId(partDetailsModel.getOrderId());
 								partTransEntity.setPartId(partDetailsModel.getPartId());
@@ -1279,7 +1352,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 
 								/// Part details updating start here
 								PartEntity partEntity = partRepositroy.findById(partDetailsModel.getPartId()).get();
-								partEntity.setModifiedBy("SYSTEM"); 
+								partEntity.setModifiedBy(ServicePartConstant.SYSTEM); 
 								partEntity.setModifiedDate(new Date());
 								partEntity.setOutstandingQuantity(partDetailsModel.getOutstandingQuantity());
 								partEntity.setStatus(partDetailsModel.getPartialStatus());
@@ -1299,6 +1372,11 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 								responseUnitsModel.setPartPOLineQuantityAllocated(
 										partDetailsModel.getSupplierFullFillQuantity());
 								responseUnitsModel.setPartPOLineStatus(partDetailsModel.getPartialStatus());
+								if(directShipFlag!=null && directShipFlag.equalsIgnoreCase("Y")) {
+									responseUnitsModel.setDealerOrFinalDist(rdealerCode);
+								}else {
+									responseUnitsModel.setDealerOrFinalDist(rdistinationFD);
+								}
 								responseUnitsModel.setSerialNumberDetailsModel(partDetailsModel.getSerialNumberDetailsModel());
 								responseUnitsModelsList.add(responseUnitsModel);
 								/// ends here
@@ -1317,7 +1395,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 									SerialNumberEntity entity = new SerialNumberEntity();
 									entity.setPartTransId(transEntity.getId());
 									entity.setSerialNumber(serialNumberValue);
-									entity.setModifiedBy("BATCH");
+									entity.setModifiedBy(ServicePartConstant.SYSTEM);
 									entity.setModifiedDate(new Date());
 									saveSerailEntity.add(entity);
 								}
