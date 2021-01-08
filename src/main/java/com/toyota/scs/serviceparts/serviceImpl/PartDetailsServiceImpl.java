@@ -226,74 +226,63 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 	public ModelApiResponse getCaseDetails(String caseNumber, String vendorCode, String directFlag,
 			int transportCode) {
 		EntityManager em = emf.createEntityManager();
-		StringBuilder sqlQuery = new StringBuilder();	
 		StringBuilder sql = new StringBuilder();
 		sql.append(" select ");
-		sql.append(" ord.vendor_code as vendorCode,");
-		sql.append(" ptr.PART_NUMBER as partNumber,");
-		sql.append("  ord.PO_NUMBER as poNumber,");
-		sql.append(" ptr.LINE_ITEM_NUMBER as lineItemNumber,");
-		sql.append(" ptr.HOME_POSITION as homePosition,");
-		sql.append(" ptr.DDD as deliveryDueDate,");
-		sql.append("  ptr.ORDER_QUANTITY as orderQuantity,");
-		sql.append("  ptr.OUTSTANDING_QUANTITY as outstandingQuantity,");
-		sql.append("  rt.fullfilledQuantity as fullfilledQuantity,");
-		sql.append("  ptr.status as status, ");
-		sql.append("  rt.serialNumber as serialNumber, ");
-		sql.append("  rt.id as id, ");
-		sql.append(" ord.dealer_code as dealerCode, ");
-		sql.append("  ord.final_destination as finalDestination, "); 
-		sql.append(" ord.direct_ship_flag as directShipFlag,");
-		sql.append("  ord.trans_code AS transportationCode,");
-		sql.append(" ord.order_type AS orderType, ");
-		sql.append(" rt.confirmationNumber as confirmationNumber");
-		sql.append( " FROM ( ");
-		sqlQuery.append(" select   ");
-		sqlQuery.append(" ord.vendor_code as vendorCode, ");
-		sqlQuery.append(" pt.PART_NUMBER as partNumber, ");
-		sqlQuery.append(" ord.PO_NUMBER as poNumber, ");
-		sqlQuery.append(" pt.LINE_ITEM_NUMBER as lineItemNumber, ");
-		sqlQuery.append(" pt.HOME_POSITION as homePosition, ");
-		sqlQuery.append(" pt.DDD as deliveryDueDate, ");
-		sqlQuery.append(" pt.ORDER_QUANTITY as orderQuantity, ");
-		sqlQuery.append(" pt.OUTSTANDING_QUANTITY as outstandingQuantity, ");
-		sqlQuery.append(" ptrans.FULLFILLED_QUANTITY as fullfilledQuantity, ");
-		sqlQuery.append(" pt.status as status, ");
-		sqlQuery.append(" ptrans.SERIAL_NUMBER as serialNumber, ");
-		sqlQuery.append(" ptrans.part_trans_id as id, ");
-		sqlQuery.append(" ord.dealer_code as dealerCode, ");
-		sqlQuery.append(" ord.final_destination as finalDestination, ");
-		sqlQuery.append(" ord.direct_ship_flag as directShipFlag, ");
-		sqlQuery.append(" ord.trans_code AS transportationCode," );
-		sqlQuery.append(" ca.confirmation_number as confirmationNumber");
-		sqlQuery.append(" from spadm.sp_case ca ");
-		sqlQuery.append(" join spadm.sp_part_trans ptrans on ptrans.case_id=ca.case_id ");
-		sqlQuery.append(" join spadm.sp_part pt on pt.part_id=ptrans.part_id and pt.order_id = ptrans.order_id ");
-		sqlQuery.append(" join spadm.sp_order ord on ord.order_id=pt.order_id ");
-		sqlQuery.append(" where 1=1  ");
-		if(caseNumber!=null) {
-			sqlQuery.append(" and  ca.case_number='").append(caseNumber).append("'"); 
-			 }
-		if(vendorCode!=null) {
-			sqlQuery.append(" and  ord.vendor_code='").append(vendorCode).append("'"); 
-			  }
-		if(directFlag!=null && directFlag.equalsIgnoreCase("Y")) { 
-			sqlQuery.append(" and  ord.direct_ship_flag =true "); 
-			}
-		if(directFlag!=null && directFlag.equalsIgnoreCase("N")) {  
-				sqlQuery.append(" and  ord.direct_ship_flag =false "); 
-			  }
-		if(transportCode!=0) {
-			sqlQuery.append(" and  ord.trans_code='").append(transportCode).append("'");
-		}
-		sqlQuery.append(" order by pt.ddd ,pt.part_number,ord.order_type asc");
+		sql.append(" ord.vendor_code as vendorCode, ");  
+		sql.append(" pt.PART_NUMBER as partNumber,  "); 
+		sql.append(" ord.PO_NUMBER as poNumber, ");  
+		sql.append(" pt.LINE_ITEM_NUMBER as lineItemNumber, ");
+		sql.append(" pt.HOME_POSITION as homePosition,  ");
+		sql.append(" pt.DDD as deliveryDueDate,  ");
+		sql.append(" coalesce(pt.ORDER_QUANTITY,0,pt.ORDER_QUANTITY) as orderQuantity,  ");
+		sql.append(" coalesce(pt.OUTSTANDING_QUANTITY,0,pt.OUTSTANDING_QUANTITY) as outstandingQuantity, ");
+		sql.append(" coalesce(ptrans.FULLFILLED_QUANTITY,0,ptrans.FULLFILLED_QUANTITY) as fullfilledQuantity,  ");
+		sql.append(" pt.status as status,  ");
+		sql.append(" ptrans.SERIAL_NUMBER as serialNumber,   ");
+		sql.append(" coalesce(ptrans.part_trans_id,0,ptrans.part_trans_id) as id,  ");
+		sql.append(" ord.dealer_code as dealerCode,   ");
+		sql.append(" ord.final_destination as finalDestination,  ");
+		sql.append(" ord.direct_ship_flag as directShipFlag,   ");
+		sql.append(" ord.trans_code AS transportationCode, ");
+		sql.append(" ord.order_type AS orderType,");
+		sql.append(" ca.confirmation_number as confirmationNumber  ");
+		sql.append(" from spadm.sp_part pt    ");
+		sql.append(" left join spadm.sp_part_trans ptrans on   pt.part_id=ptrans.part_id ");
+		sql.append(" join spadm.sp_case ca on ptrans.case_id=ca.case_id and pt.order_id = ptrans.order_id  and   ca.case_number='").append(caseNumber).append("'");
+		sql.append(" join spadm.sp_order ord on ord.order_id=pt.order_id   ");
+		sql.append(" where 1=1    ");
+		sql.append(" union");
+		sql.append(" select ");
+		sql.append(" ord.vendor_code as vendorCode,   ");
+		sql.append(" pt.PART_NUMBER as partNumber,   ");
+		sql.append(" ord.PO_NUMBER as poNumber,   ");
+		sql.append(" pt.LINE_ITEM_NUMBER as lineItemNumber, ");
+		sql.append(" pt.HOME_POSITION as homePosition,   ");
+		sql.append(" pt.DDD as deliveryDueDate,  ");
+		sql.append(" coalesce(pt.ORDER_QUANTITY,0,pt.ORDER_QUANTITY) as orderQuantity,  ");
+		sql.append(" coalesce(pt.OUTSTANDING_QUANTITY,0,pt.OUTSTANDING_QUANTITY) as outstandingQuantity, ");
+		sql.append(" coalesce(ptrans.FULLFILLED_QUANTITY,0,ptrans.FULLFILLED_QUANTITY) as fullfilledQuantity,  ");
+		sql.append(" pt.status as status,  ");
+		sql.append(" null as serialNumber,   ");
+		sql.append(" 0 as id,  ");
+		sql.append(" ord.dealer_code as dealerCode,   ");
+		sql.append(" ord.final_destination as finalDestination,  ");
+		sql.append(" ord.direct_ship_flag as directShipFlag,   ");
+		sql.append(" ord.trans_code AS transportationCode, ");
+		sql.append(" ord.order_type AS orderType,");
+		sql.append(" null as confirmationNumber  ");
+		sql.append(" from spadm.sp_part pt");
+		sql.append(" left join spadm.sp_part_trans ptrans on   pt.part_id=ptrans.part_id ");
+		sql.append(" left join spadm.sp_case ca on ptrans.case_id=ca.case_id and pt.order_id = ptrans.order_id ");
+		sql.append(" join spadm.sp_order ord on ord.order_id=pt.order_id   ");
+		sql.append(" where 1=1   ");
+		sql.append(" and ca.case_id is null");
+		sql.append(" and pt.part_number in ");
+		sql.append(" ( select distinct part_number from spadm.sp_part  where part_id in");
+		sql.append(" (select distinct part_id from spadm.sp_part_trans ptrans join spadm.sp_case ca on ptrans.case_id=ca.case_id and   ca.case_number='").append(caseNumber).append("'");
+		sql.append(" ))");
+		sql.append(" order by deliveryDueDate,partNumber,orderType asc");
 		
-		sql.append(sqlQuery);
-		sql.append(" ) rt ");
-		sql.append(" JOIN spadm.sp_order ord ON ord.vendor_code=rt.vendorCode and ord.direct_ship_flag = rt.directShipFlag  ");
-		sql.append(" and ord.trans_code = rt.transportationCode and ord.final_destination = rt.finalDestination ");
-		sql.append(" JOIN spadm.sp_part ptr ON  rt.partnumber=ptr.PART_NUMBER  and ptr.order_id=ord.order_id ");
-		sql.append(" order by ptr.ddd ,ptr.part_number,ord.order_type asc" );
 		valid=true;
 		CaseEntity caseEntityDB = caseRepositroy.findByCaseNumber(caseNumber);
 		ModelApiResponse message = new ModelApiResponse();
@@ -301,7 +290,7 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 		List<PartEntity> list  = new ArrayList<PartEntity>();
 		list =  (List<PartEntity>)em.createNativeQuery(sql.toString(),"viewCaseDetails").getResultList();
 		  em.close();
-		if(caseEntityDB!=null) {
+		if(caseEntityDB!=null && list!=null && list.size()>0) {
 			ResponseCaseBuildModel responseCaseBuildModel = new ResponseCaseBuildModel();
 			responseCaseBuildModel.setVendorCode(vendorCode);
 			List<ResponseCaseModel> responseCaseModelsList = new ArrayList<ResponseCaseModel>();
@@ -310,7 +299,7 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 			responseCaseModel.setStatus(caseEntityDB.getStatus());
 			List<ResponseUnitsModel> responseUnitsModelsList = new ArrayList<ResponseUnitsModel>();
 			Map<Long,Long> partTransId = new HashMap<Long, Long>();
-			  for(PartEntity partDetailsModel : list) {
+			for(PartEntity partDetailsModel : list) {
 				  ResponseUnitsModel responseUnitsModel = new ResponseUnitsModel();
 				  	responseCaseBuildModel.setVendorCode(partDetailsModel.getVendorCode());
 					responseUnitsModel.setPartNumber(partDetailsModel.getPartNumber());
@@ -353,6 +342,7 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 			  message.setConfirmationNumber(caseEntityDB.getConfirmationNumber());
 		}else {
 			pushMessage(caseNumber, ServicePartConstant.CASE_NUMBER_DOES_NOT_EXIST+caseNumber, mesMap);
+			valid=false;
 		}
 		
 		if (valid) {
