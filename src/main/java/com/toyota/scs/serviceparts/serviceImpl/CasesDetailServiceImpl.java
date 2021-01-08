@@ -766,10 +766,11 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 								long totalAmount = fullFillAmount+outStandingAmount;
 								if(totalAmount>=pEntity.getOrderQuantity()) {
 									pEntity.setOutstandingQuantity(pEntity.getOrderQuantity());
+									pEntity.setStatus(ServicePartConstant.INSERT_STATUS);
 								}else {
 									pEntity.setOutstandingQuantity(totalAmount);
-								}								
-								pEntity.setStatus(ServicePartConstant.INSERT_STATUS);
+									pEntity.setStatus(ServicePartConstant.PARTIAL_STATUS);
+								}	
 								partEntityList.add(pEntity);
 							}
 							partRepositroy.saveAll(partEntityList);
