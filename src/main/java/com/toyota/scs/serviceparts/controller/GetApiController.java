@@ -14,6 +14,7 @@ import com.toyota.scs.serviceparts.entity.OrderEntity;
 import com.toyota.scs.serviceparts.entity.PalletSizeLimitEntity;
 import com.toyota.scs.serviceparts.model.ModelApiResponse;
 import com.toyota.scs.serviceparts.model.PartDetailsModel;
+import com.toyota.scs.serviceparts.model.PartDetailsModelQuery;
 import com.toyota.scs.serviceparts.model.PurchaseOrderDetailsModel;
 import com.toyota.scs.serviceparts.model.ViewPONumberDetailModel;
 import com.toyota.scs.serviceparts.model.ViewPartDetailsModel;
@@ -115,5 +116,22 @@ public class GetApiController {
 		List<ViewPONumberDetailModel> viewPoNumberDetail = new ArrayList<ViewPONumberDetailModel>();	
 		viewPoNumberDetail = partdetailsService.getViewAllPONumberDetail(startDate, endDate, vendorCode, status);
 		return new ResponseEntity<>(viewPoNumberDetail,HttpStatus.OK);
+	}
+	
+	@GetMapping("/querypartdetails")
+	public ResponseEntity<List<PartDetailsModelQuery>> getQueryResult(
+			@RequestParam(name="partNumber", required = false) String partNumber,
+			@RequestParam(name="vendorCode", required = false) String vendorCode,
+			@RequestParam(name="directFlag", required = false, defaultValue = "N") String directFlag,
+			@RequestParam(name="transportCode", required = false, defaultValue = "3") int transportCode,
+			@RequestParam(name = "dealerNumber",required = false) String dealerNumber,
+			@RequestParam(name = "distFD",required = false) String distFD,
+			@RequestParam(name = "deliveruDueDate",required = false) String deliveruDueDate,
+			@RequestParam(name = "poLineNuber",required = false) String poLineNuber,
+			@RequestParam(name = "poNumber",required = false) String poNumber
+			){
+			List<PartDetailsModelQuery> queryPartDetails = new ArrayList<PartDetailsModelQuery>();	
+			queryPartDetails = partdetailsService.findPartDetailsQuery(partNumber,vendorCode,directFlag,transportCode,dealerNumber,distFD,deliveruDueDate,poLineNuber,poNumber);
+			return new ResponseEntity<>(queryPartDetails,HttpStatus.OK);
 	}
 } 
