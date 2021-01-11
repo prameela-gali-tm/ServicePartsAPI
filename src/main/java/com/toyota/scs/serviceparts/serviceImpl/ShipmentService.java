@@ -31,6 +31,8 @@ import com.toyota.scs.serviceparts.repository.CaseRepositroy;
 import com.toyota.scs.serviceparts.repository.RoutePathNodeRepositroy;
 import com.toyota.scs.serviceparts.repository.ShipmentRepositroy;
 import com.toyota.scs.serviceparts.repository.VendorRepositroy;
+import com.toyota.scs.serviceparts.specification.OrderSpecification;
+import com.toyota.scs.serviceparts.specification.ShipmentSpecification;
 import com.toyota.scs.serviceparts.util.ServicePartConstant;
 
 @Service
@@ -44,10 +46,17 @@ public class ShipmentService {
 	RoutePathNodeRepositroy routePathNodeRepository;
 	static String EMPTY = "";
 
-	public Page getAllShipmentDetails(Integer pageNo, Integer pageSize, String sortBy) {
+	public Page getAllShipmentDetails(Integer pageNo, Integer pageSize, String sortBy,String search) {
 		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).ascending());
-
-		Page<ShipmentEntity> pagedResult = shipmentRepositroy.findAll(paging);
+		Page<ShipmentEntity> pagedResult;
+		
+		if(search!=null&&!search.isEmpty()) {
+			ShipmentSpecification ordSpec= new ShipmentSpecification(search);			
+			pagedResult=shipmentRepositroy.findAll(ordSpec,paging);
+		}else {
+			pagedResult = shipmentRepositroy.findAll(paging);
+		}
+	
 
 		return pagedResult;
 	}

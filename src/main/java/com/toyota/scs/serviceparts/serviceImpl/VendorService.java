@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.toyota.scs.serviceparts.entity.VendorEntity;
 import com.toyota.scs.serviceparts.repository.VendorRepositroy;
+import com.toyota.scs.serviceparts.specification.OrderSpecification;
+import com.toyota.scs.serviceparts.specification.VendorSpecification;
 
 @Service
-public class VendorService{
+public class VendorService {
 
 	/**
 	 * 
@@ -20,12 +22,17 @@ public class VendorService{
 
 	@Autowired
 	VendorRepositroy vendorRepositroy;
-	
-	public Page getAllVendor(Integer pageNo, Integer pageSize, String sortBy){
-		Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(sortBy).ascending());
-		 
-        Page<VendorEntity> pagedResult = vendorRepositroy.findAll(paging);
-        
-        return pagedResult;
+
+	public Page getAllVendor(Integer pageNo, Integer pageSize, String sortBy, String search) {
+		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).ascending());
+		Page<VendorEntity> pagedResult;
+		if (search != null && !search.isEmpty()) {
+			VendorSpecification ordSpec = new VendorSpecification(search);
+			pagedResult = vendorRepositroy.findAll(ordSpec, paging);
+		} else {
+			pagedResult = vendorRepositroy.findAll(paging);
+		}
+
+		return pagedResult;
 	}
 }
