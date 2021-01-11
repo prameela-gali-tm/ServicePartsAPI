@@ -31,8 +31,9 @@ public class PartController {
 	@GetMapping("/fetchpart")
 	public Page getAllPart(@RequestParam(defaultValue = "0") Integer pageNo, 
             @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy){
-		Page pageresult = service.getAllPart(pageNo, pageSize, sortBy);
+            @RequestParam(defaultValue = "id:asc") String sortBy,
+            @RequestParam(defaultValue = "") String search){
+		Page pageresult = service.getAllPart(pageNo, pageSize, sortBy,search);
 		 
         return  pageresult; 
 	}

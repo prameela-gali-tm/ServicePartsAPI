@@ -8,28 +8,29 @@ import javax.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.toyota.scs.serviceparts.entity.OrderEntity;
+import com.toyota.scs.serviceparts.entity.PartEntity;
 import com.toyota.scs.serviceparts.util.SCSUtil;
 
-public class OrderSpecification  implements Specification<OrderEntity>{
+public class PartSpecification  implements Specification<PartEntity>{
 
 	
 	private String search;
 	
 	
-	public OrderSpecification(String search) {
+	public PartSpecification(String search) {
 		super();
 		this.search = search;
 	}
 
 
-	public OrderSpecification() {
+	public PartSpecification() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 
 	@Override
-	public Predicate toPredicate(Root<OrderEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+	public Predicate toPredicate(Root<PartEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 		
 		
 			
