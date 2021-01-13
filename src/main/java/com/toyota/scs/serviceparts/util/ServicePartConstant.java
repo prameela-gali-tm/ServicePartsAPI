@@ -109,5 +109,10 @@ public class ServicePartConstant {
 	public static String QTY1= "combination submitted qty greater than available qty ";
 	public static String QTY2= " for PO Number, PO Line, Part Number combination ";
 	public static String SYSTEM="SYSTEM";
+	public static String CASENUMBER_DELETE="Case number successfully deleted .";
+	public static String CASENUMBER_ERROR="Error while deleting the Case number successfully.";
+	public static String CASENUMBER_NORECORD="No record found for given case number in DataBase.";
+	public static String UNITS_EMPTY="Unit can't be empty for Case Number";
+	public static String PART_QUANTITY_ZERO = "Part Quantity can't be less than or equal to zero.";
 	
 }

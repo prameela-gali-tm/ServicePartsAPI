@@ -251,6 +251,17 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 		sql.append(" left join spadm.sp_part_trans ptrans on   pt.part_id=ptrans.part_id ");
 		sql.append(" join spadm.sp_case ca on ptrans.case_id=ca.case_id and pt.order_id = ptrans.order_id  and   ca.case_number='").append(caseNumber).append("'");
 		sql.append(" join spadm.sp_order ord on ord.order_id=pt.order_id   ");
+		if(directFlag!=null && directFlag.equalsIgnoreCase("Y")) { 
+			sql.append(" and  ord.direct_ship_flag =true "); 
+			}else {
+				sql.append("  and  ord.direct_ship_flag =false "); 
+			  }
+		if(vendorCode!=null) {
+			sql.append(" and  ord.vendor_code='").append(vendorCode).append("'"); 
+			  }
+		if(transportCode!=0) {
+			sql.append(" and  ord.trans_code='").append(transportCode).append("'");
+		}
 		sql.append(" where 1=1    ");
 		sql.append(" union");
 		sql.append(" select ");
@@ -276,6 +287,17 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 		sql.append(" left join spadm.sp_part_trans ptrans on   pt.part_id=ptrans.part_id ");
 		sql.append(" left join spadm.sp_case ca on ptrans.case_id=ca.case_id and pt.order_id = ptrans.order_id ");
 		sql.append(" join spadm.sp_order ord on ord.order_id=pt.order_id   ");
+		if(directFlag!=null && directFlag.equalsIgnoreCase("Y")) { 
+			sql.append(" and  ord.direct_ship_flag =true "); 
+			}else {
+				sql.append("  and  ord.direct_ship_flag =false "); 
+			  }
+		if(vendorCode!=null) {
+			sql.append(" and  ord.vendor_code='").append(vendorCode).append("'"); 
+			  }
+		if(transportCode!=0) {
+			sql.append(" and  ord.trans_code='").append(transportCode).append("'");
+		}
 		sql.append(" where 1=1   ");
 		sql.append(" and ca.case_id is null");
 		sql.append(" and pt.part_number in ");

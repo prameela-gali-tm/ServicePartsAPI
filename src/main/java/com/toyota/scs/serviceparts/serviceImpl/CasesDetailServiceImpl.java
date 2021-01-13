@@ -333,7 +333,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 				return ServicePartConstant.CASE_NUMBER_INVALID;
 			}
 		}
-		if (!isNumeric(s)) {
+		if (!isAlphaNumeric(s)) {
 			return ServicePartConstant.CASE_NUMBER_NUMBERIC;
 		}
 	return mes;
@@ -392,7 +392,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 			return ServicePartConstant.PART_QUANTITY_INVALID;
 		}
 		if (s <= 0) {
-			return ServicePartConstant.PART_QUANTITY_EMPTY;
+			return ServicePartConstant.PART_QUANTITY_ZERO;
 		}	
 
 		return mes;
@@ -748,37 +748,13 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 							duplicateCaseNumber.put(model.getCaseNumber(), model.getCaseNumber());
 						}
 						pushMessage(vendorCode, caseNumberValid(model.getCaseNumber(), -2), mesMap);
-						
-						int days = caseNumberDaysValidation(model.getCaseNumber());
-						if(days>=0) {
-							pushMessage(vendorCode, caseNumberValid(model.getCaseNumber(), days), mesMap);
-						}else if(days==-99){// resting all DDD values back to original quantity 
-							CaseEntity caseEntity = caseRepositroy.findByCaseNumber(model.getCaseNumber());
-							@SuppressWarnings("unchecked")
-							List<PartTransEntity> entity =  partTransRepositroy.findByCaseId(caseEntity.getId());
-							List<PartEntity> partEntityList = new ArrayList<PartEntity>();
-							for(PartTransEntity obj1:entity)
-							{
-								Optional<PartEntity> pEntityopt= partRepositroy.findById(obj1.getPartId());
-								PartEntity pEntity = pEntityopt.get();
-								long fullFillAmount = obj1.getFullfilledQuantity();
-								long outStandingAmount = pEntity.getOutstandingQuantity();
-								long totalAmount = fullFillAmount+outStandingAmount;
-								if(totalAmount>=pEntity.getOrderQuantity()) {
-									pEntity.setOutstandingQuantity(pEntity.getOrderQuantity());
-									pEntity.setStatus(ServicePartConstant.INSERT_STATUS);
-								}else {
-									pEntity.setOutstandingQuantity(totalAmount);
-									pEntity.setStatus(ServicePartConstant.PARTIAL_STATUS);
-								}	
-								partEntityList.add(pEntity);
-							}
-							partRepositroy.saveAll(partEntityList);
-							partTransRepositroy.deleteAll(entity);
-							caseRepositroy.delete(caseEntity);
-						}
-						
 						List<UnitsModel> units = model.getUnits();
+						int days = caseNumberDaysValidation(model.getCaseNumber());
+							if(days>=0) {
+								pushMessage(vendorCode, caseNumberValid(model.getCaseNumber(), days), mesMap);
+							}else if(days==-99){// resting all DDD values back to original quantity 
+								deleteCaseDetails(model.getCaseNumber(),units,vendorCode);
+							}
 						List<RfidDetailsModel> rfidDetails = model.getRfidDetails();
 						List<ExceptionsModel> exceptions = caseBuildModel.getExceptions();
 						for (RfidDetailsModel detailsModel : rfidDetails) {
@@ -804,7 +780,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 							}
 						}
 						// validating the direct shipment flag ends here
-						
+						if(units!=null && units.size()>0) {
 						for (UnitsModel obj : units) {
 							List<PartDetailsModel> detailsModel = null;
 							List<SerialNumberDetailsModel> serialNumberDetailsModels =null;
@@ -866,7 +842,7 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 							}
 							if(distinationFD!=null) {
 								noRecordFoundKey = noRecordFoundKey + distinationFD;
-							}
+							}							
 							String keyValue1= null;
 							if (obj.getDeliveryDueDate() == null && valid) {
 								
@@ -1271,7 +1247,11 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 								}
 							}
 							partDetailsMap.put(keyValue, outStandingQuantity);
-						} /// end of the for loop unit level
+						}
+						}
+						else{
+							pushMessage(vendorCode, ServicePartConstant.UNITS_EMPTY+"  "+model.getCaseNumber(), mesMap);/// end of the for loop unit level
+						}
 						caseWithUnitDetails.put(model.getCaseNumber(), unitDetails);
 					}
 
@@ -1438,4 +1418,50 @@ public class CasesDetailServiceImpl implements CasesDetailService {
 		return returnValue;
 	}
 
+	public ModelApiResponse deleteCaseDetails(String caseNumber,List<UnitsModel> units,String vendoreCode) {
+		ModelApiResponse apiResponse =new ModelApiResponse();
+		Map<String, Message> mesMap = new HashMap<String, Message>();
+		try {
+			if(units!=null && units.size()>0 && vendoreCode!=null) {
+				for (UnitsModel obj : units) {
+					pushMessage(vendoreCode, partQuantityValidation(obj.getPartQuantity()), mesMap);
+					}
+			}
+			if(valid) {
+				CaseEntity caseEntity = caseRepositroy.findByCaseNumber(caseNumber);
+				if(caseEntity!=null) {
+					List<PartTransEntity> entity =  partTransRepositroy.findByCaseId(caseEntity.getId());
+					List<PartEntity> partEntityList = new ArrayList<PartEntity>();
+					for(PartTransEntity obj1:entity)
+					{
+						Optional<PartEntity> pEntityopt= partRepositroy.findById(obj1.getPartId());
+						PartEntity pEntity = pEntityopt.get();
+						long fullFillAmount = obj1.getFullfilledQuantity();
+						long outStandingAmount = pEntity.getOutstandingQuantity();
+						long totalAmount = fullFillAmount+outStandingAmount;
+						if(totalAmount>=pEntity.getOrderQuantity()) {
+							pEntity.setOutstandingQuantity(pEntity.getOrderQuantity());
+							pEntity.setStatus(ServicePartConstant.INSERT_STATUS);
+						}else {
+							pEntity.setOutstandingQuantity(totalAmount);
+							pEntity.setStatus(ServicePartConstant.PARTIAL_STATUS);
+						}	
+						partEntityList.add(pEntity);
+					}
+					partRepositroy.saveAll(partEntityList);
+					partTransRepositroy.deleteAll(entity);
+					caseRepositroy.delete(caseEntity);
+					apiResponse.setCode(200);
+					pushMessage(caseNumber, ServicePartConstant.CASENUMBER_DELETE, mesMap);
+				}
+		}else {
+			apiResponse.setCode(200);
+			pushMessage(caseNumber, ServicePartConstant.CASENUMBER_NORECORD, mesMap);
+		}			
+		}catch (Exception e) {
+			pushMessage(caseNumber, ServicePartConstant.CASENUMBER_ERROR, mesMap);
+			
+		} 
+		return apiResponse;
+	}
 }
