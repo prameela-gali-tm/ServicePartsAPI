@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,7 @@ import com.toyota.scs.serviceparts.model.ViewPONumberDetailModel;
 import com.toyota.scs.serviceparts.model.ViewPartDetailsModel;
 import com.toyota.scs.serviceparts.repository.OrderRepository;
 import com.toyota.scs.serviceparts.repository.PalletSizeLimitRepositroy;
+import com.toyota.scs.serviceparts.serviceImpl.CasesDetailServiceImpl;
 import com.toyota.scs.serviceparts.serviceImpl.PartDetailsServiceImpl;
 
 @RestController
@@ -34,6 +36,9 @@ public class GetApiController {
 	
 	@Autowired
 	private PalletSizeLimitRepositroy palletSizeLimitEntity;
+	
+	@Autowired
+	private CasesDetailServiceImpl CasesDetailService;
 	
 	/*
 	 * @Autowired private KafkaTemplate<String, Object> template;
@@ -133,5 +138,14 @@ public class GetApiController {
 			List<PartDetailsModelQuery> queryPartDetails = new ArrayList<PartDetailsModelQuery>();	
 			queryPartDetails = partdetailsService.findPartDetailsQuery(partNumber,vendorCode,directFlag,transportCode,dealerNumber,distFD,deliveruDueDate,poLineNuber,poNumber);
 			return new ResponseEntity<>(queryPartDetails,HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/casedetails")
+	public ResponseEntity<ModelApiResponse> getCaseDetails(
+			@RequestParam(name="caseNumber", required = true) String caseNumber)	{		
+		ModelApiResponse apiResponse = new ModelApiResponse();
+		apiResponse = CasesDetailService.deleteCaseDetails(caseNumber,null,null);
+		return new ResponseEntity<>(apiResponse,HttpStatus.OK);
+		
 	}
 } 
