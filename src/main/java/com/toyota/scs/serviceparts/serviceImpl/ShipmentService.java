@@ -33,6 +33,7 @@ import com.toyota.scs.serviceparts.repository.ShipmentRepositroy;
 import com.toyota.scs.serviceparts.repository.VendorRepositroy;
 import com.toyota.scs.serviceparts.specification.OrderSpecification;
 import com.toyota.scs.serviceparts.specification.ShipmentSpecification;
+import com.toyota.scs.serviceparts.util.SCSUtil;
 import com.toyota.scs.serviceparts.util.ServicePartConstant;
 
 @Service
@@ -47,7 +48,7 @@ public class ShipmentService {
 	static String EMPTY = "";
 
 	public Page getAllShipmentDetails(Integer pageNo, Integer pageSize, String sortBy,String search) {
-		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).ascending());
+        Pageable paging = PageRequest.of(pageNo, pageSize,SCSUtil.sortHelper(sortBy));
 		Page<ShipmentEntity> pagedResult;
 		
 		if(search!=null&&!search.isEmpty()) {

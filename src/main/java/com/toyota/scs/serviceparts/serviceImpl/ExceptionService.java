@@ -11,6 +11,7 @@ import com.toyota.scs.serviceparts.entity.ExceptionEntity;
 import com.toyota.scs.serviceparts.repository.ExceptionRepository;
 import com.toyota.scs.serviceparts.specification.ExceptionSpecification;
 import com.toyota.scs.serviceparts.specification.OrderSpecification;
+import com.toyota.scs.serviceparts.util.SCSUtil;
 
 @Service
 public class ExceptionService {
@@ -20,7 +21,7 @@ public class ExceptionService {
 	
 	public Page getAllException(Integer pageNo, Integer pageSize, String sortBy,String search){
 		 
-        Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(sortBy).ascending());
+        Pageable paging = PageRequest.of(pageNo, pageSize,SCSUtil.sortHelper(sortBy));
         Page<ExceptionEntity> pagedResult;
         
         if(search!=null&&!search.isEmpty()) {

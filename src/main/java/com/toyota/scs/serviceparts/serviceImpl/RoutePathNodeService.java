@@ -11,6 +11,7 @@ import com.toyota.scs.serviceparts.entity.RoutePathNodeEntity;
 import com.toyota.scs.serviceparts.repository.RoutePathNodeRepositroy;
 import com.toyota.scs.serviceparts.specification.OrderSpecification;
 import com.toyota.scs.serviceparts.specification.RoutePathNodeSpecification;
+import com.toyota.scs.serviceparts.util.SCSUtil;
 
 @Service
 public class RoutePathNodeService {
@@ -19,7 +20,7 @@ public class RoutePathNodeService {
 	RoutePathNodeRepositroy nodeRepositroy;
 
 	public Page getAllRoutePathNodeDetails(Integer pageNo, Integer pageSize, String sortBy, String search) {
-		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).ascending());
+        Pageable paging = PageRequest.of(pageNo, pageSize,SCSUtil.sortHelper(sortBy));
 		Page<RoutePathNodeEntity> pagedResult;
 
 		if (search != null && !search.isEmpty()) {

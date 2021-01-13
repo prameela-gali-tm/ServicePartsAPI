@@ -11,6 +11,7 @@ import com.toyota.scs.serviceparts.entity.VendorEntity;
 import com.toyota.scs.serviceparts.repository.VendorRepositroy;
 import com.toyota.scs.serviceparts.specification.OrderSpecification;
 import com.toyota.scs.serviceparts.specification.VendorSpecification;
+import com.toyota.scs.serviceparts.util.SCSUtil;
 
 @Service
 public class VendorService {
@@ -24,7 +25,7 @@ public class VendorService {
 	VendorRepositroy vendorRepositroy;
 
 	public Page getAllVendor(Integer pageNo, Integer pageSize, String sortBy, String search) {
-		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).ascending());
+        Pageable paging = PageRequest.of(pageNo, pageSize,SCSUtil.sortHelper(sortBy));
 		Page<VendorEntity> pagedResult;
 		if (search != null && !search.isEmpty()) {
 			VendorSpecification ordSpec = new VendorSpecification(search);

@@ -11,6 +11,7 @@ import com.toyota.scs.serviceparts.entity.SerialNumberEntity;
 import com.toyota.scs.serviceparts.repository.SerialNumberRepository;
 import com.toyota.scs.serviceparts.specification.OrderSpecification;
 import com.toyota.scs.serviceparts.specification.SerialNumberSpecification;
+import com.toyota.scs.serviceparts.util.SCSUtil;
 
 @Service
 public class SerialNumberService {
@@ -19,7 +20,7 @@ public class SerialNumberService {
 	SerialNumberRepository serialNumberRepository;
 
 	public Page getAllSerailNumber(Integer pageNo, Integer pageSize, String sortBy, String search) {
-		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).ascending());
+        Pageable paging = PageRequest.of(pageNo, pageSize,SCSUtil.sortHelper(sortBy));
 		Page<SerialNumberEntity> pagedResult;
 		if (search != null && !search.isEmpty()) {
 			SerialNumberSpecification ordSpec = new SerialNumberSpecification(search);
