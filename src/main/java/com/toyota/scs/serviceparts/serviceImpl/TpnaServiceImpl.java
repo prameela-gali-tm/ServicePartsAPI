@@ -68,29 +68,42 @@ public class TpnaServiceImpl implements TpnaService{
 			}
 			OrderEntity currentOrd=ordRepo.findByPoNumberAndVendorCodeAndOrderType(poNumber, vendorCode, orderType);
 			// insert into order table if not exists
-			if(currentOrd==null||currentOrd.getId()==0L) {
-				orderExists=false;
-				 currentOrd= new OrderEntity();
-				 
-				 currentOrd.setPoNumber(poNumber);
-				 currentOrd.setVendorCode(vendorCode);
-				 currentOrd.setOrderType(orderType);
-				 if(poline.getdIRECT_SHP_FLG().equalsIgnoreCase("Y")) {
-					 currentOrd.setDirectShipFlag(true);
-				 }else {
-					 currentOrd.setDirectShipFlag(false);
-				 }
-				 
-				 currentOrd.setFinalDestination(poline.getdISTFD());
-				 currentOrd.setFinalDestDesc(poline.getfINAL_DST());
-				 currentOrd.setTransCode(poline.gettRANSP_CD());
-				 currentOrd.setDealerCode(poline.getdLR_CODE());
-				 currentOrd.setDealerOrder(poline.getdLR_ORD_REF_NUM());
-				 currentOrd.setModifiedDate(new Date());
-				 currentOrd.setModifiedBy("TPNA");
-				 ordRepo.save(currentOrd);
-			}else {
-				orderExists=true;
+			if (currentOrd == null || currentOrd.getId() == 0L) {
+				orderExists = false;
+				currentOrd = new OrderEntity();
+
+				currentOrd.setPoNumber(poNumber);
+				currentOrd.setVendorCode(vendorCode);
+				currentOrd.setOrderType(orderType);
+				if (poline.getdIRECT_SHP_FLG().equalsIgnoreCase("Y")) {
+					currentOrd.setDirectShipFlag(true);
+				} else {
+					currentOrd.setDirectShipFlag(false);
+				}
+
+				currentOrd.setFinalDestination(poline.getdISTFD());
+				currentOrd.setFinalDestDesc(poline.getfINAL_DST());
+				currentOrd.setTransCode(poline.gettRANSP_CD());
+				currentOrd.setDealerCode(poline.getdLR_CODE());
+				currentOrd.setDealerOrder(poline.getdLR_ORD_REF_NUM());
+				currentOrd.setModifiedDate(new Date());
+				currentOrd.setModifiedBy("TPNA");
+
+				if (orderType.equalsIgnoreCase("C")) {
+					currentOrd.setOrderPriority("1");
+				} else if (orderType.equalsIgnoreCase("E")) {
+					currentOrd.setOrderPriority("2");
+				} else if (orderType.equalsIgnoreCase("D")) {
+					currentOrd.setOrderPriority("3");
+				} else if (orderType.equalsIgnoreCase("V")) {
+					currentOrd.setOrderPriority("4");
+				} else {
+					currentOrd.setOrderPriority("5");
+				}
+
+				ordRepo.save(currentOrd);
+			} else {
+				orderExists = true;
 			}
 			
 			PartEntity part;

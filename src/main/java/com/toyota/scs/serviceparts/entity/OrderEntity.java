@@ -58,9 +58,11 @@ public class OrderEntity implements Serializable {
 	
 	@Column(name="DIRECT_SHIP_FLAG")
 	private Boolean directShipFlag;
-	
-	
-	@Column(name="MODIFIED_BY")
+
+	@Column(name = "order_priority")
+	private String orderPriority;
+
+	@Column(name = "MODIFIED_BY")
 	private String modifiedBy;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -95,7 +97,7 @@ public class OrderEntity implements Serializable {
 
 	public OrderEntity(long id, String poNumber, String orderType, String finalDestination, String dealerCode,
 			String transCode, String dealerOrder, Boolean directShipFlag, String modifiedBy, Date modifiedDate,
-			String vendorCode) {
+			String vendorCode,String orderPriority) {
 		super();
 		this.id = id;
 		this.poNumber = poNumber;
@@ -108,6 +110,7 @@ public class OrderEntity implements Serializable {
 		this.modifiedBy = modifiedBy;
 		this.modifiedDate = modifiedDate;
 		this.vendorCode = vendorCode;
+		this.orderPriority=orderPriority;
 	}
 
 
@@ -160,8 +163,13 @@ public class OrderEntity implements Serializable {
 		return dealerCode;
 	}
 
+	public String getOrderPriority() {
+		return orderPriority;
+	}
 
-
+	public void setOrderPriority(String orderPriority) {
+		this.orderPriority = orderPriority;
+	}
 
 	public void setDealerCode(String dealerCode) {
 		this.dealerCode = dealerCode;
