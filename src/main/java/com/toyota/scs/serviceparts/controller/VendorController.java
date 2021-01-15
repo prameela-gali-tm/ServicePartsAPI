@@ -36,8 +36,9 @@ public class VendorController {
 	@GetMapping("/fetchvendor")
 	public Page getAllVendor(@RequestParam(defaultValue = "0") Integer pageNo, 
             @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy){
-		Page pageresult = service.getAllVendor(pageNo, pageSize, sortBy);
+            @RequestParam(defaultValue = "id:asc") String sortBy,
+            @RequestParam(defaultValue = "") String search){
+		Page pageresult = service.getAllVendor(pageNo, pageSize, sortBy,search);
 		 
         return  pageresult; 
 	}

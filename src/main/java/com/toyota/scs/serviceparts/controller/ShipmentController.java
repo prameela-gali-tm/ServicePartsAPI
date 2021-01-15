@@ -35,8 +35,9 @@ public class ShipmentController {
 	@GetMapping("/fetchshipment")
 	public Page getAllVendor(@RequestParam(defaultValue = "0") Integer pageNo, 
             @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy){
-		Page pageresult = service.getAllShipmentDetails(pageNo, pageSize, sortBy);
+            @RequestParam(defaultValue = "id:asc") String sortBy,
+            @RequestParam(defaultValue = "") String search){
+		Page pageresult = service.getAllShipmentDetails(pageNo, pageSize, sortBy,search);
 		 
         return  pageresult; 
 	}

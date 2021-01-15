@@ -9,18 +9,26 @@ import org.springframework.stereotype.Service;
 
 import com.toyota.scs.serviceparts.entity.SerialNumberEntity;
 import com.toyota.scs.serviceparts.repository.SerialNumberRepository;
+import com.toyota.scs.serviceparts.specification.OrderSpecification;
+import com.toyota.scs.serviceparts.specification.SerialNumberSpecification;
+import com.toyota.scs.serviceparts.util.SCSUtil;
 
 @Service
 public class SerialNumberService {
 
 	@Autowired
 	SerialNumberRepository serialNumberRepository;
-	
-	public Page getAllSerailNumber(Integer pageNo, Integer pageSize, String sortBy){
-		Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(sortBy).ascending());
-		 
-        Page<SerialNumberEntity> pagedResult = serialNumberRepository.findAll(paging);
-        
-        return pagedResult;
+
+	public Page getAllSerailNumber(Integer pageNo, Integer pageSize, String sortBy, String search) {
+        Pageable paging = PageRequest.of(pageNo, pageSize,SCSUtil.sortHelper(sortBy));
+		Page<SerialNumberEntity> pagedResult;
+		if (search != null && !search.isEmpty()) {
+			SerialNumberSpecification ordSpec = new SerialNumberSpecification(search);
+			pagedResult = serialNumberRepository.findAll(ordSpec, paging);
+		} else {
+			pagedResult = serialNumberRepository.findAll(paging);
+		}
+
+		return pagedResult;
 	}
 }

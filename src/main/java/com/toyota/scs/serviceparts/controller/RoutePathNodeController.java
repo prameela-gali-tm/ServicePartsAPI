@@ -30,8 +30,9 @@ public class RoutePathNodeController {
 	@GetMapping("/fetchroutepathnode")
 	public Page getAllVendor(@RequestParam(defaultValue = "0") Integer pageNo, 
             @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy){
-		Page pageresult = service.getAllRoutePathNodeDetails(pageNo, pageSize, sortBy);
+            @RequestParam(defaultValue = "id:asc") String sortBy,
+            @RequestParam(defaultValue = "") String search){
+		Page pageresult = service.getAllRoutePathNodeDetails(pageNo, pageSize, sortBy,search);
 		 
         return  pageresult; 
 	}

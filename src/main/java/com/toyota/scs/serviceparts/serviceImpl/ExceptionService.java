@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.toyota.scs.serviceparts.entity.ExceptionEntity;
 import com.toyota.scs.serviceparts.repository.ExceptionRepository;
+import com.toyota.scs.serviceparts.specification.ExceptionSpecification;
+import com.toyota.scs.serviceparts.specification.OrderSpecification;
+import com.toyota.scs.serviceparts.util.SCSUtil;
 
 @Service
 public class ExceptionService {
@@ -16,10 +19,19 @@ public class ExceptionService {
 	@Autowired
 	ExceptionRepository exceptionRepository;
 	
-	public Page getAllException(Integer pageNo, Integer pageSize, String sortBy){
+	public Page getAllException(Integer pageNo, Integer pageSize, String sortBy,String search){
 		 
-        Pageable paging = PageRequest.of(pageNo, pageSize,Sort.by(sortBy).ascending());
-		Page<ExceptionEntity> pagedResult = exceptionRepository.findAll(paging);
+        Pageable paging = PageRequest.of(pageNo, pageSize,SCSUtil.sortHelper(sortBy));
+        Page<ExceptionEntity> pagedResult;
+        
+        if(search!=null&&!search.isEmpty()) {
+			ExceptionSpecification ordSpec= new ExceptionSpecification(search);			
+			pagedResult=exceptionRepository.findAll(ordSpec,paging);
+		}else {
+			pagedResult = exceptionRepository.findAll(paging);
+		}
+		        
+        
         
         return pagedResult;
 	}
