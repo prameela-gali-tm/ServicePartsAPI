@@ -114,7 +114,7 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 			sqlQuery.append(" and  ord.po_number = '").append(poNumber).append("'");
 		}
 		
-		sqlQuery.append(" order by pt.ddd ,pt.part_number,ord.order_type asc");
+		sqlQuery.append(" order by pt.ddd ,pt.part_number,ord.order_priority asc");
 		  List<PartEntity> list  = new ArrayList<PartEntity>();
 		  list =  (List<PartEntity>)em.createNativeQuery(sqlQuery.toString(),"viewPurchaseDetails").getResultList();
 		  List<PartDetailsModel> partDetilsList = new ArrayList<PartDetailsModel>();
@@ -427,7 +427,7 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 		}else {
 			sqlQuery.append(" and pt.status not in ('FULL FILLED','DRAFT')");
 		}		
-		sqlQuery.append(" order by pt.ddd ,pt.part_number,ord.order_type asc");
+		sqlQuery.append(" order by pt.ddd ,pt.part_number,ord.order_priority asc");
 		List<PartEntity> list  = new ArrayList<PartEntity>();
 		list =  (List<PartEntity>)em.createNativeQuery(sqlQuery.toString(),"viewPONumberDetails").getResultList();
 		em.close();
@@ -506,7 +506,7 @@ public class PartDetailsServiceImpl implements PartDetailsService {
 			sqlQuery.append(" and  ord.po_number = '").append(poNumber).append("'");
 		}
 		
-		sqlQuery.append(" order by pt.ddd ,pt.part_number,ord.order_type asc");
+		sqlQuery.append(" order by pt.ddd ,pt.part_number,ord.order_priority asc");
 		  List<PartEntity> list  = new ArrayList<PartEntity>();
 		  list =  (List<PartEntity>)em.createNativeQuery(sqlQuery.toString(),"viewPurchaseDetails").getResultList();
 		  List<PartDetailsModelQuery> partDetilsList = new ArrayList<PartDetailsModelQuery>();
